@@ -10,22 +10,17 @@ class StatusSeeder extends Seeder
     public function run()
     {
         $data = [
-            'Pickup',
-            'Drop off',
-            'Pick & Drop',
-            'Cancel',
             'Pending',
-            'Dropped',
-            'Complete', 
-            'Inspection',
-            'Ready for ride',
-            'Content Verified',
-            'Order Confirmation',
-            'Picked up',
-            'Delivered',
-            'Moved to hub',
-            'Moved to Wash-house',
-            'Customer not available',
+            'Awaiting Payment',
+            'Awaiting Fulfillment',
+            'Awaiting Shipment',
+            'Awaiting Pickup', 
+            'Completed',
+            'Shipped',
+            'Cancelled',
+            'Declined',
+            'Refunded',
+            'Disputed'
          ];
          foreach ($data as $val) {
             Status::create(['name' => $val]);

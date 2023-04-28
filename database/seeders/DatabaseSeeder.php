@@ -10,15 +10,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PermissionSeeder::class,
             UserSeeder::class,
-            DaySeeder::class,
             UnitSeeder::class,
-            MessageSeeder::class,
             StatusSeeder::class,
-            Complaint_natureSeeder::class,
-            Complaint_tagSeeder::class,
-            ReasonSeeder::class,
-            Customer_typeSeeder::class,
-            RatingSeeder::class,
+            Customer_typeSeeder::class
         ]);
     }
 }

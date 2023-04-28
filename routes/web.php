@@ -20,6 +20,13 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::group(['middleware' => ['auth']], function() {
 
+
+	Route::resource('/units', App\Http\Controllers\UnitController::class);
+	Route::get('/units_list', [App\Http\Controllers\UnitController::class, 'list']);
+	Route::delete('/units_delete', [App\Http\Controllers\UnitController::class, 'destroy']);
+
+
+
 	Route::resource('/permissions', App\Http\Controllers\PermissionController::class);
 	Route::get('/permissionList', [App\Http\Controllers\PermissionController::class, 'list']);
 	Route::delete('/permissionDelete', [App\Http\Controllers\PermissionController::class, 'destroy']);
@@ -48,10 +55,7 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::get('/cityList', [App\Http\Controllers\CityController::class, 'list']);
 	Route::delete('/cityDelete', [App\Http\Controllers\CityController::class, 'destroy']);
 
-	Route::resource('/units', App\Http\Controllers\UnitController::class);
-	Route::get('/unitList', [App\Http\Controllers\UnitController::class, 'list']);
-	Route::delete('/unitDelete', [App\Http\Controllers\UnitController::class, 'destroy']);
-
+	
 	Route::resource('/items', App\Http\Controllers\ItemController::class);
 	Route::get('/itemList', [App\Http\Controllers\ItemController::class, 'list']);
 	Route::delete('/itemDelete', [App\Http\Controllers\ItemController::class, 'destroy']);

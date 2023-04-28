@@ -6,15 +6,15 @@
 
 <div class="page-inner">
     <div class="page-header">
-        <h4 class="page-title">@yield('title')</h4>
+        <h4 class="page-title">{{trans("module.units")}}</h4>
     </div>
     <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex align-items-center">
-                        <h4 class="card-title">Show @yield('title')</h4>
-                        <a  href="{{ route('units.index') }}" class="btn btn-primary btn-round ml-auto">
+                        <h4 class="card-title">{{trans("global.edit")}} {{trans("module.unit")}}</h4>
+                        <a  href="{{ route('units.index') }}" class="btn btn-primary btn-xs ml-auto">
                             <i class="fas fa-arrow-left"></i>
                         </a>
                     </div>
@@ -26,7 +26,7 @@
                             <div class="table-responsive">
                                 <table class="table dt-responsive">
                                     <tr>
-                                        <td width="50%">Unit Name</td>
+                                        <td width="50%">{{trans("module.unit_name")}}</td>
                                         <td>{{$data->name}}</td>
                                     </tr>
                                 </table><br><br>

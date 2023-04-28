@@ -27,34 +27,16 @@ class UnitController extends Controller
 
     public function list()
     {
-        $data = DB::table('units')
-                ->orderBy('units.created_at','DESC')
-                ->select('units.*')
-                ->get();
+        $data = Unit::orderBy('units.name','ASC')->get();
         return 
             DataTables::of($data)
+                ->addIndexColumn()
                 ->addColumn('action',function($data){
-                    return '
-                    <div class="btn-group btn-group">
-                        <a class="btn btn-info btn-sm" href="units/'.$data->id.'">
-                            <i class="fa fa-eye"></i>
-                        </a>
-                       ';
+                    return  $data->getAllButton("unit");
                 })
-                ->addColumn('srno','')
-                ->rawColumns(['srno','','action'])
                 ->make(true);
     }
-            // <a class="btn btn-info btn-sm" href="units/'.$data->id.'/edit" id="'.$data->id.'">
-            //     <i class="fas fa-pencil-alt"></i>
-            // </a>
 
-            // <button
-            //     class="btn btn-danger btn-sm delete_all"
-            //     data-url="'. url('unitDelete') .'" data-id="'.$data->id.'">
-            //     <i class="fas fa-trash-alt"></i>
-            // </button>
-            // </div>
     public function create()
     {
         return view('units.create');
