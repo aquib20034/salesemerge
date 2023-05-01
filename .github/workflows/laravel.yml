@@ -22,5 +22,7 @@ jobs:
       run: php artisan key:generate
     - name: Copy .env file
       run: cp .env.example .env
+    - name: List project directory
+      run: ls -la
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
