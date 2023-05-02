@@ -17,7 +17,6 @@ jobs:
     - name: Update composer
       run: composer update
     - name: Install Dependencies
-      working-directory: /var/www/html
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
     - name: Generate key
       run: php artisan key:generate
