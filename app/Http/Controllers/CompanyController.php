@@ -1,15 +1,13 @@
 <?php
 
-
 namespace App\Http\Controllers;
-
-
+use App\Models\Company;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Company;
-use App\Models\Company_has_transaction;
+use Symfony\Component\HttpFoundation\Response;
+use Yajra\DataTables\Facades\DataTables;
 use DB;
-use DataTables;
+
 
 class CompanyController extends Controller
 {
@@ -24,39 +22,47 @@ class CompanyController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-
-        }
-        return view('companies.index');
-    }
-
-    public function list()
-    {
-        $data = DB::table('companies')
+            $query = Company::query()
                 ->orderBy('companies.created_at','DESC')
                 ->select('companies.*')
                 ->get();
-        return
-            DataTables::of($data)
-                ->addColumn('action',function($data){
-                    return '
-                    <div class="btn-group btn-group">
-                        <a class="btn btn-info btn-sm" href="companies/'.$data->id.'">
-                            <i class="fa fa-eye"></i>
-                        </a>
-                        <a class="btn btn-info btn-sm" href="companies/'.$data->id.'/edit" id="'.$data->id.'">
-                            <i class="fas fa-pencil-alt"></i>
-                        </a>
+            $table = Datatables::of($query);
 
-                        <button
-                            class="btn btn-danger btn-sm delete_all"
-                            data-url="'. url('companyDelete') .'" data-id="'.$data->id.'">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </div>';
-                })
-                ->addColumn('srno','')
-                ->rawColumns(['srno','','action'])
-                ->make(true);
+            $table->addColumn('placeholder', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
+
+            $table->editColumn('actions', function ($row) {
+                $viewGate = 'company-list';
+                $editGate = 'company-edit';
+                $deleteGate = 'company-delete';
+                $crudRoutePart = 'companies';
+
+                return view('partials.datatableActions', compact(
+                    'viewGate',
+                    'editGate',
+                    'deleteGate',
+                    'crudRoutePart',
+                    'row'
+                ));
+            });
+            $table->editColumn('sno', function ($row) {
+                return $row->id ? $row->id : 0 ;
+            });
+
+//            If any modififcation require before present in the grid, use editColumn
+//            $table->editColumn('owner_name', function ($row) {
+//                return $row->owner_name ? $row->owner_name : '';
+//            });
+//
+//            $table->editColumn('contact_no', function ($row) {
+//                return $row->contact_no ? $row->contact_no : '';
+//            });
+
+            $table->rawColumns(['actions', 'placeholder']);
+
+            return $table->make(true);
+        }
+        return view('companies.index');
     }
 
     public function create()
@@ -162,9 +168,17 @@ class CompanyController extends Controller
     public function destroy(Request $request)
     {
         $ids = $request->ids;
-        $data = DB::table("companies")->whereIn('id',explode(",",$ids))->delete();
+        $data = Company::query()->whereIn('id',explode(",",$ids))->delete();
         return response()->json(['success'=>"deleted successfully."]);
     }
+
+    public function massDestroy(MassDestroyMemberRequest $request)
+    {
+        Company::whereIn('id', request('ids'))->delete();
+
+        return response(null, Response::HTTP_NO_CONTENT);
+    }
+
 
 
 

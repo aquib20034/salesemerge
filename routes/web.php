@@ -39,9 +39,8 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::get('/userList', [App\Http\Controllers\UserController::class, 'list']);
 	Route::delete('/userDelete', [App\Http\Controllers\UserController::class, 'destroy']);
 
-//	Route::resource('companies', App\Http\Controllers\CompanyController::class);
-    Route::resource('companies', 'CompanyController', ['except' => ['create', 'store', 'edit', 'update']]);
-    Route::get('/companyList', [App\Http\Controllers\CompanyController::class, 'list']);
+    Route::delete('companies/destroy', 'CompanyController@massDestroy')->name('companies.massDestroy');
+    Route::resource('companies', 'CompanyController');
 
 	Route::delete('/companyDelete', [App\Http\Controllers\CompanyController::class, 'destroy']);
 
