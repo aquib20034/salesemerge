@@ -28,8 +28,7 @@ class cityController extends Controller
     public function list()
     {
         $data = DB::table('cities')
-                ->orderBy('cities.created_at','DESC')
-                ->select('cities.*')
+                ->orderBy('cities.name','DESC')
                 ->get();
         return 
             DataTables::of($data)
