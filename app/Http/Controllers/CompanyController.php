@@ -11,7 +11,7 @@ use App\Models\Company_has_transaction;
 use DB;
 use DataTables;
 
-class companyController extends Controller
+class CompanyController extends Controller
 {
     function __construct()
     {
@@ -23,6 +23,9 @@ class companyController extends Controller
 
     public function index(Request $request)
     {
+        if ($request->ajax()) {
+
+        }
         return view('companies.index');
     }
 
@@ -32,7 +35,7 @@ class companyController extends Controller
                 ->orderBy('companies.created_at','DESC')
                 ->select('companies.*')
                 ->get();
-        return 
+        return
             DataTables::of($data)
                 ->addColumn('action',function($data){
                     return '
@@ -43,7 +46,7 @@ class companyController extends Controller
                         <a class="btn btn-info btn-sm" href="companies/'.$data->id.'/edit" id="'.$data->id.'">
                             <i class="fas fa-pencil-alt"></i>
                         </a>
-                     
+
                         <button
                             class="btn btn-danger btn-sm delete_all"
                             data-url="'. url('companyDelete') .'" data-id="'.$data->id.'">
@@ -86,7 +89,7 @@ class companyController extends Controller
             $val->debit             = ((-1)* ($request['previous_amount']));
         }
         $val->save();
-      
+
         return redirect()
                 ->route('companies.index')
                 ->with('success','Company '.$request['name'] .' added successfully.');
@@ -96,7 +99,7 @@ class companyController extends Controller
     {
         $data   = DB::table('companies')
                     ->select('companies.*',
-                        DB::raw('(CASE 
+                        DB::raw('(CASE
                         WHEN company_has_transactions.credit >=0  THEN company_has_transactions.credit
                         ELSE company_has_transactions.debit
                         END) AS previous_amount')
@@ -114,7 +117,7 @@ class companyController extends Controller
     {
         $data= DB::table('companies')
                     ->select('companies.*',
-                    DB::raw('(CASE 
+                    DB::raw('(CASE
                     WHEN company_has_transactions.credit >=0  THEN company_has_transactions.credit
                     ELSE ((-1)*(company_has_transactions.debit))
                     END) AS previous_amount')
@@ -144,7 +147,7 @@ class companyController extends Controller
             $input['debit']      = ((-1)* ($request['previous_amount']));
             $input['credit']     = null;
         }
-       
+
         $transaction             = Company_has_transaction::where('company_id', '=', $id)
                                         ->where('payment_detail','Account Opening')
                                         ->first();

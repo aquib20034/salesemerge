@@ -21,7 +21,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="myTable" class="display table table-striped table-hover" style="width: 100%;" cellspacing="0">
+                        <table id="datatable-Company" class="display table table-striped table-hover" style="width: 100%;" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th width="5%">#</th>
@@ -30,9 +30,9 @@
                                     <th width="10%" >Action</th>
                                 </tr>
                             </thead>
-                          
+
                             <tbody>
-                                
+
                             </tbody>
                         </table>
                     </div>
@@ -43,7 +43,7 @@
 </div>
 
 <script>
-    $(document).ready(function () {  
+    $(document).ready(function () {
 
     var t = $('#myTable').DataTable({
           "aaSorting": [],
@@ -65,8 +65,70 @@
             cell.innerHTML = i+1;
         } );
     } ).draw();
+    });
 
+
+
+
+    $(function () {
+        debugger;
+        let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+        @can('earning_delete')
+        let deleteButtonTrans = '{{ trans('global.datatables.delete') }}';
+        let deleteButton = {
+            text: deleteButtonTrans,
+            url: "{{ route('companies.massDestroy') }}",
+            className: 'btn-danger',
+            action: function (e, dt, node, config) {
+                var ids = $.map(dt.rows({ selected: true }).data(), function (entry) {
+                    return entry.id
+                });
+
+                if (ids.length === 0) {
+                    alert('{{ trans('global.datatables.zero_selected') }}')
+
+                    return
+                }
+
+                if (confirm('{{ trans('global.areYouSure') }}')) {
+                    $.ajax({
+                        headers: {'x-csrf-token': _token},
+                        method: 'POST',
+                        url: config.url,
+                        data: { ids: ids, _method: 'DELETE' }})
+                        .done(function () { location.reload() })
+                }
+            }
+        }
+        dtButtons.push(deleteButton)
+        @endcan
+
+        let dtOverrideGlobals = {
+            buttons: dtButtons,
+            processing: true,
+            serverSide: true,
+            retrieve: true,
+            aaSorting: [],
+            ajax: "{{ route('companies.index') }}",
+            columns: [
+                { data: 'srno', name: 'srno' },
+                { data: 'name', name: 'name' },
+                { data: 'contact_no', name: 'contact_no' },
+                // { data: 'geteway', name: 'earnings.geteway' },
+                { data: 'actions', name: '{{ trans('global.actions') }}' }
+            ],
+            orderCellsTop: true,
+            order: [[ 1, 'desc' ]],
+            pageLength: 100,
+        };
+        let table = $('.datatable-Company').DataTable(dtOverrideGlobals);
+        $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
+            $($.fn.dataTable.tables(true)).DataTable()
+                .columns.adjust();
+        });
 
     });
+
+
 </script>
 @endsection

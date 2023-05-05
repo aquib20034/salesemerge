@@ -39,8 +39,10 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::get('/userList', [App\Http\Controllers\UserController::class, 'list']);
 	Route::delete('/userDelete', [App\Http\Controllers\UserController::class, 'destroy']);
 
-	Route::resource('/companies', App\Http\Controllers\CompanyController::class);
-	Route::get('/companyList', [App\Http\Controllers\CompanyController::class, 'list']);
+//	Route::resource('companies', App\Http\Controllers\CompanyController::class);
+    Route::resource('companies', 'CompanyController', ['except' => ['create', 'store', 'edit', 'update']]);
+    Route::get('/companyList', [App\Http\Controllers\CompanyController::class, 'list']);
+
 	Route::delete('/companyDelete', [App\Http\Controllers\CompanyController::class, 'destroy']);
 
 	Route::resource('/customers', App\Http\Controllers\CustomerController::class);
@@ -50,16 +52,16 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::resource('/customer_types', App\Http\Controllers\Customer_typeController::class);
 	Route::get('/customer_typeList', [App\Http\Controllers\Customer_typeController::class, 'list']);
 	Route::delete('/customer_typeDelete', [App\Http\Controllers\Customer_typeController::class, 'destroy']);
-	
+
 	Route::resource('/cities', App\Http\Controllers\CityController::class);
 	Route::get('/cityList', [App\Http\Controllers\CityController::class, 'list']);
 	Route::delete('/cityDelete', [App\Http\Controllers\CityController::class, 'destroy']);
 
-	
+
 	Route::resource('/items', App\Http\Controllers\ItemController::class);
 	Route::get('/itemList', [App\Http\Controllers\ItemController::class, 'list']);
 	Route::delete('/itemDelete', [App\Http\Controllers\ItemController::class, 'destroy']);
-	
+
 
 	Route::resource('/stocks', App\Http\Controllers\StockController::class);
 	Route::get('/stockList', [App\Http\Controllers\StockController::class, 'list']);
@@ -69,7 +71,7 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::get('/purchaseList', [App\Http\Controllers\PurchaseController::class, 'list']);
 	Route::delete('/purchaseDelete', [App\Http\Controllers\PurchaseController::class, 'destroy']);
 	Route::post('/fetch_item_detail', [App\Http\Controllers\PurchaseController::class, 'fetch_item_detail']);
-	
+
 	Route::resource('/sells', App\Http\Controllers\SellController::class);
 	Route::get('/sellList', [App\Http\Controllers\SellController::class, 'list']);
 	Route::delete('/sellDelete', [App\Http\Controllers\SellController::class, 'destroy']);
@@ -85,7 +87,7 @@ Route::group(['middleware' => ['auth']], function() {
 
 	Route::resource('/reports', App\Http\Controllers\ReportController::class);
 	Route::resource('/vouchers', App\Http\Controllers\VoucherController::class);
-	
+
 	// Route::resource('/amount_types', App\Http\Controllers\Amount_typeController::class);
 	// Route::get('/amount_typeList', [App\Http\Controllers\Amount_typeController::class, 'list']);
 	// Route::delete('/amount_typeDelete', [App\Http\Controllers\Amount_typeController::class, 'destroy']);
