@@ -19,7 +19,7 @@
                         </a>
                     </div>
                 </div>
-                
+
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12 col-md-12">
@@ -45,7 +45,7 @@
                                         <td>Address </td>
                                         <td>{{$data->address}}</td>
                                     </tr>
-                                  
+
                                 </table><br><br>
                             </div>
                         </div>
@@ -55,6 +55,6 @@
         </div>
     </div>
 </div>
-  
+
 
 @endsection

@@ -24,10 +24,10 @@
 	<!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
 	<link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('assets/css/azzara.min.css') }}">
-    <link href="{{ asset('libs/css/jquery.dataTables.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('libs/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('libs/css/buttons.dataTables.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('libs/css/select.dataTables.min.css') }}" rel="stylesheet" />
+{{--    <link href="{{ asset('libs/css/jquery.dataTables.min.css') }}" rel="stylesheet" />--}}
+{{--    <link href="{{ asset('libs/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" />--}}
+{{--    <link href="{{ asset('libs/css/buttons.dataTables.min.css') }}" rel="stylesheet" />--}}
+{{--    <link href="{{ asset('libs/css/select.dataTables.min.css') }}" rel="stylesheet" />--}}
 
 	<!-- CSS Just for demo purpose, don't include it in your project -->
 	<!-- <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}"> -->
@@ -37,6 +37,7 @@
 	.span_danger{
 		color:red;
 	}
+    .table>tbody>tr>td{ white-space: nowrap !important;}
 	</style>
 </head>
 <body>

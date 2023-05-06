@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Company_has_transaction;
+use Gate;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 use DB;
@@ -45,9 +47,9 @@ class CompanyController extends Controller
                     'row'
                 ));
             });
-            $table->editColumn('sno', function ($row) {
-                return $row->id ? $row->id : 0 ;
-            });
+//            $table->editColumn('sno', function ($row) {
+//                return $row->id ? $row->id : 0 ;
+//            });
 
 //            If any modififcation require before present in the grid, use editColumn
 //            $table->editColumn('owner_name', function ($row) {
@@ -89,7 +91,7 @@ class CompanyController extends Controller
         $val->payment_method_id = 1;
         $val->payment_detail    = "Account Opening";
 
-        if($request['previous_amount']>=0){
+        if($request['previous_amount'] >= 0){
             $val->credit            = $request['previous_amount'];
         }else{
             $val->debit             = ((-1)* ($request['previous_amount']));
@@ -103,15 +105,8 @@ class CompanyController extends Controller
 
     public function show($id)
     {
-        $data   = DB::table('companies')
-                    ->select('companies.*',
-                        DB::raw('(CASE
-                        WHEN company_has_transactions.credit >=0  THEN company_has_transactions.credit
-                        ELSE company_has_transactions.debit
-                        END) AS previous_amount')
-                    )
-                    ->leftjoin('company_has_transactions', 'company_has_transactions.company_id', '=', 'companies.id')
-                    ->where('company_has_transactions.payment_detail','It is first entry amount')
+        $data = Company::query()
+                    ->select('companies.*')
                     ->where('companies.id', $id)
                     ->first();
 
@@ -121,15 +116,8 @@ class CompanyController extends Controller
 
     public function edit($id)
     {
-        $data= DB::table('companies')
-                    ->select('companies.*',
-                    DB::raw('(CASE
-                    WHEN company_has_transactions.credit >=0  THEN company_has_transactions.credit
-                    ELSE ((-1)*(company_has_transactions.debit))
-                    END) AS previous_amount')
-                    )
-                    ->leftjoin('company_has_transactions', 'company_has_transactions.company_id', '=', 'companies.id')
-                    ->where('company_has_transactions.payment_detail','It is first entry amount')
+        $data = Company::query()
+                    ->select('companies.*')
                     ->where('companies.id', $id)
                     ->first();
 
@@ -165,12 +153,19 @@ class CompanyController extends Controller
                 ->with('success','Company '.$request['name'] .' updated successfully.');
     }
 
-    public function destroy(Request $request)
+    public function destroy(Company $company)
     {
-        $ids = $request->ids;
-        $data = Company::query()->whereIn('id',explode(",",$ids))->delete();
-        return response()->json(['success'=>"deleted successfully."]);
+        abort_if(Gate::denies('company-delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $company->delete();
+        return back();
     }
+
+//    public function destroy2(Request $request)
+//    {
+//        $ids = $request->ids;
+//        $data = Company::query()->whereIn('id',explode(",",$ids))->delete();
+//        return response()->json(['success'=>"deleted successfully."]);
+//    }
 
     public function massDestroy(MassDestroyMemberRequest $request)
     {
