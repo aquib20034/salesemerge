@@ -27,43 +27,40 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-       
+        if ($request->ajax()) {
+            $query =  User::select('users.id','users.name','users.email','roles.name as rolename')
+                ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                ->orderBy('Users.created_at','DESC')
+                ->get();
+            $table = DataTables::of($query);
+
+            $table->addColumn('placeholder', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
+
+            $table->editColumn('actions', function ($row) {
+                $viewGate = 'user-list';
+                $editGate = 'user-edit';
+                $deleteGate = 'user-delete';
+                $crudRoutePart = 'users';
+
+                return view('partials.datatableActions', compact(
+                    'viewGate',
+                    'editGate',
+                    'deleteGate',
+                    'crudRoutePart',
+                    'row'
+                ));
+            });
+
+            $table->rawColumns(['actions', 'placeholder']);
+
+            return $table->make(true);
+        }
         return view('users.index');
 
     }
 
-    public function list()
-    {
-        $data = User::orderBy('id','DESC')
-                    ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
-                    ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
-                    ->select('users.id','users.name','users.email','roles.name as rolename')
-                    ->get();
-
-        return 
-            DataTables::of($data)
-                ->addColumn('action',function($data){
-                    return '
-                    <div class="btn-group btn-group">
-                        <a class="btn btn-info btn-sm" href="users/'.$data->id.'">
-                            <i class="fa fa-eye"></i>
-                        </a>
-                        <a class="btn btn-info btn-sm" href="users/'.$data->id.'/edit" id="'.$data->id.'">
-                            <i class="fas fa-pencil-alt"></i>
-                        </a>
-                     
-                        <button
-                            class="btn btn-danger btn-sm delete_all"
-                            data-url="'. url('userDelete') .'" data-id="'.$data->id.'">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </div>';
-                })
-                ->addColumn('srno','')
-                ->rawColumns(['srno','','action'])
-                ->make(true);
-
-    }
     public function create()
     {
         $roles = Role::pluck('name','name')->all();
@@ -108,7 +105,7 @@ class UserController extends Controller
         ->select('users.*','roles.name as rn')
         ->where('users.id', $id)
         ->first();
-      
+
         return view('users.show',compact('user'));
     }
     public function profileedit($id)
@@ -156,11 +153,11 @@ class UserController extends Controller
         }else{
             $input['password'] = $user['password'];
         }
-        
+
         if(!empty($input['image'])){
             $this->validate($request,[
                 'image'=>'required|image|mimes:jpeg,png,jpg,gif|max:2048']);
-            
+
             if($user['image']!=""){
                 unlink(public_path('uploads/users/'.$user['image']));
             }
@@ -184,7 +181,7 @@ class UserController extends Controller
 
 
     public function destroy(Request $request)
-    { 
+    {
         $ids = $request->ids;
         $checkId = Auth::user()->id;
 
@@ -200,7 +197,7 @@ class UserController extends Controller
         }
     }
 
-      
 
-    
+
+
 }

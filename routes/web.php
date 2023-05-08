@@ -19,13 +19,18 @@ Route::get('/', function () {
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::group(['middleware' => ['auth']], function() {
+    
+    // users
+    Route::resource('users', 'UserController');
+    Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
+    // companies
+    Route::delete('companies/destroy', 'CompanyController@massDestroy')->name('companies.massDestroy');
+    Route::resource('companies', 'CompanyController');
 
 
 	Route::resource('/units', App\Http\Controllers\UnitController::class);
 	Route::get('/units_list', [App\Http\Controllers\UnitController::class, 'list']);
 	Route::delete('/units_delete', [App\Http\Controllers\UnitController::class, 'destroy']);
-
-
 
 	Route::resource('/permissions', App\Http\Controllers\PermissionController::class);
 	Route::get('/permissionList', [App\Http\Controllers\PermissionController::class, 'list']);
@@ -34,15 +39,6 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::resource('/roles', App\Http\Controllers\RoleController::class);
 	Route::get('/roleList', [App\Http\Controllers\RoleController::class, 'list']);
 	Route::delete('/roleDelete', [App\Http\Controllers\RoleController::class, 'destroy']);
-
-	Route::resource('/users', App\Http\Controllers\UserController::class);
-	Route::get('/userList', [App\Http\Controllers\UserController::class, 'list']);
-	Route::delete('/userDelete', [App\Http\Controllers\UserController::class, 'destroy']);
-
-    Route::delete('companies/destroy', 'CompanyController@massDestroy')->name('companies.massDestroy');
-    Route::resource('companies', 'CompanyController');
-
-	Route::delete('/companyDelete', [App\Http\Controllers\CompanyController::class, 'destroy']);
 
 	Route::resource('/customers', App\Http\Controllers\CustomerController::class);
 	Route::get('/customerList', [App\Http\Controllers\CustomerController::class, 'list']);
