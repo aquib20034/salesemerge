@@ -4,9 +4,9 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Retailer') }}</title>
+    <title>@yield('title') | Salesemerge</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
-	<link rel="icon" href="{{ asset('assets/img/icon.ico') }}" type="image/x-icon"/>
+	<link rel="icon" href="{{ asset('assets/img/salesemergefav.png') }}" type="image/x-icon"/>
 	<!-- Fonts and icons -->
 	<script src="{{ asset('assets/js/plugin/webfont/webfont.min.js') }}"></script>
 	<script src="{{asset('libs/jquery.min.js')}}" ></script>
@@ -50,7 +50,7 @@
 			<div class="logo-header">
 
 				<a href="{{url('/home')}}" class="logo">
-					<img src="{{ asset('assets/img/logo.png') }}" alt="navbar brand" class="navbar-brand" style= "    width: 50%;">
+					<img src="{{ asset('assets/img/salesemergewhite.png') }}" alt="navbar brand" class="navbar-brand" style= "    width: 80%;">
 				</a>
 				<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon">
@@ -88,9 +88,9 @@
 							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
 								<div class="avatar-sm">
 									@if(Auth::user()->image)
-										<div class="avatar-lg"><img src="{{ asset('/uploads/users/'.Auth::user()->image) }}" alt="image profile" class="avatar-img rounded" style="width: 65%;height: 60%;"></div>
+										<img src="{{ asset('/uploads/users/'.Auth::user()->image) }}" alt="image profile" class="avatar-img rounded" style="width: 65%;height: 60%;">
 									@else
-										<div class="avatar-lg"><img src="{{ asset('/uploads/users/no_image.png') }}" alt="image profile" class="avatar-img rounded"></div>
+										<img src="{{ asset('/uploads/users/no_image.png') }}" alt="image profile" class="avatar-img rounded">
 									@endif
 								</div>
 							</a>
@@ -98,9 +98,9 @@
 								<li>
 									<div class="user-box">
 										@if(Auth::user()->image)
-											<div class="avatar-lg"><img src="{{ asset('/uploads/users/'.Auth::user()->image) }}" alt="image profile" class="avatar-img rounded"></div>
+											<img src="{{ asset('/uploads/users/'.Auth::user()->image) }}" alt="image profile" class="avatar-img rounded">
 										@else
-											<div class="avatar-lg"><img src="{{ asset('/uploads/users/no_image.png') }}" alt="image profile" class="avatar-img rounded"></div>
+											<img src="{{ asset('/uploads/users/no_image.png') }}" alt="image profile" class="avatar-img rounded">
 										@endif
 
 										<div class="u-text">
@@ -156,9 +156,9 @@
 					<div class="user">
 						<div class="avatar-sm float-left mr-2">
 							@if(Auth::user()->image)
-								<div class="avatar-lg"><img src="{{ asset('/uploads/users/'.Auth::user()->image) }}" alt="image profile" class="avatar-img rounded" style="width: 65%;height: 60%;"></div>
+								<img src="{{ asset('/uploads/users/'.Auth::user()->image) }}" class="avatar-img rounded-circle">
 							@else
-								<div class="avatar-lg"><img src="{{ asset('/uploads/users/no_image.png') }}" alt="image profile" class="avatar-img rounded"></div>
+								<img src="{{ asset('/uploads/users/no_image.png') }}" class="avatar-img rounded-circle">
 							@endif
 						</div>
 						<div class="info">
@@ -168,7 +168,7 @@
 									<span class="user-level">Administrator</span>
 								</span>
 							</a>
-
+                            <div class="clearfix"></div>
 
 						</div>
 					</div>
@@ -181,58 +181,167 @@
 								<!-- <span class="badge badge-count">5</span> -->
 							</a>
 						</li>
+                        <li class="nav-item">
+                            <a data-toggle="collapse" href="#General" class="collapsed" aria-expanded="false">
+                                <i class="fas fa-users-cog"></i>
+                                <p>General</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="General" style="">
 
-						<li class="nav-section">
-							<span class="sidebar-mini-icon">
-								<i class="fa fa-ellipsis-h"></i>
-							</span>
-							<h4 class="text-section">Purchase & Sell</h4>
-						</li>
+                                <ul class="nav nav-collapse">
+                                    @can('user-list')
+                                        <li class="nav-item @if('users' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                            <a  href="{{url('/users')}}">
+{{--                                                <i class="fas fa-users"></i>--}}
+                                                <span class="sub-item">Users</span>
+                                            </a>
+                                        </li>
+                                    @endcan
+                                    @can('role-list')
+                                        <li class="nav-item @if('roles' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                            <a  href="{{url('/roles')}}">
+{{--                                                <i class="fas fa-graduation-cap"></i>--}}
+                                                <span class="sub-item">Roles</span>
+                                            </a>
+                                        </li>
+                                    @endcan
+                                        @can('company-list')
+                                            <li class="nav-item @if('companies' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                                <a  href="{{route('companies.index')}}">
+{{--                                                    <i class="fas fa-users-cog"></i>--}}
+                                                    <span class="sub-item">Companies</span>
+                                                </a>
+                                            </li>
+                                        @endcan
+                                        @can('customer-list')
+                                            <li class="nav-item @if('customers' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                                <a  href="{{url('/customers')}}">
+{{--                                                    <i class="fas fa-users-cog"></i>--}}
+                                                    <span class="sub-item">Customers</span>
+                                                </a>
+                                            </li>
+                                        @endcan
+                                        @can('city-list')
+                                            <li class="nav-item @if('cities' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                                <a  href="{{url('/cities')}}">
+{{--                                                    <i class="fas fa-building"></i>--}}
+                                                    <span class="sub-item">Cities</span>
+                                                </a>
+                                            </li>
+                                        @endcan
+                                </ul>
+                            </div>
+                        </li>
 
+                        <li class="nav-item">
+                            <a data-toggle="collapse" href="#Purchase&Sell" class="collapsed" aria-expanded="false">
+                                <i class="fas fa-shopping-cart"></i>
+                                <p>Purchase & Sell</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="Purchase&Sell" style="">
 
-						@can('stock-list')
-							<li class="nav-item @if('stocks' == url_explode(request()->path()) ) {{'active'}} @endif">
-								<a  href="{{url('/stocks')}}">
-									<i class="fas fa-store"></i>
-									<p>Stock</p>
-								</a>
-							</li>
-                        @endcan
+                                <ul class="nav nav-collapse">
+                                    @can('stock-list')
+                                        <li class="nav-item @if('stocks' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                            <a  href="{{url('/stocks')}}">
+{{--                                                <i class="fas fa-store"></i>--}}
+                                                <span class="sub-item">Stock</span>
+                                            </a>
+                                        </li>
+                                    @endcan
+                                    @can('purchase-list')
+                                        <li class="nav-item @if('purchases' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                            <a  href="{{url('/purchases')}}">
+{{--                                                <i class="fas fa-shopping-cart"></i>--}}
+                                                <span class="sub-item">Purchase</span>
+                                            </a>
+                                        </li>
+                                    @endcan
+                                    @can('sell-list')
+                                        <li class="nav-item @if('sells' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                            <a  href="{{url('/sells')}}">
+{{--                                                <i class="fas fa-shopping-cart"></i>--}}
+                                                <span class="sub-item">Sell</span>
+                                            </a>
+                                        </li>
+                                    @endcan
+                                    @can('voucher-list')
+                                        <li class="nav-item @if('vouchers' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                            <a  href="{{url('/vouchers')}}">
+{{--                                                <i class="fas fa-money-bill-wave"></i>--}}
+                                                <span class="sub-item">General Voucher</span>
+                                            </a>
+                                        </li>
+                                    @endcan
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a data-toggle="collapse" href="#Inventory&Services" class="collapsed" aria-expanded="false">
+                                <i class="fas fa-store"></i>
+                                <p>Inventory & Services</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="Inventory&Services" style="">
 
+                                <ul class="nav nav-collapse">
+                                    @can('item-list')
+                                        <li class="nav-item @if('items' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                            <a  href="{{url('/items')}}">
+{{--                                                <i class="fas fa-layer-group"></i>--}}
+                                                <span class="sub-item">Items</span>
+                                            </a>
+                                        </li>
+                                    @endcan
+                                    @can('unit-list')
 
+                                        <!-- <li class="nav-item">
+                                            <a  href="{{url('/permissions')}}">
+                                                <i class="fas fa-graduation-cap"></i>
+                                                <p>Permission</p>
+                                            </a>
+                                        </li> -->
+                                        <li class="nav-item">
+                                            <a  href="{{url('/units')}}">
+{{--                                                <i class="fas fa-balance-scale"></i>--}}
+                                                <span class="sub-item">Units</span>
+                                            </a>
+                                        </li>
+                                    @endcan
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a data-toggle="collapse" href="#Payables" class="collapsed" aria-expanded="false">
+                                <i class="fas fa-store"></i>
+                                <p>Payables</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="Payables" style="">
 
-						@can('purchase-list')
-							<li class="nav-item @if('purchases' == url_explode(request()->path()) ) {{'active'}} @endif">
-								<a  href="{{url('/purchases')}}">
-									<i class="fas fa-shopping-cart"></i>
-									<p>Purchase</p>
-								</a>
-							</li>
-                        @endcan
+                                <ul class="nav nav-collapse">
+                                    @can('payment_method-list')
+                                        <li class="nav-item">
+                                            <a  href="{{url('/payment_methods')}}">
+{{--                                                <i class="fas fa-handshake"></i>--}}
+                                                <span class="sub-item">Payment Method</span>
+                                            </a>
+                                        </li>
+                                    @endcan
 
+                                    <!-- <li class="nav-item">
+							<a  href="{{url('/amount_types')}}">
+								<i class="fas fa-handshake"></i>
+								<p>Amount Method</p>
+							</a>
+						</li> -->
+                                </ul>
+                            </div>
+                        </li>
 
-						@can('sell-list')
-							<li class="nav-item @if('sells' == url_explode(request()->path()) ) {{'active'}} @endif">
-								<a  href="{{url('/sells')}}">
-									<i class="fas fa-shopping-cart"></i>
-									<p>Sell</p>
-								</a>
-							</li>
-                        @endcan
-
-
-						@can('voucher-list')
-							<li class="nav-item @if('vouchers' == url_explode(request()->path()) ) {{'active'}} @endif">
-								<a  href="{{url('/vouchers')}}">
-									<i class="fas fa-money-bill-wave"></i>
-									<p>General Voucher</p>
-								</a>
-							</li>
-						@endcan
-
-
-
-						@can('report-list')
+                    @can('report-list')
 							<li class="nav-section">
 								<span class="sidebar-mini-icon">
 									<i class="fa fa-ellipsis-h"></i>
@@ -247,117 +356,6 @@
 								</a>
 							</li>
 						@endcan
-
-
-
-
-
-						<li class="nav-section">
-							<span class="sidebar-mini-icon">
-								<i class="fa fa-ellipsis-h"></i>
-							</span>
-							<h4 class="text-section">Customize</h4>
-						</li>
-
-						@can('item-list')
-						<li class="nav-item @if('items' == url_explode(request()->path()) ) {{'active'}} @endif">
-							<a  href="{{url('/items')}}">
-								<i class="fas fa-layer-group"></i>
-								<p>Items</p>
-							</a>
-						</li>
-						@endcan
-						@can('company-list')
-
-
-
-						<li class="nav-item @if('companies' == url_explode(request()->path()) ) {{'active'}} @endif">
-							<a  href="{{route('companies.index')}}">
-								<i class="fas fa-users-cog"></i>
-								<p>Companies</p>
-							</a>
-						</li>
-						@endcan
-						@can('customer-list')
-
-						<li class="nav-item @if('customers' == url_explode(request()->path()) ) {{'active'}} @endif">
-							<a  href="{{url('/customers')}}">
-								<i class="fas fa-users-cog"></i>
-								<p>Customers</p>
-							</a>
-						</li>
-						@endcan
-						@can('city-list')
-
-						<li class="nav-item @if('cities' == url_explode(request()->path()) ) {{'active'}} @endif">
-							<a  href="{{url('/cities')}}">
-								<i class="fas fa-building"></i>
-								<p>Cities</p>
-							</a>
-						</li>
-						@endcan
-						@can('user-list')
-						<!-- <li class="nav-section">
-							<span class="sidebar-mini-icon">
-								<i class="fa fa-ellipsis-h"></i>
-							</span>
-							<h4 class="text-section">System</h4>
-						</li> -->
-
-
-						<li class="nav-item @if('users' == url_explode(request()->path()) ) {{'active'}} @endif">
-							<a  href="{{url('/users')}}">
-								<i class="fas fa-users"></i>
-								<p>Users</p>
-							</a>
-						</li>
-
-						@endcan
-						@can('role-list')
-						<li class="nav-item @if('roles' == url_explode(request()->path()) ) {{'active'}} @endif">
-							<a  href="{{url('/roles')}}">
-								<i class="fas fa-graduation-cap"></i>
-								<p>Roles</p>
-							</a>
-						</li>
-						@endcan
-						@can('unit-list')
-
-						<!-- <li class="nav-item">
-							<a  href="{{url('/permissions')}}">
-								<i class="fas fa-graduation-cap"></i>
-								<p>Permission</p>
-							</a>
-						</li> -->
-
-
-
-
-						<li class="nav-item">
-							<a  href="{{url('/units')}}">
-								<i class="fas fa-balance-scale"></i>
-								<p>Units</p>
-							</a>
-						</li>
-						@endcan
-						@can('payment_method-list')
-
-						<li class="nav-item">
-							<a  href="{{url('/payment_methods')}}">
-								<i class="fas fa-handshake"></i>
-								<p>Payment Method</p>
-							</a>
-						</li>
-
-						@endcan
-
-						<!-- <li class="nav-item">
-							<a  href="{{url('/amount_types')}}">
-								<i class="fas fa-handshake"></i>
-								<p>Amount Method</p>
-							</a>
-						</li> -->
-
 					</ul>
 				</div>
 			</div>
@@ -373,7 +371,7 @@
 
 
 	</div>
-</div>
+
 <!--   Core JS Files   -->
 <script src="{{ asset('assets/js/core/jquery.3.2.1.min.js') }}"></script>
 <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
