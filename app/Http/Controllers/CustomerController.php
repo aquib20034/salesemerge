@@ -7,7 +7,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\customer;
-use App\Models\Customer_has_transaction; 
+use App\Models\Customer_has_transaction;
 use DB;
 use DataTables;
 
@@ -23,41 +23,38 @@ class CustomerController extends Controller
 
     public function index(Request $request)
     {
-        return view('customers.index');
-    }
-
-    public function list()
-    {
-        $data = DB::table('customers')
+        if ($request->ajax()) {
+            $query = Customer::query()
                 ->orderBy('customers.created_at','DESC')
                 ->leftjoin('customer_types', 'customer_types.id', '=', 'customers.customer_type_id')
                 ->select('customers.*',
-                        'customer_types.name as customer_type_name'
-                        )
+                    'customer_types.name as customer_type_name')
                 ->get();
+            $table = DataTables::of($query);
 
-        return 
-            DataTables::of($data)
-                ->addColumn('action',function($data){
-                    return '
-                    <div class="btn-group btn-group">
-                        <a class="btn btn-info btn-sm" href="customers/'.$data->id.'">
-                            <i class="fa fa-eye"></i>
-                        </a>
-                        <a class="btn btn-info btn-sm" href="customers/'.$data->id.'/edit" id="'.$data->id.'">
-                            <i class="fas fa-pencil-alt"></i>
-                        </a>
-                     
-                        <button
-                            class="btn btn-danger btn-sm delete_all"
-                            data-url="'. url('customerDelete') .'" data-id="'.$data->id.'">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </div>';
-                })
-                ->addColumn('srno','')
-                ->rawColumns(['srno','','action'])
-                ->make(true);
+            $table->addColumn('placeholder', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
+
+            $table->editColumn('actions', function ($row) {
+                $viewGate = 'customer-list';
+                $editGate = 'customer-edit';
+                $deleteGate = 'customer-delete';
+                $crudRoutePart = 'customers';
+
+                return view('partials.datatableActions', compact(
+                    'viewGate',
+                    'editGate',
+                    'deleteGate',
+                    'crudRoutePart',
+                    'row'
+                ));
+            });
+
+            $table->rawColumns(['actions', 'placeholder']);
+
+            return $table->make(true);
+        }
+        return view('customers.index');
     }
 
     public function create()
@@ -79,7 +76,7 @@ class CustomerController extends Controller
         request()->validate([
             'name' => 'required|min:3|unique:customers,name',
         ]);
-        
+
         $data = customer::create($request->all());
 
         $val                    = new Customer_has_transaction();
@@ -93,7 +90,7 @@ class CustomerController extends Controller
             $val->debit             = (-1)*($request['previous_amount']);
         }
         $val->save();
-      
+
         return redirect()
                 ->route('customers.index')
                 ->with('success','customer '.$request['name'] .' added successfully.');
@@ -107,7 +104,7 @@ class CustomerController extends Controller
                     ->select('customers.*',
                              'customer_types.name as customer_type_name',
                              'cities.name as city_name',
-                    DB::raw('(CASE 
+                    DB::raw('(CASE
                     WHEN customer_has_transactions.credit >=0  THEN customer_has_transactions.credit
                     ELSE customer_has_transactions.debit
                     END) AS previous_amount')
@@ -125,7 +122,7 @@ class CustomerController extends Controller
     {
         $data   = DB::table('customers')
                     ->select('customers.*',
-                    DB::raw('(CASE 
+                    DB::raw('(CASE
                     WHEN customer_has_transactions.credit >=0  THEN customer_has_transactions.credit
                     ELSE ((-1)*(customer_has_transactions.debit))
                     END) AS previous_amount')
@@ -156,7 +153,7 @@ class CustomerController extends Controller
 
         $this->validate($request,[
             'name' => 'required|min:3|unique:customers,name,'. $id,
-            
+
         ]);
 
         $input['customer_id']     =  $id;
@@ -165,11 +162,11 @@ class CustomerController extends Controller
             $input['credit']     = $request['previous_amount'];
             $input['debit']      = null;
         }else{
-            
+
             $input['debit']      = (-1)*($request['previous_amount']);
             $input['credit']     = null;
         }
-       
+
         $transaction             = Customer_has_transaction::where('customer_id', '=', $id)
                                         ->where('payment_detail','Account Opening')
                                         ->first();

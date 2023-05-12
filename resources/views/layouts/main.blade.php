@@ -637,6 +637,8 @@
         });
 
     </script>
+    <!-- syedhaaris97 Personal -->
+    <script src="{{ asset('assets/js/hunt.js')}}"></script>
     @yield('scripts')
 </body>
 </html>
