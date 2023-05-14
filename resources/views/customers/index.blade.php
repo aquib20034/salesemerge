@@ -47,61 +47,18 @@
     @parent
     <script>
         $(function () {
-
             let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-            @can('role-delete')
-            let deleteButtonTrans = '{{ trans('global.datatables.delete') }}';
-            let deleteButton = {
-                text: deleteButtonTrans,
-                url: "{{ route('customer.massDestroy') }}",
-                className: 'btn-danger',
-                action: function (e, dt, node, config) {
-                    var ids = $.map(dt.rows({ selected: true }).data(), function (entry) {
-                        return entry.id
-                    });
-
-                    if (ids.length === 0) {
-                        alert('{{ trans('global.datatables.zero_selected') }}')
-
-                        return
-                    }
-
-                    if (confirm('{{ trans('global.areYouSure') }}')) {
-                        $.ajax({
-                            headers: {'x-csrf-token': _token},
-                            method: 'POST',
-                            url: config.url,
-                            data: { ids: ids, _method: 'DELETE' }})
-                            .done(function () { location.reload() })
-                    }
-                }
-            }
-            dtButtons.push(deleteButton)
-
+            @can('customer-delete')
+                deleteButton = DeleteButtonCall("{{ route('customers.massDestroy') }}")
             @endcan
-
-            let dtOverrideGlobals = {
-                buttons: dtButtons,
-                processing: true,
-                serverSide: true,
-                retrieve: true,
-                aaSorting: [],
-                ajax: "{{ route('customers.index') }}",
-                columns: [
-                    { data: 'placeholder', name: 'placeholder' },
-                    { data: 'name', name: 'name' },
-                    { data: 'contact_no', name: 'contact_no' },
-                    { data: 'actions', name: '{{ trans('global.actions') }}' }
-                ],
-                orderCellsTop: true,
-                order: [[ 1, 'desc' ]],
-                pageLength: 100,
-            };
-            let table = $('.datatable-Customer').DataTable(dtOverrideGlobals);
-            $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
-                $($.fn.dataTable.tables(true)).DataTable()
-                    .columns.adjust();
-            });
+            dtButtons.push(deleteButton)
+            let data = [
+                { data: 'placeholder', name: 'placeholder' },
+                { data: 'name', name: 'name' },
+                { data: 'contact_no', name: 'contact_no' },
+                { data: 'actions', name: '{{ trans('global.actions') }}' }
+            ]
+            DataTableCall('.datatable-Customer', "{{ route('customers.index') }}", dtButtons, data)
         });
     </script>
 @endsection
