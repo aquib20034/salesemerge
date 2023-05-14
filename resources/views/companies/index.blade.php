@@ -47,62 +47,19 @@
 @parent
 <script>
     $(function () {
-
-        let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-        @can('company-delete')
-        let deleteButtonTrans = '{{ trans('global.datatables.delete') }}';
-        let deleteButton = {
-            text: deleteButtonTrans,
-            url: "{{ route('companies.massDestroy') }}",
-            className: 'btn-danger',
-            action: function (e, dt, node, config) {
-                var ids = $.map(dt.rows({ selected: true }).data(), function (entry) {
-                    return entry.id
-                });
-
-                if (ids.length === 0) {
-                    alert('{{ trans('global.datatables.zero_selected') }}')
-
-                    return
-                }
-
-                if (confirm('{{ trans('global.areYouSure') }}')) {
-                    $.ajax({
-                        headers: {'x-csrf-token': _token},
-                        method: 'POST',
-                        url: config.url,
-                        data: { ids: ids, _method: 'DELETE' }})
-                        .done(function () { location.reload() })
-                }
-            }
-        }
-        dtButtons.push(deleteButton)
-
-        @endcan
-
-        let dtOverrideGlobals = {
-            buttons: dtButtons,
-            processing: true,
-            serverSide: true,
-            retrieve: true,
-            aaSorting: [],
-            ajax: "{{ route('companies.index') }}",
-            columns: [
+            let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+            @can('company-delete')
+                deleteButton = DeleteButtonCall("{{ route('companies.massDestroy') }}")
+            @endcan
+            dtButtons.push(deleteButton)
+            let data = [
                 { data: 'placeholder', name: 'placeholder' },
                 { data: 'name', name: 'name' },
                 { data: 'owner_name', name: 'owner_name' },
                 { data: 'contact_no', name: 'contact_no' },
                 { data: 'actions', name: '{{ trans('global.actions') }}' }
-            ],
-            orderCellsTop: true,
-            order: [[ 1, 'desc' ]],
-            pageLength: 100,
-        };
-        let table = $('.datatable-Company').DataTable(dtOverrideGlobals);
-        $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
-            $($.fn.dataTable.tables(true)).DataTable()
-                .columns.adjust();
-        });
+            ]
+            DataTableCall('.datatable-Company', "{{ route('companies.index') }}", dtButtons, data)
     });
 </script>
 @endsection
