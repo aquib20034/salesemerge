@@ -20,7 +20,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="myTable" class="table" style="width: 100%;" cellspacing="0">
+                        <table class="table table-borderless table-striped table-hover ajaxTable datatable datatable-Role">
                             <thead>
                             <tr>
                                 <th width="5%">#</th>
@@ -36,33 +36,22 @@
         </div>
     </div>
 </div>
-
-
-
-<script>
-    $(document).ready(function () {  
-
-    var t = $('#myTable').DataTable({
-          "aaSorting": [],
-            "processing": true,
-            "serverSide": false,
-            "select":true,
-            "ajax": "{{ url('roleList') }}",
-            "method": "GET",
-            "columns": [
-                {"data": "srno"},
-                {"data": "name"},
-                {"data": "action",orderable:false,searchable:false}
-
-            ]
-        });
-     t.on( 'order.dt search.dt', function () {
-        t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-            cell.innerHTML = i+1;
-        } );
-    } ).draw();
-
-
-    });
-</script>
+    @endsection
+    @section('scripts')
+        @parent
+        <script>
+            $(function () {
+                let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+                @can('role-delete')
+                    deleteButton = DeleteButtonCall("{{ route('roles.massDestroy') }}")
+                @endcan
+                dtButtons.push(deleteButton)
+                let data = [
+                    { data: 'placeholder', name: 'placeholder' },
+                    { data: 'name', name: 'name' },
+                    { data: 'actions', name: 'action' }
+                ]
+                DataTableCall('.datatable-Role', "{{ route('roles.index') }}", dtButtons, data)
+            });
+        </script>
 @endsection

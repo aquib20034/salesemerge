@@ -13,6 +13,8 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
       use HasRoles;
 
+    public $table = 'users';
+
     protected $fillable = [
         'name',
         'email',
@@ -22,7 +24,7 @@ class User extends Authenticatable
         'image',
     ];
 
-   
+
     protected $hidden = [
         'password',
         'remember_token',

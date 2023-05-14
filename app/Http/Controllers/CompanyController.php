@@ -1,17 +1,17 @@
 <?php
 
-
 namespace App\Http\Controllers;
-
-
+use App\Models\Company;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Company;
 use App\Models\Company_has_transaction;
+use Gate;
+use Symfony\Component\HttpFoundation\Response;
+use Yajra\DataTables\Facades\DataTables;
 use DB;
-use DataTables;
 
-class companyController extends Controller
+
+class CompanyController extends Controller
 {
     function __construct()
     {
@@ -23,37 +23,48 @@ class companyController extends Controller
 
     public function index(Request $request)
     {
-        return view('companies.index');
-    }
-
-    public function list()
-    {
-        $data = DB::table('companies')
+        if ($request->ajax()) {
+            $query = Company::query()
                 ->orderBy('companies.created_at','DESC')
                 ->select('companies.*')
                 ->get();
-        return 
-            DataTables::of($data)
-                ->addColumn('action',function($data){
-                    return '
-                    <div class="btn-group btn-group">
-                        <a class="btn btn-info btn-sm" href="companies/'.$data->id.'">
-                            <i class="fa fa-eye"></i>
-                        </a>
-                        <a class="btn btn-info btn-sm" href="companies/'.$data->id.'/edit" id="'.$data->id.'">
-                            <i class="fas fa-pencil-alt"></i>
-                        </a>
-                     
-                        <button
-                            class="btn btn-danger btn-sm delete_all"
-                            data-url="'. url('companyDelete') .'" data-id="'.$data->id.'">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </div>';
-                })
-                ->addColumn('srno','')
-                ->rawColumns(['srno','','action'])
-                ->make(true);
+            $table = Datatables::of($query);
+
+            $table->addColumn('placeholder', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
+
+            $table->editColumn('actions', function ($row) {
+                $viewGate = 'company-list';
+                $editGate = 'company-edit';
+                $deleteGate = 'company-delete';
+                $crudRoutePart = 'companies';
+
+                return view('partials.datatableActions', compact(
+                    'viewGate',
+                    'editGate',
+                    'deleteGate',
+                    'crudRoutePart',
+                    'row'
+                ));
+            });
+//            $table->editColumn('sno', function ($row) {
+//                return $row->id ? $row->id : 0 ;
+//            });
+
+//            If any modififcation require before present in the grid, use editColumn
+//            $table->editColumn('owner_name', function ($row) {
+//                return $row->owner_name ? $row->owner_name : '';
+//            });
+//
+//            $table->editColumn('contact_no', function ($row) {
+//                return $row->contact_no ? $row->contact_no : '';
+//            });
+
+            $table->rawColumns(['actions', 'placeholder']);
+
+            return $table->make(true);
+        }
+        return view('companies.index');
     }
 
     public function create()
@@ -80,13 +91,13 @@ class companyController extends Controller
         $val->payment_method_id = 1;
         $val->payment_detail    = "Account Opening";
 
-        if($request['previous_amount']>=0){
+        if($request['previous_amount'] >= 0){
             $val->credit            = $request['previous_amount'];
         }else{
             $val->debit             = ((-1)* ($request['previous_amount']));
         }
         $val->save();
-      
+
         return redirect()
                 ->route('companies.index')
                 ->with('success','Company '.$request['name'] .' added successfully.');
@@ -94,15 +105,8 @@ class companyController extends Controller
 
     public function show($id)
     {
-        $data   = DB::table('companies')
-                    ->select('companies.*',
-                        DB::raw('(CASE 
-                        WHEN company_has_transactions.credit >=0  THEN company_has_transactions.credit
-                        ELSE company_has_transactions.debit
-                        END) AS previous_amount')
-                    )
-                    ->leftjoin('company_has_transactions', 'company_has_transactions.company_id', '=', 'companies.id')
-                    ->where('company_has_transactions.payment_detail','It is first entry amount')
+        $data = Company::query()
+                    ->select('companies.*')
                     ->where('companies.id', $id)
                     ->first();
 
@@ -112,15 +116,8 @@ class companyController extends Controller
 
     public function edit($id)
     {
-        $data= DB::table('companies')
-                    ->select('companies.*',
-                    DB::raw('(CASE 
-                    WHEN company_has_transactions.credit >=0  THEN company_has_transactions.credit
-                    ELSE ((-1)*(company_has_transactions.debit))
-                    END) AS previous_amount')
-                    )
-                    ->leftjoin('company_has_transactions', 'company_has_transactions.company_id', '=', 'companies.id')
-                    ->where('company_has_transactions.payment_detail','It is first entry amount')
+        $data = Company::query()
+                    ->select('companies.*')
                     ->where('companies.id', $id)
                     ->first();
 
@@ -144,7 +141,7 @@ class companyController extends Controller
             $input['debit']      = ((-1)* ($request['previous_amount']));
             $input['credit']     = null;
         }
-       
+
         $transaction             = Company_has_transaction::where('company_id', '=', $id)
                                         ->where('payment_detail','Account Opening')
                                         ->first();
@@ -156,12 +153,27 @@ class companyController extends Controller
                 ->with('success','Company '.$request['name'] .' updated successfully.');
     }
 
-    public function destroy(Request $request)
+    public function destroy(Company $company)
     {
-        $ids = $request->ids;
-        $data = DB::table("companies")->whereIn('id',explode(",",$ids))->delete();
-        return response()->json(['success'=>"deleted successfully."]);
+        abort_if(Gate::denies('company-delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $company->delete();
+        return back();
     }
+
+//    public function destroy2(Request $request)
+//    {
+//        $ids = $request->ids;
+//        $data = Company::query()->whereIn('id',explode(",",$ids))->delete();
+//        return response()->json(['success'=>"deleted successfully."]);
+//    }
+
+    public function massDestroy(MassDestroyMemberRequest $request)
+    {
+        Company::whereIn('id', request('ids'))->delete();
+
+        return response(null, Response::HTTP_NO_CONTENT);
+    }
+
 
 
 

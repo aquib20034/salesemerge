@@ -24,30 +24,36 @@ class RoleController extends Controller
 
     public function index(Request $request)
     {
+        if ($request->ajax()) {
+            $query = Role::query()
+                ->orderBy('roles.id','DESC')
+                ->select('roles.id','roles.name')
+                ->get();
+            $table = DataTables::of($query);
+
+            $table->addColumn('placeholder', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
+
+            $table->editColumn('actions', function ($row) {
+                $viewGate = 'role-list';
+                $editGate = 'role-edit';
+                $deleteGate = 'role-delete';
+                $crudRoutePart = 'roles';
+
+                return view('partials.datatableActions', compact(
+                    'viewGate',
+                    'editGate',
+                    'deleteGate',
+                    'crudRoutePart',
+                    'row'
+                ));
+            });
+
+            $table->rawColumns(['actions', 'placeholder']);
+
+            return $table->make(true);
+        }
         return view('roles.index');
-    }
-
-    public function list()
-    {
-        $data = DB::table('roles')
-                    ->orderBy('roles.id','DESC')
-                    ->select('roles.id','roles.name')
-                    ->get();
-
-        return DataTables::of($data)
-                ->addColumn('action',function($data){
-                return 
-                    '<div class="btn-group btn-group">
-                      
-                        <a class="btn btn-info btn-sm" href="roles/'.$data->id.'/edit" id="'.$data->id.'">
-                            <i class="fas fa-pencil-alt"></i>
-                        </a>
-                     
-                    </div>';
-                })
-                ->addColumn('srno','')
-                ->rawColumns(['srno','','action'])
-                ->make(true);
     }
 
     public function create()
@@ -110,7 +116,7 @@ class RoleController extends Controller
         return redirect()->route('roles.index')
                         ->with('success','Role '.$request['name']. ' updated successfully');
     }
-    
+
     public function destroy(Request $request)
     {
         $ids = $request->ids;
@@ -121,6 +127,6 @@ class RoleController extends Controller
             return response()->json(['success'=>$data." Roles deleted successfully."]);
         }
     }
-    
-    
+
+
 }
