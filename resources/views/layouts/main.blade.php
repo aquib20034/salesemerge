@@ -184,7 +184,7 @@
                         <li class="nav-item">
                             <a data-toggle="collapse" href="#General" class="collapsed" aria-expanded="false">
                                 <i class="fas fa-users-cog"></i>
-                                <p>General</p>
+                                <p>System Setup</p>
                                 <span class="caret"></span>
                             </a>
                             <div class="collapse" id="General" style="">
@@ -234,112 +234,112 @@
                             </div>
                         </li>
 
-                        <li class="nav-item">
-                            <a data-toggle="collapse" href="#Purchase&Sell" class="collapsed" aria-expanded="false">
-                                <i class="fas fa-shopping-cart"></i>
-                                <p>Purchase & Sell</p>
-                                <span class="caret"></span>
-                            </a>
-                            <div class="collapse" id="Purchase&Sell" style="">
+{{--                        <li class="nav-item">--}}
+{{--                            <a data-toggle="collapse" href="#Purchase&Sell" class="collapsed" aria-expanded="false">--}}
+{{--                                <i class="fas fa-shopping-cart"></i>--}}
+{{--                                <p>Purchase & Sell</p>--}}
+{{--                                <span class="caret"></span>--}}
+{{--                            </a>--}}
+{{--                            <div class="collapse" id="Purchase&Sell" style="">--}}
 
-                                <ul class="nav nav-collapse">
-                                    @can('stock-list')
-                                        <li class="nav-item @if('stocks' == url_explode(request()->path()) ) {{'active'}} @endif">
-                                            <a  href="{{url('/stocks')}}">
+{{--                                <ul class="nav nav-collapse">--}}
+{{--                                    @can('stock-list')--}}
+{{--                                        <li class="nav-item @if('stocks' == url_explode(request()->path()) ) {{'active'}} @endif">--}}
+{{--                                            <a  href="{{url('/stocks')}}">--}}
 {{--                                                <i class="fas fa-store"></i>--}}
-                                                <span class="sub-item">Stock</span>
-                                            </a>
-                                        </li>
-                                    @endcan
-                                    @can('purchase-list')
-                                        <li class="nav-item @if('purchases' == url_explode(request()->path()) ) {{'active'}} @endif">
-                                            <a  href="{{url('/purchases')}}">
+{{--                                                <span class="sub-item">Stock</span>--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
+{{--                                    @endcan--}}
+{{--                                    @can('purchase-list')--}}
+{{--                                        <li class="nav-item @if('purchases' == url_explode(request()->path()) ) {{'active'}} @endif">--}}
+{{--                                            <a  href="{{url('/purchases')}}">--}}
 {{--                                                <i class="fas fa-shopping-cart"></i>--}}
-                                                <span class="sub-item">Purchase</span>
-                                            </a>
-                                        </li>
-                                    @endcan
-                                    @can('sell-list')
-                                        <li class="nav-item @if('sells' == url_explode(request()->path()) ) {{'active'}} @endif">
-                                            <a  href="{{url('/sells')}}">
+{{--                                                <span class="sub-item">Purchase</span>--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
+{{--                                    @endcan--}}
+{{--                                    @can('sell-list')--}}
+{{--                                        <li class="nav-item @if('sells' == url_explode(request()->path()) ) {{'active'}} @endif">--}}
+{{--                                            <a  href="{{url('/sells')}}">--}}
 {{--                                                <i class="fas fa-shopping-cart"></i>--}}
-                                                <span class="sub-item">Sell</span>
-                                            </a>
-                                        </li>
-                                    @endcan
-                                    @can('voucher-list')
-                                        <li class="nav-item @if('vouchers' == url_explode(request()->path()) ) {{'active'}} @endif">
-                                            <a  href="{{url('/vouchers')}}">
+{{--                                                <span class="sub-item">Sell</span>--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
+{{--                                    @endcan--}}
+{{--                                    @can('voucher-list')--}}
+{{--                                        <li class="nav-item @if('vouchers' == url_explode(request()->path()) ) {{'active'}} @endif">--}}
+{{--                                            <a  href="{{url('/vouchers')}}">--}}
 {{--                                                <i class="fas fa-money-bill-wave"></i>--}}
-                                                <span class="sub-item">General Voucher</span>
-                                            </a>
-                                        </li>
-                                    @endcan
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <a data-toggle="collapse" href="#Inventory&Services" class="collapsed" aria-expanded="false">
-                                <i class="fas fa-store"></i>
-                                <p>Inventory & Services</p>
-                                <span class="caret"></span>
-                            </a>
-                            <div class="collapse" id="Inventory&Services" style="">
+{{--                                                <span class="sub-item">General Voucher</span>--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
+{{--                                    @endcan--}}
+{{--                                </ul>--}}
+{{--                            </div>--}}
+{{--                        </li>--}}
+{{--                        <li class="nav-item">--}}
+{{--                            <a data-toggle="collapse" href="#Inventory&Services" class="collapsed" aria-expanded="false">--}}
+{{--                                <i class="fas fa-store"></i>--}}
+{{--                                <p>Inventory & Services</p>--}}
+{{--                                <span class="caret"></span>--}}
+{{--                            </a>--}}
+{{--                            <div class="collapse" id="Inventory&Services" style="">--}}
 
-                                <ul class="nav nav-collapse">
-                                    @can('item-list')
-                                        <li class="nav-item @if('items' == url_explode(request()->path()) ) {{'active'}} @endif">
-                                            <a  href="{{url('/items')}}">
+{{--                                <ul class="nav nav-collapse">--}}
+{{--                                    @can('item-list')--}}
+{{--                                        <li class="nav-item @if('items' == url_explode(request()->path()) ) {{'active'}} @endif">--}}
+{{--                                            <a  href="{{url('/items')}}">--}}
 {{--                                                <i class="fas fa-layer-group"></i>--}}
-                                                <span class="sub-item">Items</span>
-                                            </a>
-                                        </li>
-                                    @endcan
-                                    @can('unit-list')
+{{--                                                <span class="sub-item">Items</span>--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
+{{--                                    @endcan--}}
+{{--                                    @can('unit-list')--}}
 
-                                        <!-- <li class="nav-item">
-                                            <a  href="{{url('/permissions')}}">
-                                                <i class="fas fa-graduation-cap"></i>
-                                                <p>Permission</p>
-                                            </a>
-                                        </li> -->
-                                        <li class="nav-item">
-                                            <a  href="{{url('/units')}}">
+{{--                                        <!-- <li class="nav-item">--}}
+{{--                                            <a  href="{{url('/permissions')}}">--}}
+{{--                                                <i class="fas fa-graduation-cap"></i>--}}
+{{--                                                <p>Permission</p>--}}
+{{--                                            </a>--}}
+{{--                                        </li> -->--}}
+{{--                                        <li class="nav-item">--}}
+{{--                                            <a  href="{{url('/units')}}">--}}
 {{--                                                <i class="fas fa-balance-scale"></i>--}}
-                                                <span class="sub-item">Units</span>
-                                            </a>
-                                        </li>
-                                    @endcan
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <a data-toggle="collapse" href="#Payables" class="collapsed" aria-expanded="false">
-                                <i class="fas fa-store"></i>
-                                <p>Payables</p>
-                                <span class="caret"></span>
-                            </a>
-                            <div class="collapse" id="Payables" style="">
+{{--                                                <span class="sub-item">Units</span>--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
+{{--                                    @endcan--}}
+{{--                                </ul>--}}
+{{--                            </div>--}}
+{{--                        </li>--}}
+{{--                        <li class="nav-item">--}}
+{{--                            <a data-toggle="collapse" href="#Payables" class="collapsed" aria-expanded="false">--}}
+{{--                                <i class="fas fa-store"></i>--}}
+{{--                                <p>Payables</p>--}}
+{{--                                <span class="caret"></span>--}}
+{{--                            </a>--}}
+{{--                            <div class="collapse" id="Payables" style="">--}}
 
-                                <ul class="nav nav-collapse">
-                                    @can('payment_method-list')
-                                        <li class="nav-item">
-                                            <a  href="{{url('/payment_methods')}}">
+{{--                                <ul class="nav nav-collapse">--}}
+{{--                                    @can('payment_method-list')--}}
+{{--                                        <li class="nav-item">--}}
+{{--                                            <a  href="{{url('/payment_methods')}}">--}}
 {{--                                                <i class="fas fa-handshake"></i>--}}
-                                                <span class="sub-item">Payment Method</span>
-                                            </a>
-                                        </li>
-                                    @endcan
+{{--                                                <span class="sub-item">Payment Method</span>--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
+{{--                                    @endcan--}}
 
-                                    <!-- <li class="nav-item">
-							<a  href="{{url('/amount_types')}}">
-								<i class="fas fa-handshake"></i>
-								<p>Amount Method</p>
-							</a>
-						</li> -->
-                                </ul>
-                            </div>
-                        </li>
+{{--                                    <!-- <li class="nav-item">--}}
+{{--							<a  href="{{url('/amount_types')}}">--}}
+{{--								<i class="fas fa-handshake"></i>--}}
+{{--								<p>Amount Method</p>--}}
+{{--							</a>--}}
+{{--						</li> -->--}}
+{{--                                </ul>--}}
+{{--                            </div>--}}
+{{--                        </li>--}}
 
                     @can('report-list')
 							<li class="nav-section">

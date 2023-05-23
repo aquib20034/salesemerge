@@ -35,10 +35,13 @@ Route::group(['middleware' => ['auth']], function() {
     //cities
     Route::resource('cities', CityController::class);
     Route::delete('cities/destory', [CityController::class, 'destroy'])->name('cities.massDestroy');
+    // stocks
+//    Route::resource('stocks', [StockController::class]);
+
+    Route::resource('purchases', PurchaseController::class);
 
 
-
-	Route::resource('/units', App\Http\Controllers\UnitController::class);
+    Route::resource('/units', App\Http\Controllers\UnitController::class);
 	Route::get('/units_list', [App\Http\Controllers\UnitController::class, 'list']);
 	Route::delete('/units_delete', [App\Http\Controllers\UnitController::class, 'destroy']);
 
@@ -61,11 +64,6 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::get('/stockList', [App\Http\Controllers\StockController::class, 'list']);
 	Route::delete('/stockDelete', [App\Http\Controllers\StockController::class, 'destroy']);
 
-	Route::resource('/purchases', App\Http\Controllers\PurchaseController::class);
-	Route::get('/purchaseList', [App\Http\Controllers\PurchaseController::class, 'list']);
-	Route::delete('/purchaseDelete', [App\Http\Controllers\PurchaseController::class, 'destroy']);
-	Route::post('/fetch_item_detail', [App\Http\Controllers\PurchaseController::class, 'fetch_item_detail']);
-
 	Route::resource('/sells', App\Http\Controllers\SellController::class);
 	Route::get('/sellList', [App\Http\Controllers\SellController::class, 'list']);
 	Route::delete('/sellDelete', [App\Http\Controllers\SellController::class, 'destroy']);
@@ -75,8 +73,6 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::get('/payment_methodList', [App\Http\Controllers\Payment_methodController::class, 'list']);
 	Route::delete('/payment_methodDelete', [App\Http\Controllers\Payment_methodController::class, 'destroy']);
 
-	Route::resource('/stocks', App\Http\Controllers\StockController::class);
-	Route::get('/stockList', [App\Http\Controllers\StockController::class, 'list']);
 
 
 	Route::resource('/reports', App\Http\Controllers\ReportController::class);
