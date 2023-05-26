@@ -7,8 +7,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Company;
+use App\Models\Branch;
 use App\Models\Company_has_transaction;
 use DB;
+use Auth;
 use DataTables;
 
 class companyController extends Controller
@@ -23,7 +25,12 @@ class companyController extends Controller
 
     public function index(Request $request)
     {
-        return view('companies.index');
+        $company_id = isset(Auth::user()->company_id) ? Auth::user()->company_id : 0;
+        $data       = Company::findOrFail($company_id);
+        $branches   = Branch::where('company_id',$company_id)->get();
+
+        return view('companies.edit',compact('data','branches'));
+
     }
 
     public function list()

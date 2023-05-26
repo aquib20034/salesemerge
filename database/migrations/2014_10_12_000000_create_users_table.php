@@ -23,8 +23,9 @@ class CreateUsersTable extends Migration
             $table->text('description')->nullable();
             $table->string('image')->nullable();
             $table->rememberToken();
-            $table->unsignedInteger('merchant_id')->nullable();
-            $table->unsignedInteger('station_id')->nullable();
+            $table->unsignedInteger('company_id')->nullable();
+            $table->unsignedInteger('branch_id')->nullable();
+            $table->string('add_info')->nullable();
             $table->boolean('active')->default(1)->nullable()->comment('null = inactive and 1 = active'); 
             $table->softDeletes();
             $table->timestamps();

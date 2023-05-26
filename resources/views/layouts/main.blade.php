@@ -177,6 +177,18 @@
 							</a>
 						</li>
 
+						@can('company-list')
+
+						
+
+						<li class="nav-item @if('companies' == url_explode(request()->path()) ) {{'active'}} @endif">
+							<a  href="{{url('/companies')}}">
+								<i class="fas fa-users-cog"></i>
+								<p>Company</p>
+							</a>
+						</li>
+						@endcan
+
 						<li class="nav-section">
 							<span class="sidebar-mini-icon">
 								<i class="fa fa-ellipsis-h"></i>
@@ -262,17 +274,7 @@
 							</a>
 						</li>
 						@endcan
-						@can('company-list')
-
 						
-
-						<li class="nav-item @if('companies' == url_explode(request()->path()) ) {{'active'}} @endif">
-							<a  href="{{url('/companies')}}">
-								<i class="fas fa-users-cog"></i>
-								<p>Companies</p>
-							</a>
-						</li>
-						@endcan
 						@can('customer-list')
 
 						<li class="nav-item @if('customers' == url_explode(request()->path()) ) {{'active'}} @endif">

@@ -20,6 +20,9 @@ class User extends Authenticatable
         'contact_no',
         'description',
         'image',
+        'company_id',
+        'branch_id',
+        'add_info',
     ];
 
    
