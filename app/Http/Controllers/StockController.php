@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Customer_has_transaction;
 use Illuminate\Database\Eloquent\Collection;
+use DataTables;
+
 
 class StockController extends Controller
 {
@@ -24,6 +26,34 @@ class StockController extends Controller
 
     public function index(Request $request)
     {
+        if ($request->ajax()) {
+            $query = City::query()
+                ->orderBy('cities.name','DESC')
+                ->get();
+            $table = DataTables::of($query);
+
+            $table->addColumn('placeholder', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
+
+            $table->editColumn('actions', function ($row) {
+                $viewGate = 'city-list';
+                $editGate = 'city-edit';
+                $deleteGate = 'city-delete';
+                $crudRoutePart = 'cities';
+
+                return view('partials.datatableActions', compact(
+                    'viewGate',
+                    'editGate',
+                    'deleteGate',
+                    'crudRoutePart',
+                    'row'
+                ));
+            });
+
+            $table->rawColumns(['actions', 'placeholder']);
+
+            return $table->make(true);
+        }
         return view('stocks.index');
     }
 
@@ -31,7 +61,7 @@ class StockController extends Controller
         $data       = DB::table('purchase_has_items')
                         ->select(DB::raw('SUM(purchase_has_items.item_piece * purchase_has_items.purchase_qty ) as purchase_qty'))
                         ->where('purchase_has_items.item_id',$item_id)
-                        ->first(); 
+                        ->first();
         if($data->purchase_qty!=null ){
             return  $data->purchase_qty;
         }else{
@@ -44,7 +74,7 @@ class StockController extends Controller
         $data       = DB::table('sell_has_items')
                         ->select(DB::raw('SUM(sell_has_items.tot_piece) as sell_qty'))
                         ->where('sell_has_items.item_id', $item_id)
-                        ->first(); 
+                        ->first();
 
         if($data->sell_qty!=null ){
             return $data->sell_qty;
@@ -83,27 +113,27 @@ class StockController extends Controller
             // cal and sum the purchased items
             $purchase_qty   = $this->calc_purchase_items($value->id);
 
-            // set the stock according to ctn and piece 
+            // set the stock according to ctn and piece
             $stock_qty_int      = ($purchase_qty-$sell_qty) / $value->tot_piece;
             $stock_qty_dec      = ($purchase_qty-$sell_qty) % $value->tot_piece;
-            $stock_qty_int      = ceil( $stock_qty_int ); 
+            $stock_qty_int      = ceil( $stock_qty_int );
             $stock              =  $this->setValue($stock_qty_int, $stock_qty_dec,$unit);
 
-            // set the purchase qty according to ctn and piece 
+            // set the purchase qty according to ctn and piece
             $purchase_qty_int   = ($purchase_qty/ $value->tot_piece);
             $purchase_qty_dec   = $purchase_qty % $value->tot_piece;
             $purchase_qty       =  $this->setValue($purchase_qty_int, $purchase_qty_dec,$unit);
 
-            // set the sell qty according to ctn and piece 
+            // set the sell qty according to ctn and piece
             $sell_qty_int       = ($sell_qty/ $value->tot_piece);
             $sell_qty_dec       = $sell_qty % $value->tot_piece;
-            $sell_qty_int       = floor( $sell_qty_int );  
+            $sell_qty_int       = floor( $sell_qty_int );
             $sell_qty           =  $this->setValue($sell_qty_int, $sell_qty_dec,$unit);
 
-            // set the tot piece 
+            // set the tot piece
             $tot_piece          = "1 ".$unit." has ".$value->tot_piece;
 
-         
+
             // set all the columns for datatables
             $rec[$key] = json_decode(json_encode(array(
                         'id'            => $value->id,
@@ -114,12 +144,12 @@ class StockController extends Controller
                         'purchase_qty'  => $purchase_qty,
                         'stock'         => $stock
                     )), false);
-      
+
         }
 
         $data = new Collection($rec);
-       
-        return 
+
+        return
             DataTables::of($data)
                 // ->addColumn('action',function($data){
                 //     return '
@@ -127,7 +157,7 @@ class StockController extends Controller
                 //         <a class="btn btn-info btn-sm" href="sells/'.$data->id.'">
                 //             <i class="fa fa-eye"></i>
                 //         </a>
-                      
+
                 //     </div>';
                 // })
                 ->addColumn('srno','')
@@ -143,7 +173,7 @@ class StockController extends Controller
             $item_id        = $request->item;
             $unit_id        = $request->unit;
 
-           
+
             $item           = DB::table('items')
                                 ->select('items.*')
                                 ->where('items.id',$item_id)
@@ -156,14 +186,14 @@ class StockController extends Controller
                                 // ->pluck("name","id")
                                 ->first();
             // $unit_name      = $unit->name;
-                                
+
             return response()->json(['data'=>$item,'unit'=>$unit]);
         }
 
     }
 
     public function setValue($int_part, $dec_part,$unit){
-       
+
         if ($dec_part==0){
             return ($int_part." ". $unit);
         }else{
@@ -228,12 +258,12 @@ class StockController extends Controller
         $sell_qty                   = $inputs['sell_qty'];
         $unit_piece                 = $inputs['unit_piece'];
         $sell_price                 = $inputs['sell_price'];
-        
+
 
 
         $data                       = Sell::create($inputs);
         $sell_id                    = $data['id'];
-      
+
         if($data){
             if($item){
                 foreach($item as $item_key => $item_value){
@@ -260,7 +290,7 @@ class StockController extends Controller
             $val->save();
 
         }
-        
+
         return redirect()
                 ->route('sells.index')
                 ->with('success','Order added successfully.');
@@ -334,14 +364,14 @@ class StockController extends Controller
                                 ->get()
                                 ->all();
 
-    
+
         $items              = DB::table('items')
                                 ->select('items.name','items.id')
                                 ->pluck('name','id')
                                 ->all();
 
 
-                              
+
         $customers          = DB::table('customers')
                                 ->orderBy('customers.id')
                                 ->select('customers.id',
