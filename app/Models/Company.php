@@ -13,12 +13,27 @@ class Company extends Model
     public $table = 'companies';
 
     protected $fillable = [
+        'code',
         'name',
+        'email',
         'owner_name',
-        'contact_no',
+        'mobile_no',
+        'phone_no',
         'address',
+        'image',
+        'active',
         'created_by',
         'updated_by',
         'deleted_at'
     ];
+
+    public function getNameAttribute($value)
+    {
+        return ucwords($value);
+    }
+
+    public function getOwnerNameAttribute($value)
+    {
+        return ucwords($value);
+    }
 }

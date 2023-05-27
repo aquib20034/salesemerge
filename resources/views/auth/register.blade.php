@@ -12,8 +12,28 @@
                         @csrf
 
                         <div class="form-group form-floating-label">
-                            <input id="name" name="name" type="text" class="form-control input-border-bottom @error('name') is-invalid @enderror" value="{{ old('name') }}" required autocomplete="name" autofocus >
-                            <label for="name" class="placeholder">Name</label>
+                            <input id="company_name" name="company_name" type="text" class="form-control input-border-bottom @error('company_name') is-invalid @enderror" value="{{ old('company_name') }}" required autocomplete="company_name" autofocus >
+                            <label for="company_name" class="placeholder">Company name</label>
+                            @error('company_name')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group form-floating-label">
+                            <input id="mobile_no" name="mobile_no" type="text" class="form-control input-border-bottom @error('mobile_no') is-invalid @enderror" value="{{ old('mobile_no') }}" required autocomplete="mobile_no"  >
+                            <label for="mobile_no" class="placeholder">Company mobile#</label>
+                            @error('mobile_no')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group form-floating-label">
+                            <input id="name" name="name" type="text" class="form-control input-border-bottom @error('name') is-invalid @enderror" value="{{ old('name') }}" required autocomplete="name"  >
+                            <label for="name" class="placeholder">Owner full name</label>
                             @error('name')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>

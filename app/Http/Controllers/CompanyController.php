@@ -1,14 +1,19 @@
 <?php
 
+
 namespace App\Http\Controllers;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Company;
+use App\Models\Branch;
 use App\Models\Company_has_transaction;
 use Gate;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 use DB;
+use Auth;
+use DataTables;
 
 
 class CompanyController extends Controller
@@ -173,7 +178,6 @@ class CompanyController extends Controller
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
-
 
 
 
