@@ -26,6 +26,9 @@ Route::group(['middleware' => ['auth']], function() {
     // companies
     Route::delete('companies/destroy', 'CompanyController@massDestroy')->name('companies.massDestroy');
     Route::resource('companies', 'CompanyController');
+    // branches
+    Route::delete('branches/destroy', 'BranchController@massDestroy')->name('branches.massDestroy');
+    Route::resource('branches', 'BranchController');
     //roles
     Route::resource('roles', 'RoleController');
     Route::delete('roles/destroy', ['RoleController', 'destroy'])->name('roles.massDestroy');

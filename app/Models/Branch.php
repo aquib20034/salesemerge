@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Branch extends Model
 {
+    public $table = 'branches';
+
     protected $fillable = [
         'name',
         'company_id',
@@ -13,6 +15,6 @@ class Branch extends Model
         'phone_no',
         'address',
         'active'
-        
+
     ];
 }

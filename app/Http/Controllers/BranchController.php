@@ -22,7 +22,7 @@ class BranchController extends Controller
         if ($request->ajax()) {
             $query = Branch::query()
                     ->orderBy('branches.created_at','DESC')
-                ->select('Branch.*')
+                ->select('branches.*')
                 ->get();
             $table = Datatables::of($query);
 
