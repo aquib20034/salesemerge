@@ -50,18 +50,18 @@ class CompanyController extends Controller
                     'row'
                 ));
             });
-//            $table->editColumn('sno', function ($row) {
-//                return $row->id ? $row->id : 0 ;
-//            });
+            //    $table->editColumn('sno', function ($row) {
+            //        return $row->id ? $row->id : 0 ;
+            //    });
 
-//            If any modififcation require before present in the grid, use editColumn
-//            $table->editColumn('owner_name', function ($row) {
-//                return $row->owner_name ? $row->owner_name : '';
-//            });
-//
-//            $table->editColumn('contact_no', function ($row) {
-//                return $row->contact_no ? $row->contact_no : '';
-//            });
+            //    If any modififcation require before present in the grid, use editColumn
+            //    $table->editColumn('owner_name', function ($row) {
+            //        return $row->owner_name ? $row->owner_name : '';
+            //    });
+
+            //    $table->editColumn('contact_no', function ($row) {
+            //        return $row->contact_no ? $row->contact_no : '';
+            //    });
 
             $table->rawColumns(['actions', 'placeholder']);
 

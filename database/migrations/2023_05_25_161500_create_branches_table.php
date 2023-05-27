@@ -17,12 +17,12 @@ class CreateBranchesTable extends Migration
             $table->increments('id');
             $table->integer('company_id');
             $table->string('name')->nullable();
-            $table->string('contact_no')->nullable();
+            $table->string('mobile_no')->nullable();
+            $table->string('phone_no')->nullable();
             $table->string('logo')->nullable();
             $table->text('address')->nullable();
             $table->text('add_info')->nullable();
             $table->unsignedInteger('created_by')->nullable();
-            $table->unsignedInteger('updated_by')->nullable();
             $table->boolean('active')->default(1)->nullable()->comment('null = inactive and 1 = active');
             $table->softDeletes();
             $table->timestamps();
