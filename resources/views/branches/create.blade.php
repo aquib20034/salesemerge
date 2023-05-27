@@ -38,7 +38,6 @@
                                 <!--begin::Form-->
                                     {!! Form::open(array('route' => 'companies.store','method'=>'POST','id'=>'form','enctype'=>'multipart/form-data')) !!}
                                     {{  Form::hidden('created_by', Auth::user()->id ) }}
-
                                     <div class=" row">
                                         <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
                                             <div class="form-group">
@@ -138,6 +137,7 @@
 @section('scripts')
     @parent
     <script>
+
         $(function (){
             $('.submit').on('click', function(e){
                 e.preventDefault();

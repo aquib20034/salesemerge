@@ -33,7 +33,8 @@
 	.span_danger{
 		color:red;
 	}
-    .table>tbody>tr>td{ white-space: nowrap !important;}
+    .table>tbody>tr>td{ white-space: nowrap !important;   padding: 2px; !important;}
+    .table td, .table th { padding: 0.25rem!important; }
 	</style>
 </head>
 <body>
@@ -643,7 +644,9 @@
 
     </script>
     <!-- syedhaaris97 Personal -->
+    <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
     <script src="{{ asset('assets/js/hunt.js')}}"></script>
+
     @yield('scripts')
 </body>
 </html>
