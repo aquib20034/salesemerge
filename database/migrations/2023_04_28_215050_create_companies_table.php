@@ -26,7 +26,6 @@ class CreateCompaniesTable extends Migration
             $table->text('add_info')->nullable();
             $table->boolean('active')->default(1)->nullable()->comment('null = inactive and 1 = active');
             $table->unsignedInteger('created_by')->nullable();
-            $table->unsignedInteger('updated_by')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

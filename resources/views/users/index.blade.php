@@ -14,21 +14,22 @@
                     <div class="d-flex align-items-center">
                         <h4 class="card-title">Manage @yield('title')</h4>
                         @can('user-create')
-                            <a  href="{{ route('users.create') }}" class="btn btn-primary btn-round ml-auto">
+                            <a  href="{{ route('users.create') }}" class="btn btn-primary btn-xs ml-auto">
                             <i class="fa fa-plus"></i> Add new</a>
                         @endcan
+                        
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-borderless table-striped table-hover ajaxTable datatable  datatable-users" style="width: 100%;" cellspacing="0">
+                        <table class="table table-striped dt-responsive  datatable-users" >
                             <thead>
                                 <tr>
-                                    <th  width="5%">#</th>
+                                    <th width="5%">#</th>
                                     <th> Name</th>
                                     <th>Email</th>
                                     <th>Role</th>
-                                    <th width="10%" >Action</th>
+                                    <th width="5%" >Action</th>
                                 </tr>
                             </thead>
 
@@ -53,11 +54,11 @@
         @endcan
         dtButtons.push(deleteButton)
         let data = [
-            { data: 'placeholder', name: 'placeholder' },
+            { data: 'placeholder', name: 'placeholder',orderable:false,searchable:false },
             { data: 'name', name: 'name' },
             { data: 'email', name: 'email' },
             { data: 'rolename', name: 'rolename' },
-            { data: 'actions', name: '{{ trans('global.actions') }}' }
+            { data: 'actions', name: '{{ trans('global.actions') }}',orderable:false,searchable:false }
         ]
         DataTableCall('.datatable-users', "{{ route('users.index') }}", dtButtons, data)
     });

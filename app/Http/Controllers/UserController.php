@@ -39,10 +39,10 @@ class UserController extends Controller
             $table->addColumn('actions', '&nbsp;');
 
             $table->editColumn('actions', function ($row) {
-                $viewGate = 'user-list';
-                $editGate = 'user-edit';
-                $deleteGate = 'user-delete';
-                $crudRoutePart = 'users';
+                $viewGate       = 'user-list';
+                $editGate       = 'user-edit';
+                $deleteGate     = 'user-delete';
+                $crudRoutePart  = 'users';
 
                 return view('partials.datatableActions', compact(
                     'viewGate',
