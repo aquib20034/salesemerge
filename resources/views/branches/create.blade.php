@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title','Companies')
+@section('title','Branch')
 @section('content')
 
 @include( '../sweet_script')
