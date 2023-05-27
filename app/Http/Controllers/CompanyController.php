@@ -75,14 +75,15 @@ class CompanyController extends Controller
         $amount_types =DB::table('amount_types')
                             ->select('amount_types.name','amount_types.id')
                             ->pluck('name','id')->all();
-
-        return view('companies.create',compact('amount_types'));
+        $aCountries = Company::pluck('name', 'id');
+        return view('companies.create',compact('amount_types', 'aCountries'));
     }
 
     public function store(Request $request)
     {
         request()->validate([
             'name'          => 'required|min:3|unique:companies,name',
+            'code'          => 'required|min:3|unique:companies,code',
             'owner_name'    => 'required|min:3',
         ]);
 
@@ -101,9 +102,11 @@ class CompanyController extends Controller
         }
         $val->save();
 
-        return redirect()
-                ->route('companies.index')
-                ->with('success','Company '.$request['name'] .' added successfully.');
+//        return redirect()
+//                ->route('companies.index')
+//                ->with('success','Company '.$request['name'] .' added successfully.');
+        return response()->json(['status' => 200, 'data' => array(), 'msg' => "Company added Successfully", 'alert' => "success"]);
+
     }
 
     public function show($id)
