@@ -34,7 +34,6 @@
                         <div class="col-7 col-md-10">
                             <div class="tab-content" id="v-pills-tabContent">
                                 <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-
                                 <!--begin::Form-->
                                     {!! Form::model($aCountries, ['method' => 'PATCH','id'=>'CompaniesForm','enctype'=>'multipart/form-data','route' => ['companies.update',  Auth::user()->company_id]]) !!}
                                     {{  Form::hidden('created_by', Auth::user()->id ) }}
@@ -73,19 +72,19 @@
                                     <div class="row">
                                         <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
                                             <div class="form-group">
-                                                {!! Html::decode(Form::label('contact_no','Contact No')) !!}
-                                                {!! Form::text('contact_no', null, array('placeholder' => 'Enter contact no','class' => 'form-control')) !!}
-                                                @if ($errors->has('contact_no'))
-                                                    {!! "<span class='span_danger'>". $errors->first('contact_no')."</span>"!!}
+                                                {!! Html::decode(Form::label('mobile_no','Mobile No')) !!}
+                                                {!! Form::text('mobile_no', null, array('placeholder' => 'Enter mobile_no','class' => 'form-control')) !!}
+                                                @if ($errors->has('mobile_no'))
+                                                    {!! "<span class='span_danger'>". $errors->first('mobile_no')."</span>"!!}
                                                 @endif
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
                                             <div class="form-group">
-                                                {!! Html::decode(Form::label('previous_amount','Previous Amount')) !!}
-                                                {!! Form::number('previous_amount', 0, array('placeholder' => 'Enter previous amount','class' => 'form-control')) !!}
-                                                @if ($errors->has('previous_amount'))
-                                                    {!! "<span class='span_danger'>". $errors->first('previous_amount')."</span>"!!}
+                                                {!! Html::decode(Form::label('phone_no','Phone No')) !!}
+                                                {!! Form::number('phone_no', null, array('placeholder' => 'Enter Phone No','class' => 'form-control')) !!}
+                                                @if ($errors->has('phone_no'))
+                                                    {!! "<span class='span_danger'>". $errors->first('phone_no')."</span>"!!}
                                                 @endif
                                             </div>
                                         </div>
@@ -102,7 +101,7 @@
                                     <div class="row">
 
                                         <div class="col-lg-12 text-right">
-                                            <button type="submit" class="btn btn-primary btn-xs mr-2 submit">Save</button>
+                                            <button type="submit" class="btn btn-primary btn-xs mr-2 upate_company">Save</button>
                                             <button type="reset" class="btn btn-danger btn-xs">Cancel</button>
                                         </div>
                                     </div>
@@ -181,7 +180,7 @@
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                    <button type="button" class="btn btn-primary submit" data-dismiss="modal">Save changes</button>
+                                                                    <button type="button" class="btn btn-primary submit_branches" data-dismiss="modal">Save changes</button>
                                                                 </div>
                                                                 {!! Form::close() !!}
                                                                 <!--end::Form-->
@@ -222,13 +221,14 @@
     </div>
     </div>
 </div>
+{!! JsValidator::formRequest('App\Http\Requests\CreateCompanyRequest', '#CompaniesForm'); !!}
 @endsection
 @section('scripts')
     @parent
 {{--    TODO Ajax requst creating a problem after using Request validation. multi time ajax request hiting continously--}}
     <script>
 {{--        $(function (){--}}
-{{--            $('.submit').on('click', function(e){--}}
+{{--            $('.upate_company').on('click', function(e){--}}
 {{--                e.preventDefault();--}}
 {{--                try {--}}
 {{--                   let data = $('#CompaniesForm').serialize();--}}
@@ -253,29 +253,18 @@
         DataTableCall('.datatable-Branch', "{{ route('branches.index') }}", dtButtons, data)
     });
 
-    {{--$(function (){--}}
-    {{--    $('.submit').on('click', function(e){--}}
-    {{--        e.preventDefault();--}}
-    {{--        try {--}}
-    {{--            let data = $('#form_branch').serialize();--}}
-    {{--            AjaxCall(`{{route('branches.store')}}`, "POST",function (res) { AlertCall(res, $('.datatable-Branch').DataTable().ajax.reload());   $("#form_branch")[0].reset();    }, data);--}}
-    {{--        }catch (e) {--}}
-    {{--            console.log(e)--}}
-    {{--        }--}}
-    {{--    })--}}
-    {{--})--}}
+    $(function (){
+        $('.submit_branches').on('click', function(e){
+            e.preventDefault();
+            try {
+                let data = $('#form_branch').serialize();
+                AjaxCall(`{{route('branches.store')}}`, "POST",function (res) { AlertCall(res, $('.datatable-Branch').DataTable().ajax.reload());   $("#form_branch")[0].reset();    }, data);
+            }catch (e) {
+                console.log(e)
+            }
+        })
+    })
 
-    {{--$(function (){--}}
-    {{--    $('.submit').on('click', function(e){--}}
-    {{--        e.preventDefault();--}}
-    {{--        try {--}}
-    {{--            let data = $('#form_branch').serialize();--}}
-    {{--            AjaxCall(`{{route('branches.store')}}`, "POST",function (res) { AlertCall(res, $('.datatable-Branch').DataTable().ajax.reload());   $("#form_branch")[0].reset();    }, data);--}}
-    {{--        }catch (e) {--}}
-    {{--            console.log(e)--}}
-    {{--        }--}}
-    {{--    })--}}
-    {{--})--}}
     </script>
 @endsection
-{{--{!! JsValidator::formRequest('App\Http\Requests\CreateCompanyRequest', '#CompaniesForm'); !!}--}}
+
