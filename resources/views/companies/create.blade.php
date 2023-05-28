@@ -222,7 +222,7 @@
     </div>
     </div>
 </div>
-{!! JsValidator::formRequest('App\Http\Requests\CreateCompanyRequest', '#CompaniesForm'); !!}
+
 @endsection
 @section('scripts')
     @parent
@@ -279,3 +279,4 @@
     {{--})--}}
     </script>
 @endsection
+{{--{!! JsValidator::formRequest('App\Http\Requests\CreateCompanyRequest', '#CompaniesForm'); !!}--}}
