@@ -3,13 +3,25 @@
 @section('content')
 
 @include( '../sweet_script')
-
+<style>
+    #spinner-div{
+        width:100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: rgba(0,0,0,0.2);
+        z-index:9999;
+        display:none;
+    }
+</style>
 
 <div class="page-inner">
     <div class="page-header">
         <h4 class="page-title">@yield('title')</h4>
     </div>
 
+    <div id= "spinner-div"><i class="fas fa-spinner fa-spin" style="position:absolute; left:50%; top:50%;font-size:80px; color:#3a7ae0"></i> </div>
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -253,7 +265,10 @@
             e.preventDefault();
             try {
                 let data = $('#form_branch').serialize();
-                AjaxCall(`{{route('branches.store')}}`, "POST",function (res) { AlertCall(res, $('.datatable-Branch').DataTable().ajax.reload());   $("#form_branch")[0].reset();    }, data);
+                AjaxCall(`{{route('branches.store')}}`, "POST", function (res) { 
+                    AlertCall(res, $('.datatable-Branch').DataTable().ajax.reload());
+                    $("#form_branch")[0].reset();    
+                }, data);
             }catch (e) {
                 console.log(e)
             }
