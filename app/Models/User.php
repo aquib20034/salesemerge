@@ -19,9 +19,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'contact_no',
+        'phone_no',
+        'mobile_no',
         'description',
-        'logo',
+        'profile_pic',
         'company_id',
         'branch_id',
         'add_info',
@@ -53,10 +54,15 @@ class User extends Authenticatable
         return $this->belongsTo(Branch::class, 'branch_id', 'id');
     }
 
-    public function getLogoAttribute($value)
+    public function getActiveAttribute($value)
+    {
+        return ($value == 1) ? "Active" : "Inactive";
+    }
+
+    public function getProfilePicAttribute($value)
     {
         return ( isset($value) && (file_exists( public_path('uploads/users/'.$value) ))) 
             ? asset('uploads/users/'.$value)
-            : asset('uploads/logo_no_image.png');
+            : asset('uploads/no_image.png');
     }
 }

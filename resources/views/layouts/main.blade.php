@@ -35,6 +35,61 @@
 	}
     .table>tbody>tr>td{ white-space: nowrap !important;   padding: 2px; !important;}
     .table td, .table th { padding: 0.25rem!important; }
+	
+		
+		.span_danger{
+			color:red;
+		}
+		
+		.add_image{
+			position: relative;
+		}
+		.add_image label {
+			position: absolute;
+			top: 0;
+			right: -5px;
+			max-width: 10px;
+			margin: 0;
+		}
+		.add_image input {
+			opacity: 0;
+			width: 0;
+			height: 0;
+		}
+	      html,body{
+	        height: 100%;
+	      }
+	      .loader{
+	        display: none;
+	      }
+
+
+		   /* width */
+		   ::-webkit-scrollbar {
+            width: 10px;
+            /* border-radius: 1em; */
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+            /* border-radius: 1em; */
+            
+        }
+        
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #888; 
+            border-radius: 1em;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+        background: #555; 
+        /* border-radius: 1em; */
+        }
+
+		 
 	</style>
 </head>
 <body>

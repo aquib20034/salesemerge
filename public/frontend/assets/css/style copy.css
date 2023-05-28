@@ -1,0 +1,888 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+@font-face {
+	font-family: 'Poppins', sans-serif;
+
+}
+@font-face {
+	font-family: 'Roboto', sans-serif;
+
+}
+.ables-Dashboard {
+    padding: 61px 69px 279px 85px;
+}
+body {
+    color: #704D2A;
+    background: #F7F8FA !important;
+}
+.container-fluid {
+    max-width: 1920px;
+    margin: 0px auto;
+}
+.headerTitle h1 {
+    font-size: 40px;
+    font-weight: 600;
+    font-family: 'Poppins',sans-serif;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    padding-left: 45px;
+    margin-bottom: 15px;
+}
+.invoiceBox a {
+    font-size: 20px;
+    background: #DCBFA2;
+    border: 1px solid #DCBFA2;
+    padding: 12px 22px 12px 22px;
+    border-radius: 8px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    color: #704D2A;
+    line-height: 20px;
+    width: 100%;
+    margin-right: 0;
+    text-align: left;
+    position: relative;
+}
+/*.invoiceBoxOne a span {
+    padding-right: 72px;
+}
+.invoiceBox span {
+    padding-right: 39px;
+}
+.invoiceBoxFive span {
+    padding-right: 0px;
+}*/
+.ables-Dashboard .col-md-6 {
+    display: flex;
+    align-items: flex-end;
+}
+.invoiceBox {
+    /*padding-right: 48px;*/
+}
+.invoiceGenerstorBox .invoiceRow {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding: 69px 25px 0 0px;
+}
+.invoiceBox .dropdown-toggle::after {
+    margin-left: 0px;
+    position: absolute;
+    right: 22px;
+    top: 20px;
+}
+.invoiceBoxThree {
+    width: 240px;
+}
+.invoiceBoxFour {
+    width: 293px;
+}
+.invoiceBoxFive {
+    width: 220px;
+}
+.invoiceBoxOne {
+    max-width: 220px;
+    width: 220px;
+}
+.invoiceBoxTow {
+    width: 189px;
+}
+.invoiceBox select:focus-visible {
+    border-color: #DCBFA2;
+    outline: none;
+}
+.recipPriceRow {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 0px 54px 58px;
+    margin-top: -10px;
+}
+.vendorItems {
+    padding: 0 0px 0 0px;
+    width: 440px;
+    margin: 0px 0 0 84px;
+}
+.recipPriceCol h2 {
+    font-size: 54px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+}
+.recipPriceCol span {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    font-family: 'Poppins', sans-serif;
+}
+.recipPriceCol h2 {
+    font-size: 54px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    line-height: 81px;
+}
+.invoiceBoxSix {
+    display: flex;
+}
+.recipPriceCol {
+    background: #fff;
+    padding: 13px 24px 4px 27px;
+    box-shadow: 0px 2px 5px rgb(38 51 77 / 3%);
+    border-radius: 8px;
+}
+.vendorItems ul {
+    padding: 0px;
+    list-style: none;
+}
+.vendorItems ul li p {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 22px 11px;
+    position: relative;
+}
+.vendorItems ul li p {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 57px 11px 47px;
+}
+body p {
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+    text-transform: capitalize;
+}
+.vendorItems h3 {
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 20px;
+    text-transform: uppercase;
+    padding: 15px 23px;
+    position: relative;
+}
+.vendorItems h3:before {
+    content: '';
+    width: 100%;
+    height: 1%;
+    display: block;
+    border-top: 1px solid #704D2A;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 20%;
+}
+.vendorItems h3:after {
+    content: '';
+    width: 100%;
+    height: 1%;
+    display: block;
+    border-bottom: 1px solid #704D2A;
+    position: absolute;
+    bottom:  0;
+    left: 0;
+    opacity: 20%;
+}
+ul.additionalItem li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 17px;
+}
+ul.additionalItem li p {
+    width: 89%;
+    margin: 0px;
+    padding-right: 16px;
+    padding-bottom: 0px;
+    align-items: center;
+}
+ul.additionalItem li input {
+    background: #FFFFFF;
+    border-radius: 8px;
+    border: 1px solid #FFFFFF;
+    width: 64px;
+    height: 30px;
+}
+.vendorItems ul.vendor-additionalItem li p:before {
+    content: '';
+    width: 77.5%;
+    height: 100%;
+    display: block;
+    border-bottom: 1px solid #704D2A;
+    position: absolute;
+    top: 0;
+    margin-left: 0px;
+    opacity: 12%;
+}
+p.total-amount {
+    padding: 0 28px 0 50px !important;
+}
+ul.additionalItem {
+    padding-top: 10px;
+}
+.totalAmount p {
+    display: flex;
+    justify-content: space-between;
+    padding: 11px 32px;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 36px;
+    letter-spacing: -1px;
+    text-transform: uppercase;
+    border-top: 1px solid #704d2aa6;
+    border-bottom: 1px solid #704d2aa6;
+}
+.listItem input[type="radio"] {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+.generationInvoiceBtn {
+    text-align: center;
+    padding-top: 47px;
+}
+.generationInvoiceBtn a, .generationInvoiceBtn button {
+	padding: 14px 31.5px;
+    background: #A47036;
+    border-radius: 5px;
+    font-family: 'Poppins',sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 130%;
+    text-align: center;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    border: 1px solid #A47036;
+    transition: 0.5s ease;
+}
+.generationInvoiceBtn a:hover  .generationInvoiceBtn button:hover{
+	color: #A47036;
+	background: transparent;
+}
+.retailorBox input {
+    background: #FFFFFF;
+    border-radius: 8px;
+    border: 1px solid #FFFFFF;
+    width: 189px;
+    height: 52px;
+}
+.invoiceBoxSix {
+    display: flex;
+    padding-left: 58px;
+}
+.retailorBox p {
+    margin-bottom: 8px;
+}
+.retailorBox {
+    padding-right: 58px;
+}
+.invoiceBox .listItem {
+    background: #fff;
+    border: 1px solid #fff;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 8px;
+    padding: 6px 24px 0;
+    box-shadow: 0 2px 50px 0 hsl(220deg 34% 23% / 3%);
+    position: relative;
+}
+.invoiceBox .listItem label {
+   text-transform: capitalize;
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    color: #A47036;
+}
+.invoiceBox select.selectBox {
+    border: none;
+    /*overflow: hidden;*/
+    background: #fff;
+    width: 100%;
+    border-radius: 8px !important;
+}
+.invoiceBox input:focus-visible {
+    border-color: #fff;
+    outline: none;
+}
+.invoiceBox input {
+	padding-left: 15px;
+	font-size: 12px;
+}
+p.vendorLastItem {
+    margin-bottom: 0px !important;
+    padding-bottom: 0px !important;
+}
+p.vendorLastItem:before {
+    content: '';
+    border: none !important;
+}
+.invoiceBox .dropdown-menu {
+    width: 100%;
+    /* display: block; */
+    border: transparent;
+    background: #fff;
+    border-radius: 8px;
+    margin-top: 5px;
+    padding: 0px;
+    position: unset;
+    overflow-y: scroll;
+    max-height: 156px;
+}
+.dropdown-menu::-webkit-scrollbar {
+    -webkit-box-shadow: inset 0 0 6px rgb(0 0 0 / 30%);
+    border-radius: 10px;
+    width: 8px;
+    background: #dcbfa2a6;
+    height: 200px;
+   overflow-y: scroll;
+}
+.invoiceBoxFive label {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding-right: 40px;    
+}
+.invoiceBoxFive label span {
+    color: #704D2A;
+    font-weight: 600;
+}
+.invoiceGenerstorBox .invoice-secondRow {
+    justify-content: flex-start;
+}
+
+
+@media (max-width: 767px) {
+	.ables-Dashboard {
+	    padding: 18px 0px 50px;
+	}
+	body p {
+	    font-size: 14px;
+	    line-height: 18px;
+	}
+	.recipPriceCol span {
+	    font-size: 14px;
+	    line-height: 18px;
+	}
+	.totalAmount p {
+	    padding: 11px 12px;
+	    font-size: 22px;
+	    line-height: 32px;
+	}
+	.vendorItems {
+	    padding: 15px 26px 0;
+	    width: auto;
+    	margin: 0px;    
+	}
+	.vendorItems ul li p {	
+	    padding: 0 15px 11px 15px;
+	}
+	.vendorItems ul.vendor-additionalItem li p:before {
+	    width: 87.5%;
+	}
+	p.total-amount {
+	    padding: 0px 50px 0 19px !important;
+	}
+	.ables-Dashboard .col-md-6 {
+	    align-items: center;
+	    justify-content: center;
+	}
+	.headerTitle h1 {
+	    font-size: 29px;
+	    margin-bottom: 0px;
+	    padding: 40px 0 40px 0;
+	}
+	.invoiceGenerstorBox .invoiceRow {
+	    flex-direction: column;
+	    padding: 0px 0px 0 0px;
+	    align-items: center;
+	}
+	.invoiceBox {
+	    padding-bottom: 30px;
+	    width: 220px !important;
+	}
+	.invoiceGenerstorBox .invoice-secondRow {
+	    padding-top: 0px;
+	}
+	.invoiceBoxSix {
+	    padding-left: 6px;
+	    padding-bottom: 0px;
+	    flex-direction: column;
+	}
+	.retailorBox {
+	    padding: 0 0 15px 0;
+	}
+	.recipPriceCol h2 {
+	    font-size: 30px;
+	    line-height: 42px;
+	}
+	.recipPriceRow {
+	    padding: 0px;
+	    flex-direction: column;
+	    margin-top: 35px;    
+	}
+	.recipPriceCol {
+	    padding: 15px 20px 4px;
+	    margin-bottom: 16px;
+	}
+	.invoiceBox a {
+	    font-size: 16px;
+	}
+	.generationInvoiceBtn a {
+	    padding: 12px 18px;
+	    font-size: 14px;
+	}
+	.generationInvoiceBtn {	
+	    padding-top: 28px;
+	}
+	.invoiceBox .listItem {
+	    height: 44px;
+	    font-size: 14px;
+	}
+}
+@media (min-width:768px) and (max-width: 1024px) {
+	.ables-Dashboard {
+	    padding: 24px 0px 65px;
+	}
+	.ables-Dashboard .row {
+	    flex-direction: column;
+	    align-items: center;
+	}
+	.ables-Dashboard .col-md-8 {
+	    flex: 0 0 100%;
+	    max-width: 100%;
+	}
+	.vendorItems ul.vendor-additionalItem li p:before {
+	    width: 79.5%;
+	}
+	p.total-amount {
+	    padding: 0 38px 0 41px !important;
+	}
+	.ables-Dashboard .col-md-4 {
+	    flex: 0 0 100%;
+	    max-width: 421px;
+	    padding: 24px 0px 0;
+	}
+	.vendorItems ul li p {
+	    padding: 0 37px 11px;
+	}
+	body p {
+	    font-size: 14px;
+	    line-height: 18px;
+	}
+	.recipPriceCol span {
+	    font-size: 14px;
+	    line-height: 18px;
+	}
+	.totalAmount p {
+	    padding: 11px 12px;
+	    font-size: 22px;
+	    line-height: 32px;
+	}
+	.vendorItems {
+	    padding: 15px 26px 0;
+	    width: auto;
+    	margin: 0px;    
+	}
+	.ables-Dashboard .col-md-6 {
+	    align-items: center;
+	    justify-content: center;
+	}
+	.headerTitle h1 {
+	    font-size: 29px;
+	    margin-bottom: 0px;
+	    padding: 20px 0 0 0;
+	}
+	.invoiceGenerstorBox .invoiceRow {
+	    flex-direction: row;
+	    padding: 41px 0px 0 0px;
+	    flex-wrap: wrap;
+	}
+	.invoiceBox {
+	    padding-bottom: 35px;
+	}
+	.invoiceGenerstorBox .invoice-secondRow {
+	    padding-top: 0px;
+	}
+	.invoiceBoxSix {
+	    padding-left: 44px;
+	    padding-bottom: 0px;
+	    flex-direction: row;
+	}
+	.retailorBox {
+	    padding: 0 46px 35px 0;
+	}
+	.recipPriceCol h2 {
+	    font-size: 30px;
+	    line-height: 42px;
+	}
+	.recipPriceRow {
+	    padding: 0px;
+	    flex-direction: row;
+	}
+	.recipPriceCol {
+	    padding: 15px 20px 4px;
+	    margin-bottom: 16px;
+	}
+	.invoiceBox a {
+	    font-size: 18px;
+	}
+	.generationInvoiceBtn a {
+	    padding: 12px 18px;
+	    font-size: 14px;
+	}
+	.generationInvoiceBtn {	
+	    padding-top: 28px;
+	}
+	.invoiceBox .listItem {
+	    height: 44px;
+	    font-size: 14px;
+	}
+}
+@media (min-width:1025px) and (max-width: 1199px) {
+	.ables-Dashboard {
+	    padding:55px 0px;
+	}
+	/*.ables-Dashboard .row {
+	    flex-direction: column;
+	    align-items: center;
+	}*/
+	/*.ables-Dashboard .col-md-8 {
+	    flex: 0 0 100%;
+	    max-width: 100%;
+	}
+	.ables-Dashboard .col-md-4 {
+	    flex: 0 0 100%;
+	    max-width: 100%;
+	    padding: 23px 170px 0;
+	}*/
+	body p {
+	    font-size: 14px;
+	    line-height: 18px;
+	}
+	.recipPriceCol span {
+	    font-size: 14px;
+	    line-height: 18px;
+	}
+	.totalAmount p {
+	    padding: 11px 12px;
+	    font-size: 22px;
+	    line-height: 32px;
+	}
+	.vendorItems {
+	    padding: 15px 26px 0;
+	    margin: 0px auto;    
+	}
+	.ables-Dashboard .col-md-6 {
+	    align-items: center;
+	    justify-content: left;
+	}
+	.headerTitle h1 {
+	    font-size: 29px;
+	    margin-bottom: 0px;
+	    padding: 20px 0 0 0;
+	}
+	.invoiceGenerstorBox .invoiceRow {
+	    padding: 41px 0px 0 0px;
+	}
+	.invoiceBox {
+	    padding-bottom: 35px;
+	    width: auto !important;
+	}
+	/*.invoiceBoxOne {
+	    max-width: 169px;
+	    width: 169px;
+	}
+	.invoiceBoxTow {
+	    width: 167px;
+	}
+	.invoiceBoxThree {
+	    width: 175px;
+	}
+	.invoiceBoxFour {
+	    width: 210px;
+	}*/
+	.invoiceGenerstorBox .invoice-secondRow {
+	    padding-top: 0px;
+	}
+	.invoiceBoxSix {
+	    padding-left: 0;
+	    padding-bottom: 0px;
+	    flex-direction: row;
+	}
+	.retailorBox {
+	    padding: 0 18px 35px 0;
+	}
+	.recipPriceCol h2 {
+	    font-size: 30px;
+	    line-height: 42px;
+	}
+	.recipPriceRow {
+	    padding: 0px;
+	    flex-direction: row;
+	    gap: 20px;    
+	}
+	.recipPriceCol {
+	    padding:15px 10px 4px;
+	    margin-bottom: 16px;
+	}
+	.invoiceBox .dropdown-toggle::after {
+	    right: 15px;
+	}
+	.invoiceBoxFive {
+	    width: 190px;
+	}
+	.invoiceBox a {
+	    font-size: 18px;
+	    padding: 12px 15px 12px 15px;    
+	}
+	.generationInvoiceBtn a {
+	    padding: 12px 18px;
+	    font-size: 14px;
+	}
+	.generationInvoiceBtn {	
+	    padding-top: 28px;
+	}
+	.invoiceBox .listItem {
+	    height: 44px;
+	    font-size: 14px;
+	}
+	.ables-Dashboard .row .col-md-8 {
+	    flex: 0 0 100%;
+	    max-width: 100%;
+	}
+	.ables-Dashboard .row .col-md-4 {
+	    flex: 0 0 100%;
+	    max-width: 440px;
+	    margin: 0px auto;
+	    display: flex;
+	    flex-direction: row;
+	    flex-wrap: wrap;
+	    justify-content: center;
+	}
+	.ables-Dashboard .row {
+	    flex-direction: column;
+	}
+}
+@media (min-width: 1200px) and (max-width: 1439px) {
+    .ables-Dashboard {
+	    padding: 61px 15px 279px 21px;
+	}
+	.ables-Dashboard .col-md-8 {
+	    flex: 0 0 67.666667%;
+	    max-width: 67.666667%;
+	}
+    .headerTitle h1 {
+	    font-size: 35px;
+	    margin: 0px;
+	}
+    .invoiceBoxOne a span {
+        padding-right: 38px;
+    }
+    .invoiceBox {
+        padding-right: 12px;
+    }
+    .invoiceBox a {
+        font-size: 18px;
+        padding: 12px 15px 12px 15px;    
+    }
+    .invoiceBox span {
+        padding-right: 24px;
+    }
+    .retailorBox input {
+        width: 175px;
+        height: 43px;
+    }
+    .recipPriceCol {
+        padding: 9px 15px 4px;
+    }
+
+   .recipPriceCol span {
+	    font-size: 13px;
+	    line-height: 18px;
+	}
+    .recipPriceCol h2 {
+	    font-size: 48px;
+	    line-height: 81px;
+	}
+   .ables-Dashboard .col-md-4 {
+	    padding-left: 0px;
+	    padding-top: 0px;
+	    flex: 0 0 31.333333%;
+    	max-width: 30.333333%;    
+	}
+	.ables-Dashboard .row {
+	    justify-content: space-between;
+	}
+    .retailorBox {
+        padding-right: 12px;
+    }
+    .invoiceGenerstorBox .invoiceRow {
+	    padding: 69px 0px 0 0px;
+	}
+	.recipPriceRow {
+	    padding: 0 0px 53px 4px;
+	}
+	.vendorItems {
+	    padding: 0px 15px;
+	    width: auto;
+    	margin: 0px;    
+	}
+	.ables-Dashboard .col-md-6 {
+	    align-items: center;
+	}
+	.invoiceBoxSix {
+	    padding-left: 4px;
+	}
+}
+@media (min-width: 1440px) and (max-width: 1599px) {
+    .ables-Dashboard {
+	    padding: 61px 34px 279px;
+	}
+    .headerTitle h1 {
+        font-size: 35px;
+    }
+    .invoiceBoxOne a span {
+        padding-right: 38px;
+    }
+    .invoiceBox {
+        padding-right: 12px;
+    }
+    .invoiceBoxSix {
+	    padding-left: 10px;
+	}
+    .invoiceBox a {
+        font-size: 18px;
+    }
+    .invoiceBox span {
+        padding-right: 24px;
+    }
+    .retailorBox input {
+        width: 175px;
+        height: 43px;
+    }
+    .recipPriceCol {
+        padding: 9px 15px 4px;
+    }
+
+    .recipPriceCol span {
+        font-size: 13px;
+        line-height: 18px;
+    }
+    .recipPriceCol h2 {
+        font-size: 42px;
+        line-height: 52px;
+    }
+   .ables-Dashboard .col-md-4 {
+	    padding-left: 45px;
+	    padding-top: 21px;
+	}
+    .retailorBox {
+        padding-right: 12px;
+    }
+    .invoiceGenerstorBox .invoiceRow {
+	    padding: 69px 0px 0 0px;
+	}
+	.recipPriceRow {
+	    padding: 0 0px 53px 15px;
+	}
+	.vendorItems {
+	    padding: 0 37px 0 37px;
+	    width: auto;
+    	margin: 0px    
+	}
+}
+@media (min-width: 1600px) and (max-width: 1919px) {
+
+    .ables-Dashboard {
+	    padding: 46px 40px 100px;
+	}
+    .headerTitle h1 {
+	    font-size: 42px;
+	    padding-left: 0px;
+	}
+    .invoiceBoxOne a span {
+        padding-right: 38px;
+    }
+    .invoiceBox {
+        padding-right: 12px;
+    }
+    .invoiceBox a {
+	    font-size: 20px;
+	    padding: 12px 15px 12px 15px;
+	}
+	.invoiceBox .dropdown-toggle::after {
+		right: 15px;
+	}
+    .invoiceBox span {
+        padding-right: 24px;
+    }
+    .retailorBox input {
+        width: 175px;
+        height: 43px;
+    }
+    .recipPriceCol {
+	    padding: 12px 18px 4px;
+	}
+
+    .recipPriceCol span {
+        font-size: 15px;
+        line-height: 18px;
+    }
+    .recipPriceCol h2 {
+	    font-size: 48px;
+	    line-height: 62px;
+	}
+   .ables-Dashboard .col-md-4 {
+	    padding-left: 45px;
+	    padding-top: 21px;
+	}
+    .retailorBox {
+        padding-right: 12px;
+    }
+    .invoiceGenerstorBox .invoiceRow {
+	    padding: 69px 0px 0 0px;
+	}
+	.recipPriceRow {
+	    padding: 0 0px 53px 15px;
+	}
+	.vendorItems {
+	    padding: 0 30px 0 45px;
+	    width: auto;
+    	margin: 0px;    
+	}
+	/*p.total-amount {
+	    padding: 0 29px 0 24px !important;
+	}*/
+
+}
+@media (min-width: 768px) and (max-width: 991px) {
+	.invoiceBox a {
+	    font-size: 14px;
+	    padding-left: 10px;
+	}
+	.invoiceBox {
+	    max-width: 23%;
+	    width: 23% !important;
+	}
+	.invoiceGenerstorBox .invoiceRow {
+	    gap: 10px;
+	}
+	.invoiceBox .listItem label {
+	    font-size: 14px;
+	    margin: 0px !important;
+	}
+	.invoiceBox .dropdown-toggle::after {
+	    right: 10px;
+	}
+}
