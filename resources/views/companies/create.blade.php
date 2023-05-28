@@ -222,7 +222,6 @@
     </div>
     </div>
 </div>
-
 @endsection
 @section('scripts')
     @parent
@@ -254,17 +253,17 @@
         DataTableCall('.datatable-Branch', "{{ route('branches.index') }}", dtButtons, data)
     });
 
-    $(function (){
-        $('.submit').on('click', function(e){
-            e.preventDefault();
-            try {
-                let data = $('#form_branch').serialize();
-                AjaxCall(`{{route('branches.store')}}`, "POST",function (res) { AlertCall(res, $('.datatable-Branch').DataTable().ajax.reload());   $("#form_branch")[0].reset();    }, data);
-            }catch (e) {
-                console.log(e)
-            }
-        })
-    })
+    {{--$(function (){--}}
+    {{--    $('.submit').on('click', function(e){--}}
+    {{--        e.preventDefault();--}}
+    {{--        try {--}}
+    {{--            let data = $('#form_branch').serialize();--}}
+    {{--            AjaxCall(`{{route('branches.store')}}`, "POST",function (res) { AlertCall(res, $('.datatable-Branch').DataTable().ajax.reload());   $("#form_branch")[0].reset();    }, data);--}}
+    {{--        }catch (e) {--}}
+    {{--            console.log(e)--}}
+    {{--        }--}}
+    {{--    })--}}
+    {{--})--}}
 
     {{--$(function (){--}}
     {{--    $('.submit').on('click', function(e){--}}
