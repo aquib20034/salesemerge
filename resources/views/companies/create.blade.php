@@ -34,7 +34,7 @@
                         <div class="col-7 col-md-10">
                             <div class="tab-content" id="v-pills-tabContent">
                                 <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                                <!--begin::Form-->
+                                    <!--begin::Form-->
                                     {!! Form::model($aCountries, ['method' => 'PATCH','id'=>'CompaniesForm','enctype'=>'multipart/form-data','route' => ['companies.update',  Auth::user()->company_id]]) !!}
                                     {{  Form::hidden('created_by', Auth::user()->id ) }}
                                     {{  Form::hidden('company_id', Auth::user()->company_id, array('class' => 'company_id')) }}
@@ -109,18 +109,13 @@
                                     <!--end::Form-->
                                 </div>
 
-
-
                                 <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                                     <div class="card">
                                         <div class="card-header">
                                             <div class="d-flex align-items-center">
                                                 <h4 class="card-title">Manage @yield('title')</h4>
                                                 @can('company-create')
-                                                    {{--                            <a  href="{{ route('branches.create') }}" class="btn btn-primary btn-round ml-auto">--}}
-                                                    {{--                            <i class="fa fa-plus"></i> Add new</a>--}}
-
-                                                    <a  href="#" class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#exampleModalCenter">
+                                                    <a  href="#" class="btn btn-primary btn-xs ml-auto" data-toggle="modal" data-target="#exampleModalCenter">
                                                         <i class="fa fa-plus"></i>
                                                     </a>
                                                     <!-- Modal -->
