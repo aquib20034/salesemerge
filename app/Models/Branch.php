@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Branch extends Model
 {
+    use SoftDeletes;
+
     public $table = 'branches';
 
     protected $fillable = [
@@ -14,7 +17,9 @@ class Branch extends Model
         'mobile_no',
         'phone_no',
         'address',
-        'active'
-
+        'active',
+        'created_by',
+        'updated_by',
+        'deleted_at'
     ];
 }

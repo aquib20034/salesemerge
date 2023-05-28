@@ -33,7 +33,7 @@ class BranchController extends Controller
                 $viewGate = 'company-list';
                 $editGate = 'company-edit';
                 $deleteGate = 'company-delete';
-                $crudRoutePart = 'companies';
+                $crudRoutePart = 'branches';
 
                 return view('partials.datatableActions', compact(
                     'viewGate',
@@ -94,16 +94,17 @@ class BranchController extends Controller
     {
         $data = Branch::findOrFail($id);
         $this->validate($request,[
-            'name'          => 'required|min:3|unique:companies,name,'. $id
+            'name'          => 'required|min:3|unique:branches,name,'. $id
         ]);
+        $data->update($request->all());
         return redirect()
-            ->route('companies.index')
-            ->with('success','Company '.$request['name'] .' updated successfully.');
+            ->route('companies.create')
+            ->with('success','branches '.$request['name'] .' updated successfully.');
     }
 
     public function destroy(Branch $branch)
     {
-        abort_if(Gate::denies('company-delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+//        abort_if(Gate::denies('company-delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $branch->delete();
         return back();
     }

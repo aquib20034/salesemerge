@@ -14,7 +14,6 @@
             display:none;
         }
     </style>
-
     <div class="page-inner">
         <div class="page-header">
             <h4 class="page-title">@yield('title')</h4>
@@ -37,14 +36,14 @@
                         <div class="row">
                             <div class="col-5 col-md-2">
                                 <div class="nav flex-column nav-pills nav-secondary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                    <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Home</a>
-                                    <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Branches</a>
+                                    <a class="nav-link" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Home</a>
+                                    <a class="nav-link active" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Branches</a>
                                     <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">General Settings</a>
                                 </div>
                             </div>
                             <div class="col-7 col-md-10">
                                 <div class="tab-content" id="v-pills-tabContent">
-                                    <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                                    <div class="tab-pane fade " id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                                         <!--begin::Form-->
                                         {!! Form::model($aCountries, ['method' => 'PATCH','id'=>'CompaniesForm','enctype'=>'multipart/form-data','route' => ['companies.update',  Auth::user()->company_id]]) !!}
                                         {{  Form::hidden('created_by', Auth::user()->id ) }}
@@ -120,7 +119,7 @@
                                         <!--end::Form-->
                                     </div>
 
-                                    <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                                    <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                                         <div class="card">
                                             <div class="card-header">
                                                 <div class="d-flex align-items-center">
@@ -160,14 +159,24 @@
                                                                         <div class="row">
                                                                             <div class="col-lg-12 col-md-6 col-sm-12 col-xs-12">
                                                                                 <div class="form-group">
-                                                                                    {!! Html::decode(Form::label('contact_no','Contact No')) !!}
-                                                                                    {!! Form::text('contact_no', null, array('placeholder' => 'Enter contact no','class' => 'form-control')) !!}
-                                                                                    @if ($errors->has('contact_no'))
-                                                                                        {!! "<span class='span_danger'>". $errors->first('contact_no')."</span>"!!}
+                                                                                    {!! Html::decode(Form::label('mobile_no','Mobile No')) !!}
+                                                                                    {!! Form::text('mobile_no', null, array('placeholder' => 'Enter Mobile No','class' => 'form-control')) !!}
+                                                                                    @if ($errors->has('mobile_no'))
+                                                                                        {!! "<span class='span_danger'>". $errors->first('mobile_no')."</span>"!!}
                                                                                     @endif
                                                                                 </div>
                                                                             </div>
 
+                                                                        </div><div class="row">
+                                                                            <div class="col-lg-12 col-md-6 col-sm-12 col-xs-12">
+                                                                                <div class="form-group">
+                                                                                    {!! Html::decode(Form::label('phone_no','Phone No')) !!}
+                                                                                    {!! Form::text('phone_no', null, array('placeholder' => 'Enter Phone no','class' => 'form-control')) !!}
+                                                                                    @if ($errors->has('phone_no'))
+                                                                                        {!! "<span class='span_danger'>". $errors->first('phone_no')."</span>"!!}
+                                                                                    @endif
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
 
                                                                         <div class="row">
@@ -201,8 +210,11 @@
                                                     <table class="table table-borderless table-striped table-hover ajaxTable datatable datatable-Branch" style="width:98% !important;">
                                                         <thead>
                                                         <tr>
-                                                            <th ></th>
+{{--                                                            <th ></th>--}}
                                                             <th> Branch Name</th>
+                                                            <th> Mobile #</th>
+                                                            <th> Phone #</th>
+                                                            <th> Address </th>
                                                             <th >Action</th>
                                                         </tr>
                                                         </thead>
@@ -237,8 +249,11 @@
             @endcan
             dtButtons.push(deleteButton)
             let data = [
-                { data: 'placeholder', name: 'placeholder' },
+                // { data: 'placeholder', name: 'placeholder' },
                 { data: 'name', name: 'name' },
+                { data: 'mobile_no', name: 'mobile_no' },
+                { data: 'phone_no', name: 'phone_no' },
+                { data: 'address', name: 'address' },
                 { data: 'actions', name: '{{ trans('global.actions') }}' }
             ]
             DataTableCall('.datatable-Branch', "{{ route('branches.index') }}", dtButtons, data)
@@ -249,9 +264,9 @@
                 e.preventDefault();
                 try {
                     let data = $('#form_branch').serialize();
-                    AjaxCall(`{{route('branches.store')}}`, "POST", function (res) { 
+                    AjaxCall(`{{route('branches.store')}}`, "POST", function (res) {
                         AlertCall(res, $('.datatable-Branch').DataTable().ajax.reload());
-                        $("#form_branch")[0].reset();    
+                        $("#form_branch")[0].reset();
                     }, data);
                 }catch (e) {
                     console.log(e)

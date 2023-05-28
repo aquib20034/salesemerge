@@ -25,14 +25,8 @@
 
     function AlertCall(data, Promise = null)
     {
-        Swal.fire({
-            icon:  data.alert,
-            title: data.msg,
-            // color: '#716add',
-            background: '#ffffff',
-        }).then(() => {
-            Promise
-        })
+        toastr.success(data.msg);
+        Promise
     }
 
     function DeleteButtonCall(url)
