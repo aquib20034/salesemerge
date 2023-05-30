@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use DB;
 use Hash;
 use Auth;
+use Gate;
 use DataTables;
 use App\Models\User;
 use App\Models\Company;
@@ -12,6 +13,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\Response;
+
 
 class UserController extends Controller
 {

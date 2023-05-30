@@ -38,15 +38,16 @@ Route::group(['middleware' => ['auth']], function() {
     //cities
     Route::resource('cities', CityController::class);
     Route::delete('cities/destory', [CityController::class, 'destroy'])->name('cities.massDestroy');
-    // stocks
+	//units
+    Route::resource('units', UnitController::class);
+    Route::delete('units/destory', [UnitController::class, 'destroy'])->name('units.massDestroy');
+    
+	
+	// stocks
 //    Route::resource('stocks', [StockController::class]);
 
     Route::resource('purchases', PurchaseController::class);
 
-
-    Route::resource('/units', App\Http\Controllers\UnitController::class);
-	Route::get('/units_list', [App\Http\Controllers\UnitController::class, 'list']);
-	Route::delete('/units_delete', [App\Http\Controllers\UnitController::class, 'destroy']);
 
 	Route::resource('/permissions', App\Http\Controllers\PermissionController::class);
 	Route::get('/permissionList', [App\Http\Controllers\PermissionController::class, 'list']);

@@ -14,7 +14,11 @@ class UnitSeeder extends Seeder
             'Piece'
          ];
          foreach ($data as $val) {
-            Unit::create(['name' => $val]);
+            Unit::create([
+                            'name' => $val,
+                            'company_id' => 1,
+                            'branch_id' => 1,
+                        ]);
          }
      }
 }

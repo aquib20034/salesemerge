@@ -138,8 +138,7 @@
             </div>
         </div>
     </div>
-  
-
+    {!! JsValidator::formRequest('App\Http\Requests\UserRequest', '#form'); !!}
     <script>
         $(document).ready(function () {  
             $.ajaxSetup({

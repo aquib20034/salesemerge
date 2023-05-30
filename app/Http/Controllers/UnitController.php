@@ -1,14 +1,16 @@
 <?php
-
-
 namespace App\Http\Controllers;
-
-
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\Unit;
 use DB;
+use Auth;
+use Gate;
 use DataTables;
+use App\Models\Unit;
+use App\Models\Company;
+use App\Models\Branch;
+use Illuminate\Http\Request;
+use App\Http\Requests\UnitRequest;
+use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class UnitController extends Controller
 {
@@ -22,85 +24,96 @@ class UnitController extends Controller
 
     public function index(Request $request)
     {
-        return view('units.index');
-    }
+        if ($request->ajax()) {
+            $query =  Unit::orderBy('units.name','ASC')->get();
+            $table = DataTables::of($query);
 
-    public function list()
-    {
-        $data = Unit::orderBy('units.name','ASC')->get();
-        return 
-            DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action',function($data){
-                    return  $data->getAllButton("unit");
-                })
-                ->make(true);
+            $table->addColumn('srno', '');
+            $table->addColumn('placeholder', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
+
+            $table->editColumn('actions', function ($row) {
+                $viewGate       = 'unit-list';
+                $editGate       = 'unit-edit';
+                $deleteGate     = 'unit-delete';
+                $crudRoutePart  = 'units';
+
+                return view('partials.datatableActions', compact(
+                    'viewGate',
+                    'editGate',
+                    'deleteGate',
+                    'crudRoutePart',
+                    'row'
+                ));
+            });
+
+            $table->rawColumns(['actions', 'placeholder']);
+            return $table->make(true);
+        }
+        return view('units.index');
     }
 
     public function create()
     {
-        return view('units.create');
+        $company_id = Auth::user()->company_id;
+        $companies  = Company::where('id',$company_id)->pluck('name','id')->all();
+        $branches   = Branch::where('company_id',$company_id)->pluck('name','id')->all();
+        return view('units.create',compact('companies','branches'));
+
     }
 
-    public function store(Request $request)
+    public function store(UnitRequest $request)
     {
-        request()->validate([
-            'name' => 'required|min:3|unique:units,name',
-        ]);
-        
-        $data = unit::create($request->all());
+        // Retrieve the validated input data...
+        $validated      = $request->validated();
+        $data           = unit::create($request->all());
       
         return redirect()
                 ->route('units.index')
-                ->with('success','unit '.$request['name'] .' added successfully.');
+                ->with('success','Record added successfully.');
     }
 
      public function show($id)
     {
-        $data = DB::table('units')
-                    ->orderBy('units.created_at','DESC')
-                    ->select('units.*'
-                            )
-                    ->where('units.id', $id)
-                    ->first();
-
+        $data = Unit::findOrFail($id);
         return view('units.show',compact('data'));
     }
 
 
     public function edit($id)
     {
-        $data= DB::table('units')
-                    ->where('units.id', $id)
-                    ->first();
+        $data       = Unit::findOrFail($id);
+        $company_id = Auth::user()->company_id;
 
-        return view('units.edit',compact('data'));
+        $companies  = Company::where('id',$company_id)->pluck('name','id')->all();
+        $branches   = Branch::where('company_id',$company_id)->pluck('name','id')->all();
+        return view('units.edit',compact('data','companies','branches'));
     }
 
 
-    public function update(Request $request, $id)
+    public function update(UnitRequest $request, $id)
     {
-        $data = unit::findOrFail($id);
-        $this->validate($request,[
-            'name' => 'required|min:3|unique:units,name,'. $id,
-            
-        ]);
+        // validated input data...
+        $validated  = $request->validated();
+        $data       = Unit::findOrFail($id);
+        $input      = $request->all();
 
-        $upd = $data->update($request->all());
+        // if active is not set, make it in-active
+        if(!(isset($input['active']))){
+            $input['active'] = 0;
+        }
 
+        $upd        = $data->update($input);
         return redirect()
                 ->route('units.index')
-                ->with('success','unit '.$request['name'] .' updated successfully.');
+                ->with('success','Record updated successfully.');
     }
 
-    public function destroy(Request $request)
+    public function destroy(Unit $unit)
     {
-        $ids = $request->ids;
-        $data = DB::table("units")->whereIn('id',explode(",",$ids))->delete();
-        return response()->json(['success'=>"deleted successfully."]);
+        abort_if(Gate::denies('unit-delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $unit->delete();
+        return back();
     }
-
-
-
 
 }

@@ -51,8 +51,6 @@
                                             <th>Mobile#</th>
                                             <td>{{isset($data->mobile_no) ? $data->mobile_no : ""}}</td>
                                         </tr>
-                                       
-                                       
                                         <tr>
                                             <th>Status</th>
                                             <td>
