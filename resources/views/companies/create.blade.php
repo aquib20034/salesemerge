@@ -210,7 +210,6 @@
                                                     <table class="table table-borderless table-striped table-hover ajaxTable datatable datatable-Branch" style="width:98% !important;">
                                                         <thead>
                                                         <tr>
-{{--                                                            <th ></th>--}}
                                                             <th> Branch Name</th>
                                                             <th> Mobile #</th>
                                                             <th> Phone #</th>
@@ -219,7 +218,6 @@
                                                         </tr>
                                                         </thead>
                                                         <tbody>
-
                                                         </tbody>
                                                     </table>
                                                 </div>

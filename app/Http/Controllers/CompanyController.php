@@ -73,29 +73,17 @@ class CompanyController extends Controller
 
     public function create()
     {
-        $aCountries = Company::query()
-            ->select('companies.*')
-            ->where('companies.id', Auth::user()->company_id)
-            ->first();
-        return view('companies.create',compact('aCountries', 'aCountries'));
+        $amount_types = DB::table('amount_types')
+            ->select('amount_types.name','amount_types.id')
+            ->pluck('name','id')->all();
+
+        return view('companies.create');
     }
 
     public function store(CreateCompanyRequest $request)
     {
-//        request()->validate([
-//            'name'          => 'required|min:3|unique:companies,name',
-//            'code'          => 'required|min:3|unique:companies,code',
-//            'owner_name'    => 'required|min:3',
-//        ]);
-
-        $data                   = company::create($request->all());
-
-
-//        return redirect()
-//                ->route('companies.index')
-//                ->with('success','Company '.$request['name'] .' added successfully.');
+        $data = company::create($request->all());
         return response()->json(['status' => 200, 'data' => array(), 'msg' => "Company added Successfully", 'alert' => "success"]);
-
     }
 
     public function show($id)
@@ -108,11 +96,11 @@ class CompanyController extends Controller
         return view('companies.show',compact('data'));
     }
 
-    public function edit(Request $request)
+    public function edit($id)
     {
         $data = Company::query()
                     ->select('companies.*')
-                    ->where('companies.id', $request->id)
+                    ->where('companies.id', $id)
                     ->first();
 
         return view('companies.edit',compact('data'));
@@ -122,10 +110,10 @@ class CompanyController extends Controller
     {
         $data = company::findOrFail($id);
         $data->update($request->all());
+
         return redirect()
-            ->route('companies.create')
+            ->route('companies.edit', Auth::user()->company_id)
             ->with('success','Company '.$request['name'] .' edit successfully.');
-        return response()->json(['status' => 200, 'data' => array(), 'msg' => "Company updated Successfully", 'alert' => "success"]);
     }
 
     public function destroy(Company $company)
@@ -135,21 +123,10 @@ class CompanyController extends Controller
         return back();
     }
 
-//    public function destroy2(Request $request)
-//    {
-//        $ids = $request->ids;
-//        $data = Company::query()->whereIn('id',explode(",",$ids))->delete();
-//        return response()->json(['success'=>"deleted successfully."]);
-//    }
-
     public function massDestroy(MassDestroyMemberRequest $request)
     {
         Company::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
-
-
-
-
 }

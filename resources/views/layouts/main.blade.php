@@ -35,12 +35,12 @@
 	}
     .table>tbody>tr>td{ white-space: nowrap !important;   padding: 2px; !important;}
     .table td, .table th { padding: 0.25rem!important; }
-	
-		
+
+
 		.span_danger{
 			color:red;
 		}
-		
+
 		.add_image{
 			position: relative;
 		}
@@ -72,24 +72,24 @@
 
         /* Track */
         ::-webkit-scrollbar-track {
-            background: #f1f1f1; 
+            background: #f1f1f1;
             /* border-radius: 1em; */
-            
+
         }
-        
+
         /* Handle */
         ::-webkit-scrollbar-thumb {
-            background: #888; 
+            background: #888;
             border-radius: 1em;
         }
 
         /* Handle on hover */
         ::-webkit-scrollbar-thumb:hover {
-        background: #555; 
+        background: #555;
         /* border-radius: 1em; */
         }
 
-		 
+
 	</style>
 </head>
 <body>
@@ -261,7 +261,7 @@
                                     @endcan
                                         @can('company-list')
                                             <li class="nav-item @if('companies' == url_explode(request()->path()) ) {{'active'}} @endif">
-                                                <a  href="{{route('companies.create')}}">
+                                                    <a  href="{{route('companies.edit', Auth::user()->company_id)}}">
 {{--                                                    <i class="fas fa-users-cog"></i>--}}
                                                     <span class="sub-item">Companies</span>
                                                 </a>
@@ -432,6 +432,14 @@
 
 
 	</div>
+    <div id= "spinner-div" style="  width:100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: rgba(0,0,0,0.2);
+            z-index:9999;
+            display:none;"><i class="fas fa-spinner fa-spin" style="position:absolute; left:50%; top:50%;font-size:80px; color:#3a7ae0"></i> </div>
 
 <!--   Core JS Files   -->
 <script src="{{ asset('assets/js/core/jquery.3.2.1.min.js') }}"></script>

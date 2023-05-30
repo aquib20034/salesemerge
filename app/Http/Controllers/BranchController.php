@@ -33,12 +33,14 @@ class BranchController extends Controller
                 $viewGate = 'company-list';
                 $editGate = 'company-edit';
                 $deleteGate = 'company-delete';
+                $action = 'branch_update';
                 $crudRoutePart = 'branches';
 
                 return view('partials.datatableActions', compact(
                     'viewGate',
                     'editGate',
                     'deleteGate',
+                    'action',
                     'crudRoutePart',
                     'row'
                 ));
@@ -86,8 +88,9 @@ class BranchController extends Controller
             ->select('branches.*')
             ->where('branches.id', $id)
             ->first();
+        return response()->json(['status' => 200, 'data' => $data, 'msg' => "Branch added Successfully", 'alert' => "success"]);
 
-        return view('branches.edit',compact('data'));
+//        return view('branches.edit',compact('data'));
     }
 
     public function update(Request $request, $id)
@@ -97,9 +100,7 @@ class BranchController extends Controller
             'name'          => 'required|min:3|unique:branches,name,'. $id
         ]);
         $data->update($request->all());
-        return redirect()
-            ->route('companies.create')
-            ->with('success','branches '.$request['name'] .' updated successfully.');
+        return response()->json(['status' => 200, 'data' => $data, 'msg' => "Branch update Successfully", 'alert' => "success"]);
     }
 
     public function destroy(Branch $branch)
