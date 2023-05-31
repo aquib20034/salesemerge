@@ -39,6 +39,13 @@
 
                             </div>
                         </div>
+
+                        <div class="form-group row mb-0">
+                            <div class="col-12">
+                                <span class="msg">Don't have an account yet ?</span>
+					            <a href="{{ route('register') }}" id="show-signup" class="link">Register</a>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>

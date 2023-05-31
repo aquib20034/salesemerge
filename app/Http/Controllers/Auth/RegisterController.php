@@ -75,6 +75,7 @@ class RegisterController extends Controller
         // BEGIN :: Create new company
             $company            = Company::create([
                                         'name'          => isset($data['company_name']) ? $data['company_name'] : "", 
+                                        'code'          => isset($data['code']) ? $data['code'] : "", 
                                         'mobile_no'     => isset($data['mobile_no']) ? $data['mobile_no'] : "", 
                                         'owner_name'    => isset($data['name']) ? $data['name'] : "", 
                                     ]);
