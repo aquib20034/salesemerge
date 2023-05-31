@@ -291,6 +291,22 @@
                                                 </a>
                                             </li>
                                         @endcan
+
+                                        @can('unit-list')
+                                            <li class="nav-item @if('units' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                                <a  href="{{url('/units')}}">
+                                                    <span class="sub-item">Units</span>
+                                                </a>
+                                            </li>
+                                        @endcan
+
+                                        @can('item-list')
+                                            <li class="nav-item @if('items' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                                <a  href="{{url('/items')}}">
+                                                    <span class="sub-item">Items</span>
+                                                </a>
+                                            </li>
+                                        @endcan
                                 </ul>
                             </div>
                         </li>

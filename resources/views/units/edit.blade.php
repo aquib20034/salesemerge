@@ -26,31 +26,14 @@
                                     <div class="row">
                                         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                             <div class="form-group">
-                                                {!! Html::decode(Form::label('name','Unit Name <span class="text-danger">*</span>')) !!}
+                                                {!! Html::decode(Form::label('name','Unit name <span class="text-danger">*</span>')) !!}
                                                 {{ Form::text('name', null, array('placeholder' => 'Enter unit name','class' => 'form-control','autofocus' => ''  )) }}
                                                 @if ($errors->has('name'))  
                                                     {!! "<span class='span_danger'>". $errors->first('name')."</span>"!!} 
                                                 @endif
                                             </div>
                                         </div>
-                                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                            <div class="form-group">
-                                                {!! Html::decode(Form::label('company_id','Company <span class="text-danger">*</span>')) !!}
-                                                {!! Form::select('company_id', $companies,$data->company_id, array('class' => 'form-control')) !!}
-                                                @if ($errors->has('company_id'))  
-                                                    {!! "<span class='span_danger'>". $errors->first('company_id')."</span>"!!} 
-                                                @endif
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                            <div class="form-group">
-                                                {!! Html::decode(Form::label('branch_id','Branch <span class="text-danger">*</span>')) !!}
-                                                {!! Form::select('branch_id', $branches,$data->branch_id, array('class' => 'form-control')) !!}
-                                                @if ($errors->has('branch_id'))  
-                                                    {!! "<span class='span_danger'>". $errors->first('branch_id')."</span>"!!} 
-                                                @endif
-                                            </div>
-                                        </div>
+                                        
                                         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                             <div class="form-group">
                                                 {!! Html::decode(Form::label('active','Active<span class="text-danger">*</span>')) !!}<br>

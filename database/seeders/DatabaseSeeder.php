@@ -12,7 +12,12 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             UnitSeeder::class,
             StatusSeeder::class,
+            GroupSeeder::class,
+            CategorySeeder::class,
+            ManufacturerSeeder::class,
+            ItemSeeder::class,
             Customer_typeSeeder::class
+            
         ]);
     }
 }

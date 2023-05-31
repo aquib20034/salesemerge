@@ -41,6 +41,10 @@ Route::group(['middleware' => ['auth']], function() {
 	//units
     Route::resource('units', UnitController::class);
     Route::delete('units/destory', [UnitController::class, 'destroy'])->name('units.massDestroy');
+	//units
+    Route::resource('items', ItemController::class);
+    Route::delete('items/destory', [ItemController::class, 'destroy'])->name('items.massDestroy');
+    
     
 	
 	// stocks
@@ -58,10 +62,6 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::resource('/customer_types', App\Http\Controllers\Customer_typeController::class);
 	Route::get('/customer_typeList', [App\Http\Controllers\Customer_typeController::class, 'list']);
 	Route::delete('/customer_typeDelete', [App\Http\Controllers\Customer_typeController::class, 'destroy']);
-
-	Route::resource('/items', App\Http\Controllers\ItemController::class);
-	Route::get('/itemList', [App\Http\Controllers\ItemController::class, 'list']);
-	Route::delete('/itemDelete', [App\Http\Controllers\ItemController::class, 'destroy']);
 
 
 	Route::resource('/stocks', App\Http\Controllers\StockController::class);

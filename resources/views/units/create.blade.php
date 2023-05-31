@@ -22,37 +22,22 @@
                     <!--begin::Form-->
                         {!! Form::open(array('route' => 'units.store','method'=>'POST','id'=>'form','enctype'=>'multipart/form-data')) !!}
                             {{  Form::hidden('created_by', Auth::user()->id ) }}
+                            {{  Form::hidden('company_id', Auth::user()->company_id ) }}
+                            {{  Form::hidden('branch_id', Auth::user()->branch_id ) }}
                             {{  Form::hidden('action', "store" ) }}
 
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                         <div class="form-group">
-                                            {!! Html::decode(Form::label('name','Unit Name <span class="text-danger">*</span>')) !!}
+                                            {!! Html::decode(Form::label('name','Unit name <span class="text-danger">*</span>')) !!}
                                             {{ Form::text('name', null, array('placeholder' => 'Enter unit name','class' => 'form-control','autofocus' => ''  )) }}
                                             @if ($errors->has('name'))  
                                                 {!! "<span class='span_danger'>". $errors->first('name')."</span>"!!} 
                                             @endif
                                         </div>
                                     </div>
-                                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                        <div class="form-group">
-                                            {!! Html::decode(Form::label('company_id','Company <span class="text-danger">*</span>')) !!}
-                                            {!! Form::select('company_id', $companies,[], array('class' => 'form-control')) !!}
-                                            @if ($errors->has('company_id'))  
-                                                {!! "<span class='span_danger'>". $errors->first('company_id')."</span>"!!} 
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                        <div class="form-group">
-                                            {!! Html::decode(Form::label('branch_id','Branch <span class="text-danger">*</span>')) !!}
-                                            {!! Form::select('branch_id', $branches,[], array('class' => 'form-control')) !!}
-                                            @if ($errors->has('branch_id'))  
-                                                {!! "<span class='span_danger'>". $errors->first('branch_id')."</span>"!!} 
-                                            @endif
-                                        </div>
-                                    </div>
+                                    
                                 </div>
                             </div>
 
