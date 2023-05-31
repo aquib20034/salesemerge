@@ -28,8 +28,8 @@ class BranchRequest extends FormRequest
         }else{
             $con    =   [
                             'name'                  => 'required|min:2|string',
-                            'phone_no'              => 'sometimes|unique:branches,phone_no,NULL,id,deleted_at,NULL|digits:11|numeric',
-                            'mobile_no'             => 'sometimes|unique:branches,mobile_no,NULL,id,deleted_at,NULL|digits:11|numeric',
+                            'phone_no'              => 'sometimes|digits:11|numeric',
+                            'mobile_no'             => 'sometimes|digits:11|numeric',
                             'address'               => 'sometimes|min:3',
                             'company_id'            => 'required|numeric|min:1|exists:companies,id',
                             'created_by'            => 'required|numeric|min:1|exists:users,id',

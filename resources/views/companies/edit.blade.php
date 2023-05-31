@@ -177,7 +177,7 @@
 
                                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                                     <div class="form-group">
-                                                                        {!! Html::decode(Form::label('address','Address ')) !!}
+                                                                        {!! Html::decode(Form::label('address','Address')) !!}
                                                                         {!! Form::textarea('address', null, array('placeholder' => 'Address','rows'=>1, 'class' => 'form-control')) !!}
                                                                         @if ($errors->has('address'))
                                                                             {!! "<span class='span_danger'>". $errors->first('address')."</span>"!!}

@@ -30,8 +30,8 @@ class CompanyRequest extends FormRequest
                             'name'                  => 'required|min:2|string',
                             'code'                  => 'required|min:2|string',
                             'owner_name'            => 'required|min:2|regex:/^([^0-9]*)$/',
-                            'phone_no'              => 'sometimes|unique:branches,phone_no,NULL,id,deleted_at,NULL|digits:11|numeric',
-                            'mobile_no'             => 'sometimes|unique:branches,mobile_no,NULL,id,deleted_at,NULL|digits:11|numeric',
+                            'phone_no'              => 'sometimes|digits:11|numeric',
+                            'mobile_no'             => 'sometimes|digits:11|numeric',
                         ];
 
             return $con; 
