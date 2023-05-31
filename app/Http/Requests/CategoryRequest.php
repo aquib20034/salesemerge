@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UnitRequest extends FormRequest
+class CategoryRequest extends FormRequest
 {
     public function authorize()
     {
@@ -16,6 +16,7 @@ class UnitRequest extends FormRequest
         if((isset($this->action)) && (($this->action) == "store") ){
             $con    =   [
                             'name'                  => 'required|min:2|regex:/^([^0-9]*)$/',
+                            'parent_id'             => 'sometimes|numeric|min:0',
                             'company_id'            => 'required|numeric|min:1|exists:companies,id',
                             'branch_id'             => 'required|numeric|min:1|exists:branches,id',
                         ];
@@ -25,6 +26,8 @@ class UnitRequest extends FormRequest
         }else{
             $con    =   [
                             'name'                  => 'required|min:2|regex:/^([^0-9]*)$/',
+                            'parent_id'             => 'sometimes|numeric|min:0',
+
                             // 'company_id'            => 'required|numeric|min:1|exists:companies,id',
                             // 'branch_id'             => 'required|numeric|min:1|exists:branches,id',
                         ];

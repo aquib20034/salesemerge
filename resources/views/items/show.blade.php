@@ -3,7 +3,7 @@
 @section('content')
 @include( '../sweet_script')
     <div class="page-inner">
-        <h4 class="page-title">@yield('title') Profile</h4>
+        <h4 class="page-title">@yield('title') </h4>
         <div class="row">
             <div class="col-md-12">
                 <div class="card">

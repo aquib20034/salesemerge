@@ -25,8 +25,10 @@ class UnitController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query =  Unit::orderBy('units.name','ASC')->get();
-            $table = DataTables::of($query);
+
+            $company_id = Auth::user()->company_id;
+            $query      = Unit::where('company_id',$company_id)->orderBy('units.name','ASC')->get();
+            $table      = DataTables::of($query);
 
             $table->addColumn('srno', '');
             $table->addColumn('placeholder', '&nbsp;');
@@ -59,15 +61,14 @@ class UnitController extends Controller
         $companies  = Company::where('id',$company_id)->pluck('name','id')->all();
         $branches   = Branch::where('company_id',$company_id)->pluck('name','id')->all();
         return view('units.create',compact('companies','branches'));
-
     }
 
     public function store(UnitRequest $request)
     {
         // Retrieve the validated input data...
         $validated      = $request->validated();
-        $data           = unit::create($request->all());
-      
+        $data           = Unit::create($request->all());
+
         return redirect()
                 ->route('units.index')
                 ->with('success','Record added successfully.');
@@ -75,15 +76,16 @@ class UnitController extends Controller
 
      public function show($id)
     {
-        $data = Unit::findOrFail($id);
+        $company_id = Auth::user()->company_id;
+        $data       = Unit::where('company_id',$company_id)->findOrFail($id);
         return view('units.show',compact('data'));
     }
 
 
     public function edit($id)
     {
-        $data       = Unit::findOrFail($id);
         $company_id = Auth::user()->company_id;
+        $data       = Unit::where('company_id',$company_id)->findOrFail($id);
 
         $companies  = Company::where('id',$company_id)->pluck('name','id')->all();
         $branches   = Branch::where('company_id',$company_id)->pluck('name','id')->all();

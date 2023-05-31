@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title','Unit')
+@section('title','Category')
 @section('content')
 
     @include( '../sweet_script')
@@ -13,14 +13,14 @@
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <h4 class="card-title">Add @yield('title')</h4>
-                            <a  href="{{ route('units.index') }}" class="btn btn-primary btn-xs ml-auto">
+                            <a  href="{{ route('categories.index') }}" class="btn btn-primary btn-xs ml-auto">
                                 <i class="fas fa-arrow-left"></i>
                             </a>
                             
                         </div>
                     </div>
                     <!--begin::Form-->
-                        {!! Form::open(array('route' => 'units.store','method'=>'POST','id'=>'form','enctype'=>'multipart/form-data')) !!}
+                        {!! Form::open(array('route' => 'categories.store','method'=>'POST','id'=>'form','enctype'=>'multipart/form-data')) !!}
                             {{  Form::hidden('created_by', Auth::user()->id ) }}
                             {{  Form::hidden('company_id', Auth::user()->company_id ) }}
                             {{  Form::hidden('branch_id', Auth::user()->branch_id ) }}
@@ -30,14 +30,22 @@
                                 <div class="row">
                                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                         <div class="form-group">
-                                            {!! Html::decode(Form::label('name','Unit name <span class="text-danger">*</span>')) !!}
-                                            {{ Form::text('name', null, array('placeholder' => 'Enter unit name','class' => 'form-control','autofocus' => ''  )) }}
+                                            {!! Html::decode(Form::label('name','Category<span class="text-danger">*</span>')) !!}
+                                            {{ Form::text('name', null, array('placeholder' => 'Enter category','class' => 'form-control','autofocus' => ''  )) }}
                                             @if ($errors->has('name'))  
                                                 {!! "<span class='span_danger'>". $errors->first('name')."</span>"!!} 
                                             @endif
                                         </div>
                                     </div>
-                                    
+                                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                        <div class="form-group">
+                                            {!! Html::decode(Form::label('parent_id','Parent id<span class="text-danger">*</span>')) !!}
+                                            {!! Form::select('parent_id', [0=>"--No parent--"]+$categories,[], array('class' => 'form-control')) !!}
+                                            @if ($errors->has('parent_id'))  
+                                                {!! "<span class='span_danger'>". $errors->first('parent_id')."</span>"!!} 
+                                            @endif
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -55,5 +63,5 @@
             </div>
         </div>
     </div>
-    {!! JsValidator::formRequest('App\Http\Requests\UnitRequest', '#form'); !!}
+    {!! JsValidator::formRequest('App\Http\Requests\CategoryRequest', '#form'); !!}
 @endsection

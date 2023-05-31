@@ -22,10 +22,10 @@ class UserController extends Controller
     function __construct()
     {
         $this->folder_path = "uploads/users/";
-         $this->middleware('permission:user-list', ['only' => ['index','show']]);
-         $this->middleware('permission:user-create', ['only' => ['create','store']]);
-         $this->middleware('permission:user-edit|user-profileEdit', ['only' => ['edit','update']]);
-         $this->middleware('permission:user-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:user-list', ['only' => ['index','show']]);
+        $this->middleware('permission:user-create', ['only' => ['create','store']]);
+        $this->middleware('permission:user-edit|user-profileEdit', ['only' => ['edit','update']]);
+        $this->middleware('permission:user-delete', ['only' => ['destroy']]);
          // $this->middleware('permission:user-profileEdit', ['only' => ['profileedit','update']]);
     }
 

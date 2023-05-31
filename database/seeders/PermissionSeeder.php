@@ -9,6 +9,16 @@ class PermissionSeeder extends Seeder
     public function run()
     {
         $permissions = [
+
+            'company-list',
+            'company-create',
+            'company-edit',
+            'company-delete',
+
+            'branch-list',
+            'branch-create',
+            'branch-edit',
+            'branch-delete',
             
             'permission-list',
             'permission-create',
@@ -25,20 +35,35 @@ class PermissionSeeder extends Seeder
             'user-edit',
             'user-delete',
 
-            'amount_type-list',
-            'amount_type-create',
-            'amount_type-edit',
-            'amount_type-delete',
+            'unit-list',
+            'unit-create',
+            'unit-edit',
+            'unit-delete',
+
+            'item-list',
+            'item-create',
+            'item-edit',
+            'item-delete',
+
+            'manufacturer-list',
+            'manufacturer-create',
+            'manufacturer-edit',
+            'manufacturer-delete',
+
+            'category-list',
+            'category-create',
+            'category-edit',
+            'category-delete',
+
+            'group-list',
+            'group-create',
+            'group-edit',
+            'group-delete',
 
             'city-list',
             'city-create',
             'city-edit',
             'city-delete',
-
-            'company-list',
-            'company-create',
-            'company-edit',
-            'company-delete',
 
             'customer-list',
             'customer-create',
@@ -49,6 +74,11 @@ class PermissionSeeder extends Seeder
             'customer_type-create',
             'customer_type-edit',
             'customer_type-delete',
+
+            'amount_type-list',
+            'amount_type-create',
+            'amount_type-edit',
+            'amount_type-delete',
 
             'payment_method-list',
             'payment_method-create',
@@ -69,16 +99,6 @@ class PermissionSeeder extends Seeder
             'sell-create',
             'sell-edit',
             'sell-delete',
-
-            'unit-list',
-            'unit-create',
-            'unit-edit',
-            'unit-delete',
-
-            'item-list',
-            'item-create',
-            'item-edit',
-            'item-delete',
 
             'report-list',
             'report-create',

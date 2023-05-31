@@ -16,6 +16,7 @@ class CreateGroupsTable extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->nullable();
+            $table->unsignedInteger('parent_id')->nullable();
             $table->unsignedInteger('company_id')->nullable();
             $table->unsignedInteger('branch_id')->nullable();
             $table->boolean('active')->default(1)->nullable()->comment('null = inactive and 1 = active'); 

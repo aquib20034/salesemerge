@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UnitRequest extends FormRequest
+class ManufacturerRequest extends FormRequest
 {
     public function authorize()
     {

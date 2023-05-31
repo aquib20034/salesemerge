@@ -23,28 +23,46 @@ Route::group(['middleware' => ['auth']], function() {
     // users
     Route::resource('users', 'UserController');
     Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
+    
     // companies
     Route::delete('companies/destroy', 'CompanyController@massDestroy')->name('companies.massDestroy');
     Route::resource('companies', 'CompanyController');
+    
     // branches
     Route::delete('branches/destroy', 'BranchController@massDestroy')->name('branches.massDestroy');
     Route::resource('branches', 'BranchController');
+    
     //roles
     Route::resource('roles', 'RoleController');
     Route::delete('roles/destroy', ['RoleController', 'destroy'])->name('roles.massDestroy');
+    
     //customers
     Route::resource('customers', CustomerController::class);
     Route::delete('customers/destory', [CustomerController::class, 'destroy'])->name('customer.massDestroy');
+    
     //cities
     Route::resource('cities', CityController::class);
     Route::delete('cities/destory', [CityController::class, 'destroy'])->name('cities.massDestroy');
-	//units
+	
+    //units
     Route::resource('units', UnitController::class);
     Route::delete('units/destory', [UnitController::class, 'destroy'])->name('units.massDestroy');
-	//units
+	
+    //items
     Route::resource('items', ItemController::class);
     Route::delete('items/destory', [ItemController::class, 'destroy'])->name('items.massDestroy');
     
+    //categories
+    Route::resource('categories', CategoryController::class);
+    Route::delete('categories/destory', [CategoryController::class, 'destroy'])->name('categories.massDestroy');
+    
+    //groups
+    Route::resource('groups', GroupController::class);
+    Route::delete('groups/destory', [GroupController::class, 'destroy'])->name('groups.massDestroy');
+    
+    //manufacturers
+    Route::resource('manufacturers', ManufacturerController::class);
+    Route::delete('manufacturers/destory', [ManufacturerController::class, 'destroy'])->name('manufacturers.massDestroy');
     
 	
 	// stocks

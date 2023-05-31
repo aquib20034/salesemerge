@@ -29,8 +29,10 @@ class ItemController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query =  Item::orderBy('items.name','ASC')->get();
-            $table = DataTables::of($query);
+
+            $company_id     = Auth::user()->company_id;
+            $query          = Item::where('company_id',$company_id)->orderBy('items.name','ASC')->get();
+            $table          = DataTables::of($query);
 
             $table->addColumn('srno', '');
             $table->addColumn('placeholder', '&nbsp;');
@@ -119,17 +121,16 @@ class ItemController extends Controller
 
      public function show($id)
     {
-        $data = Item::findOrFail($id);
+        $company_id = Auth::user()->company_id;
+        $data       = Item::where('company_id',$company_id)->findOrFail($id);
         return view('items.show',compact('data'));
     }
 
 
     public function edit($id)
     {
-        $data       = Item::findOrFail($id);
-
         $company_id     = Auth::user()->company_id;
-
+        $data           = Item::where('company_id',$company_id)->findOrFail($id);
         $units          = Unit::where('company_id',$company_id)->pluck('name','id')->all();
         $groups         = Group::where('company_id',$company_id)->pluck('name','id')->all();
         $branches       = Branch::where('company_id',$company_id)->pluck('name','id')->all();
@@ -145,7 +146,8 @@ class ItemController extends Controller
     {
         // validated input data...
         $validated  = $request->validated();
-        $data       = Item::findOrFail($id);
+        $company_id = Auth::user()->company_id;
+        $data       = Item::where('company_id',$company_id)->findOrFail($id);
         $input      = $request->all();
 
         // if active is not set, make it in-active

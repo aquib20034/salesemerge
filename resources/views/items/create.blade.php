@@ -154,25 +154,4 @@
         </div>
     </div>
     {!! JsValidator::formRequest('App\Http\Requests\ItemRequest', '#form'); !!}
-
-    <script>
-        $(document).ready(function () {  
-
-
-            // getting and viewing profile_pic
-            $("#profile_pic").change(function() {
-                if (this.files && this.files[0]) {
-                    var reader = new FileReader();
-                    
-                    reader.onload = function(e) {
-                        $('#blah').attr('src', e.target.result);
-                    }
-                    reader.readAsDataURL(this.files[0]); // convert to base64 string
-                }
-            });
-
-        });
-    </script>
-    
-
 @endsection
