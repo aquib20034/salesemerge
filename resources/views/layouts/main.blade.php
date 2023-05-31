@@ -246,7 +246,6 @@
                                     @can('user-list')
                                         <li class="nav-item @if('users' == url_explode(request()->path()) ) {{'active'}} @endif">
                                             <a  href="{{url('/users')}}">
-{{--                                                <i class="fas fa-users"></i>--}}
                                                 <span class="sub-item">Users</span>
                                             </a>
                                         </li>
@@ -254,7 +253,6 @@
                                     @can('role-list')
                                         <li class="nav-item @if('roles' == url_explode(request()->path()) ) {{'active'}} @endif">
                                             <a  href="{{url('/roles')}}">
-{{--                                                <i class="fas fa-graduation-cap"></i>--}}
                                                 <span class="sub-item">Roles</span>
                                             </a>
                                         </li>
@@ -262,34 +260,24 @@
                                         @can('company-list')
                                             <li class="nav-item @if('companies' == url_explode(request()->path()) ) {{'active'}} @endif">
                                                     <a  href="{{route('companies.edit', Auth::user()->company_id)}}">
-{{--                                                    <i class="fas fa-users-cog"></i>--}}
                                                     <span class="sub-item">Companies</span>
                                                 </a>
                                             </li>
                                         @endcan
-{{--                                        @can('company-list')--}}
-{{--                                            <li class="nav-item @if('companies' == url_explode(request()->path()) ) {{'active'}} @endif">--}}
-{{--                                                <a  href="{{route('branches.index')}}">--}}
-{{--                                                    --}}{{--                                                    <i class="fas fa-users-cog"></i>--}}
-{{--                                                    <span class="sub-item">Branches</span>--}}
-{{--                                                </a>--}}
-{{--                                            </li>--}}
-{{--                                        @endcan--}}
+
                                         @can('customer-list')
-                                            <li class="nav-item @if('customers' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                            <!-- <li class="nav-item @if('customers' == url_explode(request()->path()) ) {{'active'}} @endif">
                                                 <a  href="{{url('/customers')}}">
-{{--                                                    <i class="fas fa-users-cog"></i>--}}
                                                     <span class="sub-item">Customers</span>
                                                 </a>
-                                            </li>
+                                            </li> -->
                                         @endcan
                                         @can('city-list')
-                                            <li class="nav-item @if('cities' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                            <!-- <li class="nav-item @if('cities' == url_explode(request()->path()) ) {{'active'}} @endif">
                                                 <a  href="{{url('/cities')}}">
-{{--                                                    <i class="fas fa-building"></i>--}}
                                                     <span class="sub-item">Cities</span>
                                                 </a>
-                                            </li>
+                                            </li> -->
                                         @endcan
 
                                         @can('unit-list')
@@ -304,6 +292,30 @@
                                             <li class="nav-item @if('items' == url_explode(request()->path()) ) {{'active'}} @endif">
                                                 <a  href="{{url('/items')}}">
                                                     <span class="sub-item">Items</span>
+                                                </a>
+                                            </li>
+                                        @endcan
+
+                                        @can('category-list')
+                                            <li class="nav-categorie @if('categories' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                                <a  href="{{url('/categories')}}">
+                                                    <span class="sub-item">Categories</span>
+                                                </a>
+                                            </li>
+                                        @endcan
+
+                                        @can('group-list')
+                                            <li class="nav-categorie @if('groups' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                                <a  href="{{url('/groups')}}">
+                                                    <span class="sub-item">Groups</span>
+                                                </a>
+                                            </li>
+                                        @endcan
+
+                                        @can('manufacturer-list')
+                                            <li class="nav-categorie @if('manufacturers' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                                <a  href="{{url('/manufacturers')}}">
+                                                    <span class="sub-item">Manufacturers</span>
                                                 </a>
                                             </li>
                                         @endcan

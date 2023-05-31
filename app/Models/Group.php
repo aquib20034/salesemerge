@@ -8,14 +8,41 @@ class Group extends Model
 {
     protected $fillable = [
         'name',
+        'parent_id',
         'company_id',
         'branch_id',
         'active'
     ];
 
+    public function parentGroups()
+    {
+        return $this->belongsTo(Group::class, 'parent_id');
+    }
+
+    public function getAllParentGroups()
+    {
+        $group = $this;
+        $parentGroups = collect();
+
+        while ($group->parentGroups) {
+            $parentGroups->push($group->parentGroups);
+            $group = $group->parentGroups;
+        }
+
+        $formattedGroups = $parentGroups->pluck('name')->implode('  >  ');
+        // $formattedGroups = $parentGroups->reverse()->pluck('name')->implode(' > ');
+
+        return $formattedGroups;
+    }
+
     public function getNameAttribute($value)
     {
         return ucwords($value);
+    }
+    
+    public function parent() // get parent group
+    {
+        return $this->belongsTo(Group::class, 'parent_id', 'id');
     }
 
     public function company()
