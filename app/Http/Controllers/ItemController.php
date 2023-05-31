@@ -165,7 +165,7 @@ class ItemController extends Controller
     {
         abort_if(Gate::denies('item-delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $item->delete();
-        return back();
+        return back()->with('success','Record deleted successfully.');
     }
 
 }

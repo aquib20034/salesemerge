@@ -115,7 +115,7 @@ class UnitController extends Controller
     {
         abort_if(Gate::denies('unit-delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $unit->delete();
-        return back();
+        return back()->with('success','Record deleted successfully.');
     }
 
 }

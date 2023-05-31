@@ -82,8 +82,8 @@
                                         <div class="row">
                                             <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
                                                 <div class="form-group">
-                                                    {!! Html::decode(Form::label('mobile_no','Mobile No')) !!}
-                                                    {!! Form::text('mobile_no', null, array('placeholder' => 'Enter mobile_no','class' => 'form-control')) !!}
+                                                    {!! Html::decode(Form::label('mobile_no','Mobile#')) !!}
+                                                    {!! Form::text('mobile_no', null, array('placeholder' => 'Enter mobile#','class' => 'form-control')) !!}
                                                     @if ($errors->has('mobile_no'))
                                                         {!! "<span class='span_danger'>". $errors->first('mobile_no')."</span>"!!}
                                                     @endif
@@ -91,8 +91,8 @@
                                             </div>
                                             <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
                                                 <div class="form-group">
-                                                    {!! Html::decode(Form::label('phone_no','Phone No')) !!}
-                                                    {!! Form::number('phone_no', null, array('placeholder' => 'Enter Phone No','class' => 'form-control')) !!}
+                                                    {!! Html::decode(Form::label('phone_no','Phone#')) !!}
+                                                    {!! Form::number('phone_no', null, array('placeholder' => 'Enter phone#','class' => 'form-control')) !!}
                                                     @if ($errors->has('phone_no'))
                                                         {!! "<span class='span_danger'>". $errors->first('phone_no')."</span>"!!}
                                                     @endif
@@ -124,7 +124,7 @@
                                             <div class="card-header">
                                                 <div class="d-flex align-items-center">
                                                     <h4 class="card-title">Manage @yield('title')</h4>
-                                                    @can('company-create')
+                                                    @can('branch-create')
                                                         <a  href="#" class="btn btn-primary btn-xs ml-auto" data-toggle="modal" data-target="#exampleModalCenter">
                                                             <i class="fa fa-plus"></i>
                                                         </a>
@@ -142,12 +142,12 @@
                                                                         <!--begin::Form-->
                                                                         {!! Form::open(array('route' => 'branches.store','method'=>'POST','id'=>'form_branch','enctype'=>'multipart/form-data')) !!}
                                                                         {{  Form::hidden('created_by', Auth::user()->id ) }}
-                                                                        {{  Form::hidden('company_id', 1 ) }}
+                                                                        {{  Form::hidden('company_id', Auth::user()->company_id ) }}
 
                                                                         <div class=" row">
                                                                             <div class="col-lg-12 col-md-6 col-sm-12 col-xs-12">
                                                                                 <div class="form-group">
-                                                                                    {!! Html::decode(Form::label('name','Branch Name <span class="text-danger">*</span>')) !!}
+                                                                                    {!! Html::decode(Form::label('name','Branch name <span class="text-danger">*</span>')) !!}
                                                                                     {{ Form::text('name', null, array('placeholder' => 'Enter full branch name','class' => 'form-control','autofocus' => ''  )) }}
                                                                                     @if ($errors->has('name'))
                                                                                         {!! "<span class='span_danger'>". $errors->first('name')."</span>"!!}
@@ -159,8 +159,8 @@
                                                                         <div class="row">
                                                                             <div class="col-lg-12 col-md-6 col-sm-12 col-xs-12">
                                                                                 <div class="form-group">
-                                                                                    {!! Html::decode(Form::label('mobile_no','Mobile No')) !!}
-                                                                                    {!! Form::text('mobile_no', null, array('placeholder' => 'Enter Mobile No','class' => 'form-control')) !!}
+                                                                                    {!! Html::decode(Form::label('mobile_no','Mobile#')) !!}
+                                                                                    {!! Form::text('mobile_no', null, array('placeholder' => 'Enter mobile#','class' => 'form-control')) !!}
                                                                                     @if ($errors->has('mobile_no'))
                                                                                         {!! "<span class='span_danger'>". $errors->first('mobile_no')."</span>"!!}
                                                                                     @endif
@@ -170,8 +170,8 @@
                                                                         </div><div class="row">
                                                                             <div class="col-lg-12 col-md-6 col-sm-12 col-xs-12">
                                                                                 <div class="form-group">
-                                                                                    {!! Html::decode(Form::label('phone_no','Phone No')) !!}
-                                                                                    {!! Form::text('phone_no', null, array('placeholder' => 'Enter Phone no','class' => 'form-control')) !!}
+                                                                                    {!! Html::decode(Form::label('phone_no','Phone#')) !!}
+                                                                                    {!! Form::text('phone_no', null, array('placeholder' => 'Enter phone#','class' => 'form-control')) !!}
                                                                                     @if ($errors->has('phone_no'))
                                                                                         {!! "<span class='span_danger'>". $errors->first('phone_no')."</span>"!!}
                                                                                     @endif
@@ -180,10 +180,9 @@
                                                                         </div>
 
                                                                         <div class="row">
-
                                                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                                                 <div class="form-group">
-                                                                                    {!! Html::decode(Form::label('address','Address ')) !!}
+                                                                                    {!! Html::decode(Form::label('address','Address')) !!}
                                                                                     {!! Form::textarea('address', null, array('placeholder' => 'Address','rows'=>1, 'class' => 'form-control')) !!}
                                                                                     @if ($errors->has('address'))
                                                                                         {!! "<span class='span_danger'>". $errors->first('address')."</span>"!!}
@@ -191,7 +190,6 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -209,13 +207,13 @@
                                                 <div class="card-body">
                                                     <table class="table table-borderless table-striped table-hover ajaxTable datatable datatable-Branch" style="width:98% !important;">
                                                         <thead>
-                                                        <tr>
-                                                            <th> Branch Name</th>
-                                                            <th> Mobile #</th>
-                                                            <th> Phone #</th>
-                                                            <th> Address </th>
-                                                            <th >Action</th>
-                                                        </tr>
+                                                            <tr>
+                                                                <th> Branch Name</th>
+                                                                <th> Mobile #</th>
+                                                                <th> Phone #</th>
+                                                                <th> Address </th>
+                                                                <th >Action</th>
+                                                            </tr>
                                                         </thead>
                                                         <tbody>
                                                         </tbody>
@@ -226,7 +224,7 @@
                                     </div>
 
                                     <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                                    <h3>General Setting </h3>
+                                        <h3>General Setting </h3>
                                     </div>
                                 </div>
                             </div>
@@ -237,7 +235,9 @@
         </div>
         </div>
     </div>
-    {!! JsValidator::formRequest('App\Http\Requests\CreateCompanyRequest', '#CompaniesForm'); !!}
+    {!! JsValidator::formRequest('App\Http\Requests\CompanyRequest', '#CompaniesForm'); !!}
+    {!! JsValidator::formRequest('App\Http\Requests\BranchRequest', '#form_branch'); !!}
+
     {{--    TODO Ajax requst creating a problem after using Request validation. multi time ajax request hiting continously--}}
     <script>
         $(function () {

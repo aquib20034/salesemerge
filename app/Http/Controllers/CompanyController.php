@@ -1,18 +1,16 @@
 <?php
-
-
 namespace App\Http\Controllers;
-use App\Http\Requests\CreateCompanyRequest;
+use DB;
+use Auth;
+use Gate;
+use App\Models\Branch;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Branch;
+use App\Http\Requests\CompanyRequest;
 use App\Models\Company_has_transaction;
-use Gate;
-use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
-use DB;
-use Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class CompanyController extends Controller
@@ -28,20 +26,21 @@ class CompanyController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = Company::query()
-                ->orderBy('companies.created_at','DESC')
-                ->select('companies.*')
-                ->get();
-            $table = Datatables::of($query);
+            $company_id = Auth::user()->company_id;
+            $query      = Company::where('id',$company_id) // get logged in user company only.
+                            ->orderBy('companies.created_at','DESC')
+                            ->get();
+
+            $table      = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');
             $table->addColumn('actions', '&nbsp;');
 
             $table->editColumn('actions', function ($row) {
-                $viewGate = 'company-list';
-                $editGate = 'company-edit';
-                $deleteGate = 'company-delete';
-                $crudRoutePart = 'companies';
+                $viewGate       = 'company-list';
+                $editGate       = 'company-edit';
+                $deleteGate     = 'company-delete';
+                $crudRoutePart  = 'companies';
 
                 return view('partials.datatableActions', compact(
                     'viewGate',
@@ -51,21 +50,8 @@ class CompanyController extends Controller
                     'row'
                 ));
             });
-            //    $table->editColumn('sno', function ($row) {
-            //        return $row->id ? $row->id : 0 ;
-            //    });
-
-            //    If any modififcation require before present in the grid, use editColumn
-            //    $table->editColumn('owner_name', function ($row) {
-            //        return $row->owner_name ? $row->owner_name : '';
-            //    });
-
-            //    $table->editColumn('contact_no', function ($row) {
-            //        return $row->contact_no ? $row->contact_no : '';
-            //    });
 
             $table->rawColumns(['actions', 'placeholder']);
-
             return $table->make(true);
         }
         return view('companies.index');
@@ -73,54 +59,48 @@ class CompanyController extends Controller
 
     public function create()
     {
-        $amount_types = DB::table('amount_types')
-            ->select('amount_types.name','amount_types.id')
-            ->pluck('name','id')->all();
-
+        return back()->with('permission','Invalid route');
         return view('companies.create');
     }
 
-    public function store(CreateCompanyRequest $request)
+    public function store(CompanyRequest $request)
     {
-        $data = company::create($request->all());
-        return response()->json(['status' => 200, 'data' => array(), 'msg' => "Company added Successfully", 'alert' => "success"]);
+        return back()->with('permission','Invalid route');
+        $data       = company::create($request->all());
+        return redirect()
+                    ->route('companies.edit', Auth::user()->company_id)
+                    ->with('success','Record added successfully.');
     }
 
     public function show($id)
     {
-        $data = Company::query()
-                    ->select('companies.*')
-                    ->where('companies.id', $id)
-                    ->first();
-
+        return back()->with('permission','Invalid route');
+        $company_id     = Auth::user()->company_id;
+        $data           = Company::where('id',$company_id)->findOrFail($id);
         return view('companies.show',compact('data'));
     }
 
     public function edit($id)
     {
-        $data = Company::query()
-                    ->select('companies.*')
-                    ->where('companies.id', $id)
-                    ->first();
-
+        $company_id     = Auth::user()->company_id;
+        $data           = Company::where('id',$company_id)->findOrFail($id); // no one can edit another company
         return view('companies.edit',compact('data'));
     }
 
-    public function update(CreateCompanyRequest $request, $id)
+    public function update(CompanyRequest $request, $id)
     {
-        $data = company::findOrFail($id);
-        $data->update($request->all());
-
+        $data           = Company::findOrFail($id);
+                          $data->update($request->all());
         return redirect()
-            ->route('companies.edit', Auth::user()->company_id)
-            ->with('success','Company '.$request['name'] .' edit successfully.');
+                    ->route('companies.edit', Auth::user()->company_id)
+                    ->with('success','Record updated successfully.');
     }
 
     public function destroy(Company $company)
     {
         abort_if(Gate::denies('company-delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $company->delete();
-        return back();
+        return back()->with('success','Record deleted successfully.');
     }
 
     public function massDestroy(MassDestroyMemberRequest $request)
