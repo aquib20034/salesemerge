@@ -381,7 +381,7 @@
     </div>
     </div>
     {!! JsValidator::formRequest('App\Http\Requests\CompanyRequest', '#CompaniesForm'); !!}
-    {!! JsValidator::formRequest('App\Http\Requests\CompanyRequest', '#form_branch'); !!}
+    {!! JsValidator::formRequest('App\Http\Requests\BranchRequest', '#form_branch'); !!}
 
     <script>
         $(function () {

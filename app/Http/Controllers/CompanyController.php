@@ -25,6 +25,7 @@ class CompanyController extends Controller
 
     public function index(Request $request)
     {
+        return back()->with('permission','Invalid route');
         if ($request->ajax()) {
             $company_id = Auth::user()->company_id;
             $query      = Company::where('id',$company_id) // get logged in user company only.
