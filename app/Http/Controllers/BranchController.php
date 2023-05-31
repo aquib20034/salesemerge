@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Branch;
 use Illuminate\Http\Request;
+use App\Http\Requests\BranchRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -58,17 +59,13 @@ class BranchController extends Controller
         return view('branches.create');
     }
 
-    public function store(Request $request)
+    public function store(BranchRequest $request)
     {
-        request()->validate([
-            'name'          => 'required|min:3|unique:companies,name',
-        ]);
+        $validated  = $request->validated();
+        $data       = Branch::create($request->all());
 
-        $data                   = Branch::create($request->all());
-//        return redirect()
-//                ->route('companies.index')
-//                ->with('success','Company '.$request['name'] .' added successfully.');
-        return response()->json(['status' => 200, 'data' => array(), 'msg' => "Branch added Successfully", 'alert' => "success"]);
+        return response()->json(['status' => 200,'success'=>'Branch added successfully.']);
+
 
     }
 
@@ -93,14 +90,15 @@ class BranchController extends Controller
 //        return view('branches.edit',compact('data'));
     }
 
-    public function update(Request $request, $id)
+    public function update(BranchRequest $request, $id)
     {
-        $data = Branch::findOrFail($id);
-        $this->validate($request,[
-            'name'          => 'required|min:3|unique:branches,name,'. $id
-        ]);
-        $data->update($request->all());
-        return response()->json(['status' => 200, 'data' => $data, 'msg' => "Branch update Successfully", 'alert' => "success"]);
+        $data       = Branch::findOrFail($id);
+        $validated  = $request->validated();
+                      $data->update($request->all());
+        return response()->json(['status' => 200,'success'=>'Branch updated successfully.']);
+
+
+        // return response()->json(['status' => 200, 'data' => $data, 'msg' => "Branch update Successfully", 'alert' => "success"]);
     }
 
     public function destroy(Branch $branch)

@@ -134,8 +134,10 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             <!--begin::Form-->
-                                                            {!! Form::open(array('route' => 'branches.store','method'=>'POST','id'=>'form_branch','enctype'=>'multipart/form-data')) !!}
+                                                            {!! Form::open(array('route' => 'branches.store','method'=>'POST','id'=>'form_branch','class'=>'formBranch','enctype'=>'multipart/form-data')) !!}
+
                                                             {{  Form::hidden('created_by', Auth::user()->id ) }}
+                                                            {{  Form::hidden('action', "store" ) }}
                                                             {{  Form::hidden('company_id', Auth::user()->company_id ) }}
 
                                                             <div class=" row">
@@ -178,7 +180,7 @@
                                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                                     <div class="form-group">
                                                                         {!! Html::decode(Form::label('address','Address')) !!}
-                                                                        {!! Form::textarea('address', null, array('placeholder' => 'Address','rows'=>1, 'class' => 'form-control')) !!}
+                                                                        {!! Form::textarea('address', null, array('id'=>'address','placeholder' => 'Address','rows'=>1, 'class' => 'form-control')) !!}
                                                                         @if ($errors->has('address'))
                                                                             {!! "<span class='span_danger'>". $errors->first('address')."</span>"!!}
                                                                         @endif
@@ -188,8 +190,8 @@
 
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary btn-xs" data-dismiss="modal">Close</button>
-                                                            <button type="button" class="btn btn-primary btn-xs submit_branches" data-dismiss="modal">Save changes</button>
+                                                            <button type="button" class="btn btn-secondary btn-xs" class="close_form_branch" data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary btn-xs mr-2">Save</button>
                                                         </div>
                                                         {!! Form::close() !!}
                                                         <!--end::Form-->
@@ -353,6 +355,7 @@
                                             </div>
                                         @endcan
                                         <!--end::Branch View Form-->
+
                                         <table class="table table-borderless table-striped table-hover ajaxTable datatable datatable-Branch" style="width:98% !important;">
                                             <thead>
                                             <tr>
@@ -380,7 +383,7 @@
         </div>
     </div>
     </div>
-    {!! JsValidator::formRequest('App\Http\Requests\CompanyRequest', '#CompaniesForm'); !!}
+    <!-- {!! JsValidator::formRequest('App\Http\Requests\CompanyRequest', '#CompaniesForm'); !!} -->
     {!! JsValidator::formRequest('App\Http\Requests\BranchRequest', '#form_branch'); !!}
 
     <script>
@@ -401,20 +404,69 @@
             DataTableCall('.datatable-Branch', "{{ route('branches.index') }}", dtButtons, data)
         });
 
-        $(function (){
-            $('.submit_branches').on('click', function(e){
-                e.preventDefault();
-                try {
-                    let data = $('#form_branch').serialize();
-                    AjaxCall(`{{route('branches.store')}}`, "POST", function (res) {
-                        AlertCall(res, $('.datatable-Branch').DataTable().ajax.reload());
-                        $("#form_branch")[0].reset();
-                    }, data);
-                }catch (e) {
-                    console.log(e)
+        $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-            })
-        })
+            });
+
+         
+            $('#form_branch').submit(function(e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('branches.store') }}",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    beforeSend:function(){
+                        $('#spinner-div').show();
+                    },
+                    success: (data) => {
+                        if(data.success){
+                            this.reset();
+                            toastr.success(data.success);
+                            $('#spinner-div').hide();
+                            $('#BranchAdd').modal('hide');
+                            $('.datatable-Branch').DataTable().ajax.reload()
+                        }
+                    },
+                    error: function(data) {
+                        var txt         = '';
+                        console.log(data.responseJSON.errors[0])
+                        for (var key in data.responseJSON.errors) {
+                            txt += data.responseJSON.errors[key];
+                            txt +='<br>';
+                        }
+                        $('#spinner-div').hide();
+                        toastr.error(txt);
+                    }
+                });
+            });
+
+
+
+        // $(function (){
+        //     $('.submit_branches').on('click', function(e){
+        //         e.preventDefault();
+        //         try {
+        //             let data = $('#form_branch').serialize();
+
+        //             console.log("test");
+
+                    
+
+        //             // AjaxCall(`{{route('branches.store')}}`, "POST", function (res) {
+        //             //     AlertCall(res, $('.datatable-Branch').DataTable().ajax.reload());
+        //             //     $("#form_branch")[0].reset();
+        //             // }, data);
+        //         }catch (e) {
+        //             console.log(e)
+        //         }
+        //     })
+        // })
 
 
         const FormFillUp = function (data) {
