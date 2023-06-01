@@ -49,6 +49,18 @@
                                                 @endif
                                             </div>
                                         </div>
+
+                                        <div class="col-lg-2" >
+                                        {!! Html::decode(Form::label('profile_pic','Profile picture')) !!}
+
+                                            <div class="avatar avatar-xl add_image" id="kt_profile_avatar">
+                                                <img id="blah" src="{{ $data->profile_pic }}" class="avatar-img rounded-circle" alt="your image"/>
+                                                <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change Image">
+                                                    <i class="fa fa-pen icon-sm text-muted"></i>
+                                                    {!! Form::file('profile_pic', array('id'=>'profile_pic','accept'=>'.png, .jpg, .jpeg')) !!}
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             <div class="card-footer">
@@ -66,4 +78,26 @@
         </div>
     </div>
     {!! JsValidator::formRequest('App\Http\Requests\ProfileRequest', '#form'); !!}
+
+    <script>
+        $(document).ready(function () {  
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            // getting and viewing profile_pic
+            $("#profile_pic").change(function() {
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#blah').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(this.files[0]); // convert to base64 string
+                }
+            });
+        });
+    </script>   
+
 @endsection

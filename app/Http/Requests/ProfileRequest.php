@@ -19,13 +19,29 @@ class ProfileRequest extends FormRequest
                             'password'          => 'required|min:8|confirmed',
                         ];
 
+
+           
+            if(!empty($this->profile_pic)){
+                $con['profile_pic']     = 'required|image|mimes:jpeg,png,jpg,gif|max:2048';
+            }
+
             return $con; 
 
         }else{
-            $con    =   [
-                            'old_password'      => 'required|min:8',
-                            'password'          => 'required|min:8|confirmed',
-                        ];
+            $con = [];
+            if((!empty($this->old_password)) || (!empty($this->password))){
+                $con['old_password']     = 'required|min:8';
+                $con['password']        = 'required|min:8|confirmed';
+            }
+
+            // $con    =   [
+            //                 'old_password'      => 'required|min:8',
+            //                 'password'          => 'required|min:8|confirmed',
+            //             ];
+
+            if(!empty($this->profile_pic)){
+                $con['profile_pic']     = 'required|image|mimes:jpeg,png,jpg,gif|max:2048';
+            }
 
             return $con; 
         }

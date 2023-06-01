@@ -144,25 +144,17 @@
 						<li class="nav-item dropdown hidden-caret">
 							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
 								<div class="avatar-sm">
-									@if(Auth::user()->image)
-										<img src="{{ asset('/uploads/users/'.Auth::user()->image) }}" alt="image profile" class="avatar-img rounded" style="width: 65%;height: 60%;">
-									@else
-										<img src="{{ asset('/uploads/users/no_image.png') }}" alt="image profile" class="avatar-img rounded">
-									@endif
+                                    <img src="{{ Auth::user()->profile_pic }}" alt="image profile" class="avatar-img rounded" style="width: 100%;height: 100%;">
+
 								</div>
 							</a>
 							<ul class="dropdown-menu dropdown-user animated fadeIn">
 								<li>
 									<div class="user-box">
-										@if(Auth::user()->image)
-											<img src="{{ asset('/uploads/users/'.Auth::user()->image) }}" alt="image profile" class="avatar-img rounded">
-										@else
-											<img src="{{ asset('/uploads/users/no_image.png') }}" alt="image profile" class="avatar-img rounded">
-										@endif
-
+                                        <img src="{{ Auth::user()->profile_pic }}" alt="image profile" class="avatar-img rounded" style="width: 40%;height: 100%;">
 										<div class="u-text">
-											<h4>{{Auth::user()->name}}</h4>
-											<p class="text-muted">{{Auth::user()->email}}</p><a href="#" class="btn btn-rounded btn-danger btn-sm">View Profile</a>
+											<h4>{{Auth::user()->name}} ttt</h4>
+											<p class="text-muted">{{Auth::user()->email}}</p><a href="{{route('profiles.edit', Auth::user()->id)}}" class="btn btn-rounded btn-danger btn-sm">View Profile</a>
 										</div>
 									</div>
 								</li>
@@ -211,11 +203,7 @@
 				<div class="sidebar-content">
 					<div class="user">
 						<div class="avatar-sm float-left mr-2">
-							@if(Auth::user()->image)
-								<img src="{{ asset('/uploads/users/'.Auth::user()->image) }}" class="avatar-img rounded-circle">
-							@else
-								<img src="{{ asset('/uploads/users/no_image.png') }}" class="avatar-img rounded-circle">
-							@endif
+                            <img src="{{ Auth::user()->profile_pic }}" alt="image profile" class="avatar-img rounded" style="width: 100%;height: 100%;">
 						</div>
 						<div class="info">
 							<a data-toggle="collapse" href="#collapseExample" aria-expanded="true">

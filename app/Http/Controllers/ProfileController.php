@@ -154,13 +154,24 @@ class ProfileController extends Controller
         $data       = User::where('company_id',$company_id)->findOrFail($id);
         $input      = $request->all();
         
-        if(!(Hash::check($request->old_password, $data->password))) {
-            return back()->withErrors(['old_password' => 'Old password is incorrect'])->with('permission','Old password is incorrect.');
+
+        if(!empty($input['old_password'])){
+            if(!(Hash::check($request->old_password, $data->password))) {
+                return back()->withErrors(['old_password' => 'Old password is incorrect'])->with('permission','Old password is incorrect.');
+            }
         }
 
         // password 
         if(!empty($input['password'])){
             $input['password'] = Hash::make($input['password']);
+        }else{
+            $input['password'] = $data['password'];
+        }
+
+        // image
+        if(!empty($input['profile_pic'])){
+            $this->deleteExistingImage((basename($data['profile_pic'])));
+            $input['profile_pic']   =  ($this->uploadNewImage($request->file('profile_pic')));
         }
 
         // update the entity
