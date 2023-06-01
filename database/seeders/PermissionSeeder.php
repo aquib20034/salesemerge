@@ -35,6 +35,11 @@ class PermissionSeeder extends Seeder
             'user-edit',
             'user-delete',
 
+            'profile-list',
+            'profile-create',
+            'profile-edit',
+            'profile-delete',
+
             'unit-list',
             'unit-create',
             'unit-edit',

@@ -49,9 +49,6 @@
                                                 @endif
                                             </td>
                                         </tr>
-                                        
-                                      
-                                        <br>
                                     </table>
                                 </div>
                             <!-- </div> -->
