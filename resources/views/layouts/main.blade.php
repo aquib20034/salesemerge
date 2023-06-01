@@ -234,6 +234,9 @@
 								<!-- <span class="badge badge-count">5</span> -->
 							</a>
 						</li>
+
+                       
+
                         <li class="nav-item">
                             <a data-toggle="collapse" href="#General" class="collapsed" aria-expanded="false">
                                 <i class="fas fa-users-cog"></i>
@@ -243,6 +246,14 @@
                             <div class="collapse" id="General" style="">
 
                                 <ul class="nav nav-collapse">
+                                    @can('company-list')
+                                        <li class="nav-item @if('companies' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                                <a  href="{{route('companies.edit', Auth::user()->company_id)}}">
+                                                <span class="sub-item">Companies</span>
+                                            </a>
+                                        </li>
+                                    @endcan
+
                                     @can('user-list')
                                         <li class="nav-item @if('users' == url_explode(request()->path()) ) {{'active'}} @endif">
                                             <a  href="{{url('/users')}}">
@@ -250,6 +261,7 @@
                                             </a>
                                         </li>
                                     @endcan
+
                                     @can('role-list')
                                         <li class="nav-item @if('roles' == url_explode(request()->path()) ) {{'active'}} @endif">
                                             <a  href="{{url('/roles')}}">
@@ -257,71 +269,99 @@
                                             </a>
                                         </li>
                                     @endcan
-                                        @can('company-list')
-                                            <li class="nav-item @if('companies' == url_explode(request()->path()) ) {{'active'}} @endif">
-                                                    <a  href="{{route('companies.edit', Auth::user()->company_id)}}">
-                                                    <span class="sub-item">Companies</span>
-                                                </a>
-                                            </li>
-                                        @endcan
+                                    
 
-                                        @can('customer-list')
-                                            <!-- <li class="nav-item @if('customers' == url_explode(request()->path()) ) {{'active'}} @endif">
-                                                <a  href="{{url('/customers')}}">
-                                                    <span class="sub-item">Customers</span>
-                                                </a>
-                                            </li> -->
-                                        @endcan
-                                        @can('city-list')
-                                            <!-- <li class="nav-item @if('cities' == url_explode(request()->path()) ) {{'active'}} @endif">
-                                                <a  href="{{url('/cities')}}">
-                                                    <span class="sub-item">Cities</span>
-                                                </a>
-                                            </li> -->
-                                        @endcan
+                                    @can('customer-list')
+                                        <!-- <li class="nav-item @if('customers' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                            <a  href="{{url('/customers')}}">
+                                                <span class="sub-item">Customers</span>
+                                            </a>
+                                        </li> -->
+                                    @endcan
+                                    @can('city-list')
+                                        <!-- <li class="nav-item @if('cities' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                            <a  href="{{url('/cities')}}">
+                                                <span class="sub-item">Cities</span>
+                                            </a>
+                                        </li> -->
+                                    @endcan
 
-                                        @can('unit-list')
-                                            <li class="nav-item @if('units' == url_explode(request()->path()) ) {{'active'}} @endif">
-                                                <a  href="{{url('/units')}}">
-                                                    <span class="sub-item">Units</span>
-                                                </a>
-                                            </li>
-                                        @endcan
-
-                                        @can('item-list')
-                                            <li class="nav-item @if('items' == url_explode(request()->path()) ) {{'active'}} @endif">
-                                                <a  href="{{url('/items')}}">
-                                                    <span class="sub-item">Items</span>
-                                                </a>
-                                            </li>
-                                        @endcan
-
-                                        @can('category-list')
-                                            <li class="nav-categorie @if('categories' == url_explode(request()->path()) ) {{'active'}} @endif">
-                                                <a  href="{{url('/categories')}}">
-                                                    <span class="sub-item">Categories</span>
-                                                </a>
-                                            </li>
-                                        @endcan
-
-                                        @can('group-list')
-                                            <li class="nav-categorie @if('groups' == url_explode(request()->path()) ) {{'active'}} @endif">
-                                                <a  href="{{url('/groups')}}">
-                                                    <span class="sub-item">Groups</span>
-                                                </a>
-                                            </li>
-                                        @endcan
-
-                                        @can('manufacturer-list')
-                                            <li class="nav-categorie @if('manufacturers' == url_explode(request()->path()) ) {{'active'}} @endif">
-                                                <a  href="{{url('/manufacturers')}}">
-                                                    <span class="sub-item">Manufacturers</span>
-                                                </a>
-                                            </li>
-                                        @endcan
+                                    
                                 </ul>
                             </div>
                         </li>
+
+                        <li class="nav-item">
+                            <a data-toggle="collapse" href="#item" class="collapsed" aria-expanded="false">
+                                <i class="fas fa-layer-group"></i>
+                                <p>Item Setup</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="item" style="">
+                                <ul class="nav nav-collapse">
+                                    @can('unit-list')
+                                        <li class="nav-item @if('units' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                            <a  href="{{url('/units')}}">
+                                                <span class="sub-item">Units</span>
+                                            </a>
+                                        </li>
+                                    @endcan
+
+                                    @can('item-list')
+                                        <li class="nav-item @if('items' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                            <a  href="{{url('/items')}}">
+                                                <span class="sub-item">Items</span>
+                                            </a>
+                                        </li>
+                                    @endcan
+
+                                    @can('category-list')
+                                        <li class="nav-categorie @if('categories' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                            <a  href="{{url('/categories')}}">
+                                                <span class="sub-item">Categories</span>
+                                            </a>
+                                        </li>
+                                    @endcan
+
+                                    @can('group-list')
+                                        <li class="nav-categorie @if('groups' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                            <a  href="{{url('/groups')}}">
+                                                <span class="sub-item">Groups</span>
+                                            </a>
+                                        </li>
+                                    @endcan
+
+                                    @can('manufacturer-list')
+                                        <li class="nav-categorie @if('manufacturers' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                            <a  href="{{url('/manufacturers')}}">
+                                                <span class="sub-item">Manufacturers</span>
+                                            </a>
+                                        </li>
+                                    @endcan
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li class="nav-item">
+                            <a data-toggle="collapse" href="#accounts" class="collapsed" aria-expanded="false">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <p>Accounts Setup</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="accounts" style="">
+
+                                <ul class="nav nav-collapse">
+                                    @can('account-list')
+                                        <li class="nav-item @if('accounts' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                            <a  href="{{url('/accounts')}}">
+                                                <span class="sub-item">Accounts</span>
+                                            </a>
+                                        </li>
+                                    @endcan
+                                </ul>
+                            </div>
+                        </li>
+
 
 {{--                        <li class="nav-item">--}}
 {{--                            <a data-toggle="collapse" href="#Purchase&Sell" class="collapsed" aria-expanded="false">--}}

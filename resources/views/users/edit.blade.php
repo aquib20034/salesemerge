@@ -128,7 +128,7 @@
                                 <div class="row">
                                     
                                     <div class="col-lg-12 text-right">
-                                        <button type="submit" class="btn btn-primary btn-sm mr-2">Save</button>
+                                        <button type="submit" class="btn btn-primary btn-xs mr-2">Save</button>
                                     </div>
                                 </div>
                             </div>

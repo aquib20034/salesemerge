@@ -13,7 +13,7 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center">
                         <h4 class="card-title">Edit @yield('title')</h4>
-                        <a  href="{{ route('roles.index') }}" class="btn btn-primary btn-round ml-auto">
+                        <a  href="{{ route('roles.index') }}" class="btn btn-primary btn-xs ml-auto">
                             <i class="fas fa-arrow-left"></i>
                         </a>
                     </div>
@@ -60,12 +60,18 @@
                                                         if( $firstVal == $LastVal){
                                                 ?>
                                                 <td>
-                                                    <div class="checkbox-inline">
+                                                    <!-- <div class="checkbox-inline">
                                                         <label class="checkbox checkbox-success">
                                                             {{ Form::checkbox('permission[]', $value->id, in_array($value->id, $rolePermissions) ? true : false, array('class' => 'name')) }}
                                                              <span></span>  
                                                         </label>
-                                                    </div>
+                                                    </div> -->
+                                                    <span class="switch switch-sm switch-icon switch-success">
+                                                        <label>
+                                                            {{ Form::checkbox('permission[]', $value->id, in_array($value->id, $rolePermissions) ? true : false, array('class' => 'form-control', 'data-toggle'=>'toggle', 'data-onstyle'=>'success', 'data-style' => 'btn-round')) }}
+                                                            <span></span>
+                                                        </label>
+                                                    </span>
                                                 </td>
                                                 <?php }else{
                                                     $firstVal = $LastVal;
@@ -74,12 +80,18 @@
                                             <tr>
                                                 <td> <label>{{ucfirst($firstVal)}}</label></td>
                                                 <td>
-                                                     <div class="checkbox-inline">
+                                                     <!-- <div class="checkbox-inline">
                                                         <label class="checkbox checkbox-success">
                                                             {{ Form::checkbox('permission[]', $value->id, in_array($value->id, $rolePermissions) ? true : false, array('class' => 'name')) }}
                                                             <span></span>  
                                                         </label>
-                                                    </div>
+                                                    </div> -->
+                                                    <span class="switch switch-sm switch-icon switch-success">
+                                                        <label>
+                                                            {{ Form::checkbox('permission[]', $value->id, in_array($value->id, $rolePermissions) ? true : false, array('class' => 'form-control', 'data-toggle'=>'toggle', 'data-onstyle'=>'success', 'data-style' => 'btn-round')) }}
+                                                            <span></span>
+                                                        </label>
+                                                    </span>
                                                 </td>
                                                 <?php if ($LastVal == 'profile'){ echo "<td> </td><td> </td><td></td>";}}?>
                                                 <?php } ?>
@@ -95,8 +107,8 @@
                         <div class="row">
                             
                             <div class="col-lg-12 text-right">
-                                <button type="submit" class="btn btn-primary mr-2">Save</button>
-                                <button type="reset" class="btn btn-danger">Cancel</button>
+                                <button type="submit" class="btn btn-primary btn-xs mr-2">Save</button>
+                                <button type="reset" class="btn btn-danger btn-xs">Cancel</button>
                             </div>
                         </div>
                     </div>

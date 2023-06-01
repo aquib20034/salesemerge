@@ -13,7 +13,7 @@
                     <div class="d-flex align-items-center">
                         <h4 class="card-title">Manage @yield('title')</h4>
                         @can('role-create')
-                            <a  href="{{ route('roles.create') }}" class="btn btn-primary btn-round ml-auto">
+                            <a  href="{{ route('roles.create') }}" class="btn btn-primary btn-xs ml-auto">
                             <i class="fa fa-plus"></i> Add new</a>
                         @endcan
                     </div>
@@ -23,7 +23,6 @@
                         <table class="table table-borderless table-striped table-hover ajaxTable datatable datatable-Role">
                             <thead>
                             <tr>
-                                <th width="5%">#</th>
                                 <th> Name</th>
                                 <th width="10%" >Action</th>
                             </tr>
@@ -47,9 +46,8 @@
                 @endcan
                 dtButtons.push(deleteButton)
                 let data = [
-                    { data: 'placeholder', name: 'placeholder' },
                     { data: 'name', name: 'name' },
-                    { data: 'actions', name: 'action' }
+                    { data: 'actions', name: '{{ trans('global.actions') }}',orderable:false,searchable:false }
                 ]
                 DataTableCall('.datatable-Role', "{{ route('roles.index') }}", dtButtons, data)
             });

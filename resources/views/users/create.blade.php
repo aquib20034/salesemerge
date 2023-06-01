@@ -130,8 +130,8 @@
                             <div class="card-footer">
                                 <div class="row">
                                     <div class="col-lg-12 text-right">
-                                        <button type="submit" class="btn btn-primary btn-sm mr-2">Save</button>
-                                        <button type="reset" class="btn btn-danger btn-sm">Cancel</button>
+                                        <button type="submit" class="btn btn-primary btn-xs mr-2">Save</button>
+                                        <button type="reset" class="btn btn-danger btn-xs">Cancel</button>
                                     </div>
                                 </div>
                             </div>

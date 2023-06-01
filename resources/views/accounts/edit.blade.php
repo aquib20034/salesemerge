@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title','Unit')
+@section('title','Acount')
 @section('content')
     @include( '../sweet_script')
     <div class="page-inner">
@@ -12,22 +12,22 @@
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <h4 class="card-title">Edit @yield('title')</h4>
-                            <a  href="{{ route('units.index') }}" class="btn btn-primary btn-xs ml-auto">
+                            <a  href="{{ route('accounts.index') }}" class="btn btn-primary btn-xs ml-auto">
                                 <i class="fas fa-arrow-left"></i>
                             </a>
                         </div>
                     </div>
 
                     <!--begin::Form-->
-                        {!! Form::model($data, ['method' => 'PATCH','id'=>'form','enctype'=>'multipart/form-data','route' => ['units.update', $data->id]]) !!}
+                        {!! Form::model($data, ['method' => 'PATCH','id'=>'form','enctype'=>'multipart/form-data','route' => ['accounts.update', $data->id]]) !!}
                             {{  Form::hidden('updated_by', Auth::user()->id ) }}
                             {{  Form::hidden('action', "update" ) }}
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                             <div class="form-group">
-                                                {!! Html::decode(Form::label('name','Unit name <span class="text-danger">*</span>')) !!}
-                                                {{ Form::text('name', null, array('placeholder' => 'Enter unit name','class' => 'form-control','autofocus' => ''  )) }}
+                                                {!! Html::decode(Form::label('name','Account name <span class="text-danger">*</span>')) !!}
+                                                {{ Form::text('name', null, array('placeholder' => 'Enter account name','class' => 'form-control','autofocus' => ''  )) }}
                                                 @if ($errors->has('name'))  
                                                     {!! "<span class='span_danger'>". $errors->first('name')."</span>"!!} 
                                                 @endif
@@ -66,5 +66,5 @@
             </div>
         </div>
     </div>
-    {!! JsValidator::formRequest('App\Http\Requests\UnitRequest', '#form'); !!}
+    {!! JsValidator::formRequest('App\Http\Requests\AccountRequest', '#form'); !!}
 @endsection
