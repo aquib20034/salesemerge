@@ -142,7 +142,7 @@ class ProfileController extends Controller
     {
         // Retrieve the validated input data...
         $validated  = $request->validated();
-
+        $input      = $request->all();
         $user_id    = Auth::user()->id;
         $company_id = Auth::user()->company_id;
 
@@ -150,9 +150,18 @@ class ProfileController extends Controller
             return back()->with('permission','Id not matched');
         }
 
+        if((!isset($input['password'])) && !isset($input['profile_pic'])){
+            return back()
+                        ->with('permission','Fields are empty')
+                        ->withErrors([
+                                        'old_password'  => 'Old password is required',
+                                        'password'      => 'Password is required',
+                                        'profile_pic'   => 'Profile pic is required',
+                                    ]);
+        }
+
         // get all request
         $data       = User::where('company_id',$company_id)->findOrFail($id);
-        $input      = $request->all();
         
 
         if(!empty($input['old_password'])){
@@ -178,7 +187,7 @@ class ProfileController extends Controller
         $data->update($input);
 
         
-        return back()->with('success','Password changed successfully.');
+        return back()->with('success','Profile updated successfully.');
         // return response()->json(['success'=>$input['name']. ' updated successfully.']);
     }
 

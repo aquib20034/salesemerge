@@ -6,7 +6,7 @@ use Gate;
 use DataTables;
 use App\Models\Account;
 use App\Models\Company;
-use App\Models\Branch;
+use App\Models\AccountType;
 use Illuminate\Http\Request;
 use App\Http\Requests\AccountRequest;
 use App\Http\Controllers\Controller;
@@ -55,14 +55,34 @@ class AccountController extends Controller
         return view('accounts.index');
     }
 
+    public function get_children($parent_id, $type)
+    {
+        $company_id     = Auth::user()->company_id;
+        $records        = AccountType::where('company_id',$company_id)
+                            ->where('parent_id', $parent_id)
+                            ->pluck('name','id')
+                            ->all();
+                            // dd($records);
+        
+        if(isset($type)){
+            switch($type){
+                case 'group':
+                    $records        = view('accounts.ajax_group',compact('records'))->render();
+                break;
+                case 'child': 
+                    $records        = view('accounts.ajax_child',compact('records'))->render();
+                break;
+            }
+        }
+        return response()->json(['data'=>$records]);
+    }
+
     public function create()
     {
-        $heads          = array(1=>'Assets', 2=>'Liabilities',3=>'Equity',4=>'Revenue',5=>'Expense');
-        $sub_heads      = array(1=>'Current Assets',2=>'Fixed Assets');
-        $child_heads    = array(1=>'Cash in hand');
-        $group_heads    = array(1=>'Group 1');
-
-        return view('accounts.create',compact('heads','sub_heads','child_heads','group_heads'));
+        $company_id     = Auth::user()->company_id;
+        $account_types  = AccountType::where('company_id',$company_id)->whereNull('parent_id')->pluck('name','id')->all();
+        $cities         = City::pluck('name','id')->all();
+        return view('accounts.create',compact('cities','account_types'));
     }
 
     public function store(AccountRequest $request)

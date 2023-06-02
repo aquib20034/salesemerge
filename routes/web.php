@@ -64,9 +64,17 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('manufacturers', ManufacturerController::class);
     Route::delete('manufacturers/destory', [ManufacturerController::class, 'destroy'])->name('manufacturers.massDestroy');
     
+    //account_types
+    Route::resource('account_types', AccountTypeController::class);
+    Route::delete('account_types/destory', [AccountTypeController::class, 'destroy'])->name('account_types.massDestroy');
+	
+
+    
     //accounts
     Route::resource('accounts', AccountController::class);
     Route::delete('accounts/destory', [AccountController::class, 'destroy'])->name('accounts.massDestroy');
+    Route::get('/get_children/{parent_id}/{type}', [App\Http\Controllers\AccountController::class, 'get_children']);
+    
     
     //profiles
     Route::resource('profiles', ProfileController::class);
