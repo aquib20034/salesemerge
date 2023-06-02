@@ -92,9 +92,10 @@ class BranchController extends Controller
 
     public function update(BranchRequest $request, $id)
     {
-        $data       = Branch::findOrFail($id);
         $validated  = $request->validated();
-                      $data->update($request->all());
+        $data       = Branch::findOrFail($id);
+        $data->update($request->all());
+
         return response()->json(['status' => 200,'success'=>'Branch updated successfully.']);
 
 
