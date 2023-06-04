@@ -4,6 +4,8 @@ use DB;
 use Auth;
 use Gate;
 use DataTables;
+use App\Models\City;
+use App\Models\Branch;
 use App\Models\Account;
 use App\Models\Company;
 use App\Models\AccountType;
