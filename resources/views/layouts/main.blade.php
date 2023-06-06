@@ -137,8 +137,8 @@
 					</div> -->
 
                     <div style="color:white; font-weight:bold;font-size:24px; text-transform: uppercase;">
-                        {{Auth::user()->branch->name}}, 
-                        {{Auth::user()->company->name}}
+                        {{isset(Auth::user()->branch->name) ? Auth::user()->branch->name : ""}}, 
+                        {{isset(Auth::user()->company->name) ? Auth::user()->company->name : ""}}
                     </div>
 					<ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
 						<li class="nav-item dropdown hidden-caret">
@@ -208,8 +208,11 @@
 						<div class="info">
 							<a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
 								<span>
-									{{Auth::user()->name}}
-									<span class="user-level">{{Auth::user()->branch->name}}, {{Auth::user()->company->name}}</span>
+                                    {{Auth::user()->name}}
+									<span class="user-level">
+                                        {{isset(Auth::user()->branch->name) ? Auth::user()->branch->name : ""}}, 
+                                        {{isset(Auth::user()->company->name) ? Auth::user()->company->name : ""}}
+                                    </span>
 								</span>
 							</a>
                             <div class="clearfix"></div>
@@ -234,8 +237,11 @@
                             <div class="collapse" id="General" style="">
                                 <ul class="nav nav-collapse">
                                     @can('company-edit')
+                                        <?php 
+                                            $company_id = isset( Auth::user()->company_id) ?  Auth::user()->company_id : 0;
+                                        ?>
                                         <li class="nav-item @if('companies' == url_explode(request()->path()) ) {{'active'}} @endif">
-                                                <a  href="{{route('companies.edit', Auth::user()->company_id)}}">
+                                                <a  href="{{route('companies.edit',$company_id)}}">
                                                 <span class="sub-item">Companies</span>
                                             </a>
                                         </li>
