@@ -8,21 +8,16 @@ class CitySeeder extends Seeder
 {
     public function run()
     {
-        $countries = [
-            'Pakistan',
-            'Bangladesh',
-            'India'
-         ];
 
          $cities = [
             'Mirpurkhas',
             'Hyderabad',
             'Karachi'
          ];
-         foreach ($countries as $key => $country) {
+         foreach ($cities as $key => $city) {
             City::create([
-                            'name'          => $country,
-                            'country_id'    => $cities[$key],
+                            'name'          => $city,
+                            'country_id'    => 1,
                         ]);
          }
      }

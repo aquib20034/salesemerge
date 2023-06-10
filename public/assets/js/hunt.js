@@ -1,6 +1,10 @@
-    function AjaxCall(url, ajaxMethod, callBack, data)
+    function AjaxCall(url, ajaxMethod, callBack, data, replace_id = 0)
     {
         var requestData = (data != "undefined") ? data : {}; // set request data to data if exists
+
+        if(url.includes(':id') && replace_id > 0); // true
+            url = url.replace(':id', replace_id);
+
         var request = $.ajax({
             url: url,
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -25,14 +29,8 @@
 
     function AlertCall(data, Promise = null)
     {
-        Swal.fire({
-            icon:  data.alert,
-            title: data.msg,
-            // color: '#716add',
-            background: '#ffffff',
-        }).then(() => {
-            Promise
-        })
+        toastr.success(data.msg);
+        Promise
     }
 
     function DeleteButtonCall(url)

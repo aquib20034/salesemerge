@@ -1,14 +1,20 @@
 <?php
-
-
 namespace App\Http\Controllers;
-
-
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\Item;
 use DB;
+use Auth;
+use Gate;
 use DataTables;
+use App\Models\Unit;
+use App\Models\Item;
+use App\Models\Company;
+use App\Models\Branch;
+use App\Models\Group;
+use App\Models\Category;
+use App\Models\Manufacturer;
+use Illuminate\Http\Request;
+use App\Http\Requests\ItemRequest;
+use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class ItemController extends Controller
 {
@@ -22,144 +28,144 @@ class ItemController extends Controller
 
     public function index(Request $request)
     {
+        if ($request->ajax()) {
+
+            $company_id     = Auth::user()->company_id;
+            $query          = Item::where('company_id',$company_id)->orderBy('items.name','ASC')->get();
+            $table          = DataTables::of($query);
+
+            $table->addColumn('srno', '');
+            $table->addColumn('placeholder', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
+
+            $table->editColumn('manufacturer_id', function ($row) {
+                if(isset($row->manufacturer_id)){
+                    if(isset($row->manufacturer->name)){
+                        return $row->manufacturer->name;
+                    }
+                }
+                return "";
+            });
+
+            $table->editColumn('category_id', function ($row) {
+                if(isset($row->category_id)){
+                    if(isset($row->category->name)){
+                        return $row->category->name;
+                    }
+                }
+                return "";
+            });
+
+            $table->editColumn('group_id', function ($row) {
+                if(isset($row->group_id)){
+                    if(isset($row->group->name)){
+                        return $row->group->name;
+                    }
+                }
+                return "";
+            });
+
+            $table->editColumn('unit_id', function ($row) {
+                if(isset($row->unit_id)){
+                    if(isset($row->unit->name)){
+                        return $row->unit->name;
+                    }
+                }
+                return "";
+            });
+
+            $table->editColumn('actions', function ($row) {
+                $viewGate       = 'item-list';
+                $editGate       = 'item-edit';
+                $deleteGate     = 'item-delete';
+                $crudRoutePart  = 'items';
+
+                return view('partials.datatableActions', compact(
+                    'viewGate',
+                    'editGate',
+                    'deleteGate',
+                    'crudRoutePart',
+                    'row'
+                ));
+            });
+
+            $table->rawColumns(['actions', 'placeholder']);
+            return $table->make(true);
+        }
         return view('items.index');
-    }
-
-    public function list()
-    {
-        $data = DB::table('items')
-                ->orderBy('items.created_at','DESC')
-                ->leftjoin('companies', 'companies.id', '=', 'items.company_id')
-                ->leftjoin('units', 'units.id', '=', 'items.unit_id')
-                ->select('items.*',
-                        'companies.name as company_name',
-                        'units.name as unit_name'
-                        )
-                ->get();
-
-        return 
-            DataTables::of($data)
-                ->addColumn('action',function($data){
-                    return '
-                    <div class="btn-group btn-group">
-                        <a class="btn btn-info btn-sm" href="items/'.$data->id.'">
-                            <i class="fa fa-eye"></i>
-                        </a>
-                        <a class="btn btn-info btn-sm" href="items/'.$data->id.'/edit" id="'.$data->id.'">
-                            <i class="fas fa-pencil-alt"></i>
-                        </a>
-                     
-                        <button
-                            class="btn btn-danger btn-sm delete_all"
-                            data-url="'. url('itemDelete') .'" data-id="'.$data->id.'">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </div>';
-                })
-                ->addColumn('srno','')
-                ->rawColumns(['srno','','action'])
-                ->make(true);
     }
 
     public function create()
     {
-        $companies = DB::table('companies')
-                            ->select('companies.name','companies.id')
-                            ->pluck('name','id')->all();
+        $company_id     = Auth::user()->company_id;
 
-        $units = DB::table('units')
-                            ->select('units.name','units.id')
-                            ->pluck('name','id')->all();
-
-
-        return view('items.create',compact('companies','units'));
+        $units          = Unit::where('company_id',$company_id)->pluck('name','id')->all();
+        $groups         = Group::where('company_id',$company_id)->pluck('name','id')->all();
+        $branches       = Branch::where('company_id',$company_id)->pluck('name','id')->all();
+        $companies      = Company::where('id',$company_id)->pluck('name','id')->all();
+        $categories     = Category::where('company_id',$company_id)->pluck('name','id')->all();
+        $manufacturers  = Manufacturer::where('company_id',$company_id)->pluck('name','id')->all();
+        return view('items.create',compact('units','groups','branches','companies','categories','manufacturers'));
     }
 
-    public function store(Request $request)
+    public function store(ItemRequest $request)
     {
-        request()->validate([
-            'name' => 'required|min:3|unique:items,name',
-            'purchase_price' => 'required',
-            'sell_price' => 'required',
-            'tot_piece' => 'required|min:1'
-        ]);
-        
-        $input = $request->all();
-
-        $input['unit_sell_price'] =  ( $request['sell_price'] /  $request['tot_piece']);
-        $data = item::create($input);
+        // Retrieve the validated input data...
+        $validated      = $request->validated();
+        $data           = Item::create($request->all());
       
         return redirect()
                 ->route('items.index')
-                ->with('success','item '.$request['name'] .' added successfully.');
+                ->with('success','Record added successfully.');
     }
 
      public function show($id)
     {
-        $data = DB::table('items')
-                    ->orderBy('items.created_at','DESC')
-                    ->leftjoin('companies', 'companies.id', '=', 'items.company_id')
-                    ->leftjoin('units', 'units.id', '=', 'items.unit_id')
-                    ->select('items.*',
-                            'companies.name as company_name',
-                            'units.name as unit_name'
-                            )
-                    ->where('items.id', $id)
-                    ->first();
-
+        $company_id = Auth::user()->company_id;
+        $data       = Item::where('company_id',$company_id)->findOrFail($id);
         return view('items.show',compact('data'));
     }
 
 
     public function edit($id)
     {
-        $data= DB::table('items')
-                    ->where('items.id', $id)
-                    ->first();
+        $company_id     = Auth::user()->company_id;
+        $data           = Item::where('company_id',$company_id)->findOrFail($id);
+        $units          = Unit::where('company_id',$company_id)->pluck('name','id')->all();
+        $groups         = Group::where('company_id',$company_id)->pluck('name','id')->all();
+        $branches       = Branch::where('company_id',$company_id)->pluck('name','id')->all();
+        $companies      = Company::where('id',$company_id)->pluck('name','id')->all();
+        $categories     = Category::where('company_id',$company_id)->pluck('name','id')->all();
+        $manufacturers  = Manufacturer::where('company_id',$company_id)->pluck('name','id')->all();
+        return view('items.edit',compact('data','units','groups','branches','companies','categories','manufacturers'));
 
-        $companies = DB::table('companies')
-                    ->select('companies.name','companies.id')
-                    ->pluck('name','id')->all();
-
-        $units = DB::table('units')
-                    ->select('units.name','units.id')
-                    ->pluck('name','id')->all();
-
-
-        return view('items.edit',compact('data','companies','units'));
     }
 
 
-    public function update(Request $request, $id)
+    public function update(ItemRequest $request, $id)
     {
-        $data = item::findOrFail($id);
-        $this->validate($request,[
-            'name' => 'required|min:3|unique:items,name,'. $id,
-            'purchase_price' => 'required',
-            'sell_price' => 'required',
-            'tot_piece' => 'required|min:1'
-            
-        ]);
+        // validated input data...
+        $validated  = $request->validated();
+        $company_id = Auth::user()->company_id;
+        $data       = Item::where('company_id',$company_id)->findOrFail($id);
+        $input      = $request->all();
 
-        $input = $request->all();
-        $input['unit_sell_price'] =  ( $request['sell_price'] /  $request['tot_piece']);
+        // if active is not set, make it in-active
+        if(!(isset($input['active']))){
+            $input['active'] = 0;
+        }
 
-
-        $upd = $data->update($input);
-
+        $upd        = $data->update($input);
         return redirect()
                 ->route('items.index')
-                ->with('success','item '.$request['name'] .' updated successfully.');
+                ->with('success','Record updated successfully.');
     }
 
-    public function destroy(Request $request)
+    public function destroy(Item $item)
     {
-        $ids = $request->ids;
-        $data = DB::table("items")->whereIn('id',explode(",",$ids))->delete();
-        return response()->json(['success'=>"deleted successfully."]);
+        abort_if(Gate::denies('item-delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $item->delete();
+        return back()->with('success','Record deleted successfully.');
     }
-
-
-
 
 }

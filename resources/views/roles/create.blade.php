@@ -15,7 +15,7 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center">
                         <h4 class="card-title">Add @yield('title')</h4>
-                        <a  href="{{ route('roles.index') }}" class="btn btn-primary btn-round ml-auto">
+                        <a  href="{{ route('roles.index') }}" class="btn btn-primary btn-xs ml-auto">
                             <i class="fas fa-arrow-left"></i>
                         </a>
                     </div>
@@ -24,6 +24,9 @@
                     <!--begin::Form-->
                 {!! Form::open(array('route' => 'roles.store','method'=>'POST','id'=>'form','enctype'=>'multipart/form-data')) !!}
                     {{  Form::hidden('created_by', Auth::user()->id ) }}
+                    {{  Form::hidden('company_id', Auth::user()->company_id ) }}
+                    {{  Form::hidden('branch_id', Auth::user()->branch_id ) }}
+                    {{  Form::hidden('action', "store" ) }}
 
                     <div class="card-body">
                         <div class="form-group row">
@@ -64,12 +67,12 @@
                                                             
                                                                     
                                                 <td>
-                                                    <div class="checkbox-inline">
-                                                        <label class="checkbox checkbox-success">
-                                                            {{ Form::checkbox('permission[]', $value->id, false, array('class' => 'name')) }}
+                                                    <span class="switch switch-sm switch-icon switch-success">
+                                                        <label>
+                                                            {{ Form::checkbox('permission[]', $value->id, false, array('class' => 'form-control', 'data-toggle'=>'toggle', 'data-onstyle'=>'success', 'data-style' => 'btn-round')) }}
                                                             <span></span>
                                                         </label>
-                                                    </div>
+                                                    </span>
                                                 </td>
                                                 <?php }else{
                                                         $firstVal = $LastVal;
@@ -78,12 +81,13 @@
                                             <tr>
                                                 <td> <label>{{ ucfirst($firstVal)}}</label></td>
                                                 <td>
-                                                    <div class="checkbox-inline">
-                                                        <label class="checkbox checkbox-success">
-                                                            {{ Form::checkbox('permission[]', $value->id, false, array('class' => 'name')) }}
-                                                             <span></span>  
+                                                    <span class="switch switch-sm switch-icon switch-success">
+                                                        <label>
+                                                            {{ Form::checkbox('permission[]', $value->id, false, array('class' => 'form-control', 'data-toggle'=>'toggle', 'data-onstyle'=>'success', 'data-style' => 'btn-round')) }}
+                                                            <span></span>
                                                         </label>
-                                                    </div>
+                                                    </span>
+                                                    
                                                 </td>
                                                 <?php if ($LastVal == 'profile'){ echo "<td> </td><td> </td><td></td>";}}?>
                                                 <?php } ?>
@@ -98,8 +102,8 @@
                         <div class="row">
                             
                             <div class="col-lg-12 text-right">
-                                <button type="submit" class="btn btn-primary mr-2">Save</button>
-                                <button type="reset" class="btn btn-danger">Cancel</button>
+                                <button type="submit" class="btn btn-primary btn-xs mr-2">Save</button>
+                                <button type="reset" class="btn btn-danger btn-xs">Cancel</button>
                             </div>
                         </div>
                     </div>

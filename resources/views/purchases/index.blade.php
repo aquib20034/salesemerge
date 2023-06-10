@@ -21,7 +21,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="myTable" class="display table table-striped table-hover" style="width: 100%;" cellspacing="0">
+                        <table class="table table-borderless table-striped table-hover ajaxTable datatable datatable-Purchase">
                             <thead>
                                 <tr>
                                     <th width="5%">#</th>
@@ -34,9 +34,9 @@
                                     <th width="10%" >Action</th>
                                 </tr>
                             </thead>
-                          
+
                             <tbody>
-                                
+
                             </tbody>
                         </table>
                     </div>
@@ -45,36 +45,26 @@
         </div>
     </div>
 </div>
-
-<script>
-    $(document).ready(function () {  
-
-    var t = $('#myTable').DataTable({
-          "aaSorting": [],
-            "processing": true,
-            "serverSide": false,
-            "select":true,
-            "ajax": "{{ url('purchaseList') }}",
-            "method": "GET",
-            "columns": [
-                {"data": "srno"},
-                {"data": "order_no"},
-                {"data": "company_name"},
-                {"data": "invoice_date"},
-                {"data": "bilty_amount"},
-                {"data": "net_amount"},
-                // {"data": "pay_amount"},
-                {"data": "action",orderable:false,searchable:false}
-
+@endsection
+@section('scripts')
+    @parent
+    <script>
+        $(function () {
+            let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+{{--            @can('purchase-delete')--}}
+{{--                deleteButton = DeleteButtonCall("{{ route('purchases.massDestroy') }}")--}}
+{{--            @endcan--}}
+            // dtButtons.push(deleteButton)
+            let data = [
+                { data: 'placeholder', name: 'placeholder' },
+                { data: 'order_no', name: 'order_no' },
+                { data: 'company_name', name: 'company_name' },
+                { data: 'invoice_date', name: 'invoice_date' },
+                { data: 'bilty_amount', name: 'bilty_amount' },
+                { data: 'net_amount', name: 'net_amount' },
+                { data: 'actions', name: '{{ trans('global.actions') }}' }
             ]
+            DataTableCall('.datatable-Purchase', "{{ route('purchases.index') }}", dtButtons, data)
         });
-     t.on( 'order.dt search.dt', function () {
-        t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-            cell.innerHTML = i+1;
-        } );
-    } ).draw();
-
-
-    });
-</script>
+    </script>
 @endsection

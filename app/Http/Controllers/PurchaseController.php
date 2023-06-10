@@ -24,41 +24,38 @@ class PurchaseController extends Controller
 
     public function index(Request $request)
     {
-        return view('purchases.index');
-    }
-
-    public function list()
-    {
-        $data = DB::table('purchases')
+        if ($request->ajax()) {
+            $query = Purchase::query()
                 ->orderBy('purchases.created_at','DESC')
                 ->leftjoin('companies', 'companies.id', '=', 'purchases.company_id')
                 ->select('purchases.*',
-                        'companies.name as company_name'
-                        )
+                    'companies.name as company_name')
                 ->get();
+            $table = DataTables::of($query);
 
-        return 
-            DataTables::of($data)
-                ->addColumn('action',function($data){
-                    return '
-                    <div class="btn-group btn-group">
-                        <a class="btn btn-info btn-sm" href="purchases/'.$data->id.'">
-                            <i class="fa fa-eye"></i>
-                        </a>
-                        <a class="btn btn-info btn-sm" href="purchases/'.$data->id.'/edit" id="'.$data->id.'">
-                            <i class="fas fa-pencil-alt"></i>
-                        </a>
-                     
-                        <button
-                            class="btn btn-danger btn-sm delete_all"
-                            data-url="'. url('purchaseDelete') .'" data-id="'.$data->id.'">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </div>';
-                })
-                ->addColumn('srno','')
-                ->rawColumns(['srno','','action'])
-                ->make(true);
+            $table->addColumn('placeholder', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
+
+            $table->editColumn('actions', function ($row) {
+                $viewGate = 'city-list';
+                $editGate = 'city-edit';
+                $deleteGate = 'city-delete';
+                $crudRoutePart = 'cities';
+
+                return view('partials.datatableActions', compact(
+                    'viewGate',
+                    'editGate',
+                    'deleteGate',
+                    'crudRoutePart',
+                    'row'
+                ));
+            });
+
+            $table->rawColumns(['actions', 'placeholder']);
+
+            return $table->make(true);
+        }
+        return view('purchases.index');
     }
 
     public function fetch_item_detail(Request $request)
@@ -67,13 +64,13 @@ class PurchaseController extends Controller
 
             $item_id        = $request->item;
 
-           
+
             $item      = DB::table('items')
                                 ->select('items.*')
                                 ->where('items.id',$item_id)
                                 // ->pluck("name","id")
                                 ->first();
-                            
+
             return response()->json(['data'=>$item]);
         }
 
@@ -97,7 +94,7 @@ class PurchaseController extends Controller
                                           DB::raw('CONCAT(companies.name, "  -  ", companies.owner_name) as name'))
                                 ->pluck('name','id')
                                 ->all();
-        
+
         $payment_types      = DB::table('payment_types')
                                 ->orderBy('payment_types.id')
                                 ->select('payment_types.name','payment_types.id')
@@ -143,7 +140,7 @@ class PurchaseController extends Controller
         $purchase_price             = $inputs['purchase_price'];
         $data                       = Purchase::create($inputs);
         $purchase_id                =  $data['id'];
-      
+
         if($data){
             if($item){
                 foreach($item as $item_key => $item_value){
@@ -172,14 +169,14 @@ class PurchaseController extends Controller
         if($request['direction']==1){
            return redirect("purchases/$purchase_id")
                   ->with('success','Order added successfully.');
-             
+
         }else{
             return redirect()
                 ->route('purchases.index')
                 ->with('success','Order added successfully.');
         }
-        
-        
+
+
     }
 
      public function show($id)
@@ -230,7 +227,7 @@ class PurchaseController extends Controller
                                          )
                                 ->where('purchases.id', $id)
                                 ->first();
-                               
+
         // $items              = DB::table('items')
         //                         ->select('items.name','items.id')
         //                         ->pluck('name','id')
@@ -253,7 +250,7 @@ class PurchaseController extends Controller
                                 ->get()
                                 ->all();
 
-                              
+
         $companies          = DB::table('companies')
                                 ->orderBy('companies.id')
                                 ->select('companies.id',

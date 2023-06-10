@@ -9,6 +9,11 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
+use App\Models\Company;
+use App\Models\Branch;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
 class RegisterController extends Controller
 {
     /*
@@ -50,9 +55,12 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'company_name'          => ['required', 'string', 'min:3', 'max:255'],
+            'code'                  => ['required', 'string', 'min:2', 'max:255'],
+            'mobile_no'             => ['required', 'numeric', 'unique:companies'],
+            'name'                  => ['required', 'string', 'max:255'],
+            'email'                 => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password'              => ['required', 'string', 'min:8', 'confirmed']
         ]);
     }
 
@@ -64,10 +72,49 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+
+        // BEGIN :: Create new company
+            $company            = Company::create([
+                                        'name'          => isset($data['company_name']) ? $data['company_name'] : "", 
+                                        'code'          => isset($data['code']) ? $data['code'] : "", 
+                                        'mobile_no'     => isset($data['mobile_no']) ? $data['mobile_no'] : "", 
+                                        'owner_name'    => isset($data['name']) ? $data['name'] : "", 
+                                    ]);
+        // END :: Create new company
+
+        // BEGIN :: Create new branch
+            $branch             = Branch::create([
+                                        'name'          => "Main", 
+                                        'company_id'    => $company->id 
+                                    ]);
+        // END :: Create new branch
+
+        // BEGIN :: Create new role
+            $company_role_name  = "Admin - ". (isset($data['company_name']) ? $data['company_name'] : "");
+            $role               = Role::create([
+                                        'name'          => $company_role_name, 
+                                        'company_id'    => $company->id
+                                    ]);
+        // END :: Create new role
+
+
+        // BEGIN :: Create new user
+            $user               = User::create([
+                                        'name'          => isset($data['name']) ? $data['name'] : "", 
+                                        'email'         => isset($data['email']) ? $data['email'] : "", 
+                                        'password'      => isset($data['password']) ? Hash::make($data['password']) : "",
+                                        'company_id'    => $company->id,
+                                        'branch_id'     => $branch->id
+                                    ]);
+        // END :: Create new company
+  
+
+        // BEGIN :: Assign role to user
+            $permissions        = Permission::pluck('id','id')->all();
+            $role->syncPermissions($permissions);
+            $user->assignRole([$role->id]);
+        // END :: Assign role to user
+  
+        return $user;
     }
 }
