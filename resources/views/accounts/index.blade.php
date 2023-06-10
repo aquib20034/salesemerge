@@ -24,6 +24,7 @@
                                 <thead>
                                     <tr>
                                         <th>Name</th>
+                                        <th>Type</th>
                                         <th width="8%">Active</th>
                                         <th width="5%">Action</th>
                                     </tr>
@@ -48,6 +49,7 @@
             dtButtons.push(deleteButton)
             let data = [
                 { data: 'name', name: 'name' },
+                { data: 'account_type', name: 'account_type' },
                 { data: 'active', name: 'active' },
                 { data: 'actions', name: '{{ trans('global.actions') }}',orderable:false,searchable:false }
             ]

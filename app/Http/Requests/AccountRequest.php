@@ -17,6 +17,8 @@ class AccountRequest extends FormRequest
             $con    =   [
                             'name'                  => 'required|min:2|regex:/^([^0-9]*)$/',
                             'account_type_id'       => 'required|numeric|min:1|exists:account_types,id',
+                            'group_head_id'         => 'required|numeric|min:1|exists:account_types,id',
+                            'child_head_id'         => 'required|numeric|min:1|exists:account_types,id',
                             'company_id'            => 'required|numeric|min:1|exists:companies,id',
                             'branch_id'             => 'required|numeric|min:1|exists:branches,id',
                         ];

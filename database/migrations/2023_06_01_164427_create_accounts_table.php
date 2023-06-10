@@ -18,6 +18,8 @@ class CreateAccountsTable extends Migration
             $table->string('name')->nullable();
             $table->text('detail')->nullable();
             $table->unsignedInteger('account_type_id')->nullable();
+            $table->unsignedInteger('group_head_id')->nullable();
+            $table->unsignedInteger('child_head_id')->nullable();
             $table->unsignedInteger('company_id')->nullable();
             $table->unsignedInteger('branch_id')->nullable();
             $table->unsignedInteger('created_by')->nullable();

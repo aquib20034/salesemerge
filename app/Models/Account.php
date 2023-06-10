@@ -10,6 +10,8 @@ class Account extends Model
         'name',
         'detail',
         'account_type_id',
+        'group_head_id',
+        'child_head_id',
         'company_id',
         'branch_id',
         'created_by',
@@ -22,15 +24,39 @@ class Account extends Model
         return ucwords($value);
     }
 
+    public function account_type_tree($row){
+        $type_name  = "";
+        $type_name  = (isset($row->child_head->name)) ? ($row->child_head->name) : "";
+        $type_name .= (isset($row->group_head->name)) ? (" > " . ($row->group_head->name)) : "";
+        $type_name .= (isset($row->account_type->name)) ? (" > " . ($row->account_type->name)) : "";
+
+        return $type_name;
+
+    }
     public function account_type()
     {
-        return $this->belongsTo(Account_type::class, 'account_type_id', 'id');
+        return $this->belongsTo(AccountType::class, 'account_type_id', 'id');
     }
 
-    public function ledger()
+    public function group_head()
+    {
+        return $this->belongsTo(AccountType::class, 'group_head_id', 'id');
+    }
+
+    public function child_head()
+    {
+        return $this->belongsTo(AccountType::class, 'child_head_id', 'id');
+    }
+
+    public function ledgers()
     {
         return $this->hasMany(Ledger::class, 'id', 'account_id');
     }
+
+    // public function ledgers()
+    // {
+    //     return $this->hasMany(Ledger::class);
+    // }
 
     public function company()
     {

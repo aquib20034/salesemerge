@@ -27,6 +27,11 @@
                                         </tr>
                                         
                                         <tr>
+                                            <th>Head of Accounts/ Account types</th>
+                                            <td>{{$data->account_type_tree($data)}}</td>
+                                        </tr>
+
+                                        <tr>
                                             <th>Company</th>
                                             <td>{{isset($data->company->name) ? $data->company->name : ""}}</td>
                                         </tr>

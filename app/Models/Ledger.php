@@ -19,9 +19,14 @@ class Ledger extends Model
         return ucwords($value);
     }
 
-    public function acount()
+    // public function acount()
+    // {
+    //     return $this->belongsTo(Account::class, 'account_id', 'id');
+    // }
+
+    public function account()
     {
-        return $this->belongsTo(Account::class, 'account_id', 'id');
+        return $this->belongsTo(Account::class);
     }
 
     public function transaction()
