@@ -28,7 +28,7 @@
         <link rel="stylesheet" href="{{asset('assets/css/demo.css')}}">
 
         <!-- CSS Just for demo purpose, don't include it in your project -->
-        
+
     </head>
 <body>
     <div id="app">
@@ -55,7 +55,11 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                             </li>
-                           
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            </li>
+
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -80,13 +84,13 @@
             </div>
         </nav>
 
-      
+
     </div>
 </body class="login">
   <main class="py-4">
   @yield('content')
         </main>
-<script src="{{asset('assets/js/core/jquery.3.2.1.min.js')}}"></script>
+        <script src="{{asset('assets/js/core/jquery.3.2.1.min.js')}}"></script>
         <script src="{{asset('assets/js/core/popper.min.js')}}"></script>
         <script src="{{asset('assets/js/core/bootstrap.min.js')}}"></script>
 
@@ -110,7 +114,10 @@
         <script src="{{asset('assets/js/plugin/chart-circle/circles.min.js')}}"></script>
 
         <!-- Datatables -->
-        <script src="{{asset('assets/js/plugin/datatables/datatables.min.js')}}"></script>
+{{--        <script src="{{asset('assets/js/plugin/datatables/datatables.min.js')}}"></script>--}}
+{{--        <script src="{{ asset('libs/datatable/jquery.dataTables.min.js') }}"></script>--}}
+{{--        <script src="{{ asset('libs/datatable/dataTables.select.min.js') }}"></script>--}}
+{{--        <script src="{{ asset('libs/datatable/dataTables.buttons.min.js') }}"></script>--}}
 
         <!-- Bootstrap Notify -->
         <script src="{{asset('assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js')}}"></script>
@@ -136,6 +143,6 @@
         <script src="{{asset('assets/js/demo.js')}}"></script> -->
 
         <script >
-        
+
 	</script>
 </html>

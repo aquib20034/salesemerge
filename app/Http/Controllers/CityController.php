@@ -10,7 +10,7 @@ use App\Models\City;
 use DB;
 use DataTables;
 
-class cityController extends Controller
+class CityController extends Controller
 {
     function __construct()
     {
@@ -22,6 +22,34 @@ class cityController extends Controller
 
     public function index(Request $request)
     {
+        if ($request->ajax()) {
+            $query = City::query()
+                ->orderBy('cities.name','DESC')
+                ->get();
+            $table = DataTables::of($query);
+
+            $table->addColumn('placeholder', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
+
+            $table->editColumn('actions', function ($row) {
+                $viewGate = 'city-list';
+                $editGate = 'city-edit';
+                $deleteGate = 'city-delete';
+                $crudRoutePart = 'cities';
+
+                return view('partials.datatableActions', compact(
+                    'viewGate',
+                    'editGate',
+                    'deleteGate',
+                    'crudRoutePart',
+                    'row'
+                ));
+            });
+
+            $table->rawColumns(['actions', 'placeholder']);
+
+            return $table->make(true);
+        }
         return view('cities.index');
     }
 
@@ -30,7 +58,7 @@ class cityController extends Controller
         $data = DB::table('cities')
                 ->orderBy('cities.name','DESC')
                 ->get();
-        return 
+        return
             DataTables::of($data)
                 ->addColumn('action',function($data){
                     return '
@@ -41,7 +69,7 @@ class cityController extends Controller
                         <a class="btn btn-info btn-sm" href="cities/'.$data->id.'/edit" id="'.$data->id.'">
                             <i class="fas fa-pencil-alt"></i>
                         </a>
-                     
+
                         <button
                             class="btn btn-danger btn-sm delete_all"
                             data-url="'. url('cityDelete') .'" data-id="'.$data->id.'">
@@ -64,9 +92,9 @@ class cityController extends Controller
         request()->validate([
             'name' => 'required|min:3|unique:cities,name',
         ]);
-        
+
         $data = city::create($request->all());
-      
+
         return redirect()
                 ->route('cities.index')
                 ->with('success','city '.$request['name'] .' added successfully.');
@@ -100,7 +128,7 @@ class cityController extends Controller
         $data = city::findOrFail($id);
         $this->validate($request,[
             'name' => 'required|min:3|unique:cities,name,'. $id,
-            
+
         ]);
 
         $upd = $data->update($request->all());

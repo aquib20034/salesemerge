@@ -21,19 +21,19 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="myTable" class="display table table-striped table-hover" style="width: 100%;" cellspacing="0">
+                        <table class="table table-borderless table-striped table-hover ajaxTable datatable datatable-Customer">
                             <thead>
                                 <tr>
                                     <th width="5%">#</th>
                                     <th> Full Name</th>
                                     <th> Contact#</th>
-                                    <th> Type</th>
+{{--                                    <th> Type</th>--}}
                                     <th width="10%" >Action</th>
                                 </tr>
                             </thead>
-                          
+
                             <tbody>
-                                
+
                             </tbody>
                         </table>
                     </div>
@@ -42,33 +42,23 @@
         </div>
     </div>
 </div>
-
-<script>
-    $(document).ready(function () {  
-
-    var t = $('#myTable').DataTable({
-          "aaSorting": [],
-            "processing": true,
-            "serverSide": false,
-            "select":true,
-            "ajax": "{{ url('customerList') }}",
-            "method": "GET",
-            "columns": [
-                {"data": "srno"},
-                {"data": "name"},
-                {"data": "contact_no"},
-                {"data": "customer_type_name"},
-                {"data": "action",orderable:false,searchable:false}
-
+@endsection
+@section('scripts')
+    @parent
+    <script>
+        $(function () {
+            let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+            @can('customer-delete')
+                deleteButton = DeleteButtonCall("{{ route('customers.massDestroy') }}")
+            @endcan
+            dtButtons.push(deleteButton)
+            let data = [
+                { data: 'placeholder', name: 'placeholder' },
+                { data: 'name', name: 'name' },
+                { data: 'contact_no', name: 'contact_no' },
+                { data: 'actions', name: '{{ trans('global.actions') }}' }
             ]
+            DataTableCall('.datatable-Customer', "{{ route('customers.index') }}", dtButtons, data)
         });
-     t.on( 'order.dt search.dt', function () {
-        t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-            cell.innerHTML = i+1;
-        } );
-    } ).draw();
-
-
-    });
-</script>
+    </script>
 @endsection

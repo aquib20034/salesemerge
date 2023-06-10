@@ -21,7 +21,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="myTable" class="display table table-striped table-hover" style="width: 100%;" cellspacing="0">
+                        <table class="table table-borderless table-striped table-hover ajaxTable datatable datatable-Cities">
                             <thead>
                                 <tr>
                                     <th width="5%">#</th>
@@ -29,9 +29,9 @@
                                     <th width="10%" >Action</th>
                                 </tr>
                             </thead>
-                          
+
                             <tbody>
-                                
+
                             </tbody>
                         </table>
                     </div>
@@ -40,31 +40,65 @@
         </div>
     </div>
 </div>
+@endsection
+@section('scripts')
+    @parent
+    <script>
+        $(function () {
 
-<script>
-    $(document).ready(function () {  
+            let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+            @can('role-delete')
+            let deleteButtonTrans = '{{ trans('global.datatables.delete') }}';
+            let deleteButton = {
+                text: deleteButtonTrans,
+                url: "{{ route('customer.massDestroy') }}",
+                className: 'btn-danger',
+                action: function (e, dt, node, config) {
+                    var ids = $.map(dt.rows({ selected: true }).data(), function (entry) {
+                        return entry.id
+                    });
 
-    var t = $('#myTable').DataTable({
-          "aaSorting": [],
-            "processing": true,
-            "serverSide": false,
-            "select":true,
-            "ajax": "{{ url('cityList') }}",
-            "method": "GET",
-            "columns": [
-                {"data": "srno"},
-                {"data": "name"},
-                {"data": "action",orderable:false,searchable:false}
+                    if (ids.length === 0) {
+                        alert('{{ trans('global.datatables.zero_selected') }}')
 
-            ]
+                        return
+                    }
+
+                    if (confirm('{{ trans('global.areYouSure') }}')) {
+                        $.ajax({
+                            headers: {'x-csrf-token': _token},
+                            method: 'POST',
+                            url: config.url,
+                            data: { ids: ids, _method: 'DELETE' }})
+                            .done(function () { location.reload() })
+                    }
+                }
+            }
+            dtButtons.push(deleteButton)
+
+            @endcan
+
+            let dtOverrideGlobals = {
+                buttons: dtButtons,
+                processing: true,
+                serverSide: true,
+                retrieve: true,
+                aaSorting: [],
+                ajax: "{{ route('cities.index') }}",
+                columns: [
+                    { data: 'placeholder', name: 'placeholder' },
+                    { data: 'name', name: 'name' },
+                    { data: 'actions', name: '{{ trans('global.actions') }}' }
+                ],
+                orderCellsTop: true,
+                order: [[ 1, 'desc' ]],
+                pageLength: 100,
+            };
+            let table = $('.datatable-Cities').DataTable(dtOverrideGlobals);
+            $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
+                $($.fn.dataTable.tables(true)).DataTable()
+                    .columns.adjust();
+            });
         });
-     t.on( 'order.dt search.dt', function () {
-        t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-            cell.innerHTML = i+1;
-        } );
-    } ).draw();
-
-
-    });
-</script>
+    </script>
 @endsection

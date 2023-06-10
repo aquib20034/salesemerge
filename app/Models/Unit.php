@@ -8,55 +8,28 @@ class Unit extends Model
 {
     protected $fillable = [
         'name',
+        'company_id',
+        'branch_id',
+        'active'
     ];
 
-    public function getViewButton($mod){
-        if(isset($this->id)){
-            return '<div class="btn-group btn-group">
-                        <a class="btn btn-info btn-xs" href="'.$mod.'s/'.$this->id.'">
-                            <i class="fa fa-eye"></i>
-                        </a>
-                    </div>';
-        }
+    public function getNameAttribute($value)
+    {
+        return ucwords($value);
     }
 
-    public function getEditButton($mod){
-        if(isset($this->id)){
-            return '<div class="btn-group btn-group">
-                        <a class="btn btn-info btn-xs" href="'.$mod.'s/'.$this->id.'">
-                            <i class="fa fa-eye"></i>
-                        </a>
-                    </div>';
-        }
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id', 'id');
     }
 
-    public function getDeleteButton($mod){
-        if(isset($this->id)){
-            return '<div class="btn-group btn-group">
-                        <button
-                            class="btn btn-danger btn-xs delete_all"
-                            data-url="'. url($mod.'s_delete') .'" data-id="'.$this->id.'">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </div>';
-        }
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id', 'id');
     }
 
-    public function getAllButton($mod){
-        if(isset($this->id)){
-            return '<div class="btn-group btn-group">
-                        <a class="btn btn-info btn-xs" href="'.$mod.'s/'.$this->id.'">
-                            <i class="fa fa-eye"></i>
-                        </a>
-                        <a class="btn btn-info btn-xs" href="'.$mod.'s/'.$this->id.'/edit" id="'.$this->id.'">
-                            <i class="fas fa-pencil-alt"></i>
-                        </a>
-                        <button
-                            class="btn btn-danger btn-xs delete_all"
-                            data-url="'. url($mod.'s_delete') .'" data-id="'.$this->id.'">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </div>';
-        }
+    public function getActiveAttribute($value)
+    {
+        return ($value == 1) ? "Active" : "Inactive";
     }
 }
