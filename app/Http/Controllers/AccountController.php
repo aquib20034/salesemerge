@@ -18,10 +18,10 @@ class AccountController extends Controller
 {
     function __construct()
     {
-         $this->middleware('permission:account-list', ['only' => ['index','show']]);
-         $this->middleware('permission:account-create', ['only' => ['create','store']]);
-         $this->middleware('permission:account-edit', ['only' => ['edit','update']]);
-         $this->middleware('permission:account-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:account-list', ['only' => ['index','show']]);
+        $this->middleware('permission:account-create', ['only' => ['create','store']]);
+        $this->middleware('permission:account-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:account-delete', ['only' => ['destroy']]);
     }
 
     public function index(Request $request)
@@ -64,7 +64,6 @@ class AccountController extends Controller
                             ->where('parent_id', $parent_id)
                             ->pluck('name','id')
                             ->all();
-                            // dd($records);
         
         if(isset($type)){
             switch($type){
@@ -98,7 +97,7 @@ class AccountController extends Controller
                 ->with('success','Record added successfully.');
     }
 
-     public function show($id)
+    public function show($id)
     {
         $company_id = Auth::user()->company_id;
         $data       = Account::where('company_id',$company_id)->findOrFail($id);

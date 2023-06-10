@@ -68,8 +68,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('account_types', AccountTypeController::class);
     Route::delete('account_types/destory', [AccountTypeController::class, 'destroy'])->name('account_types.massDestroy');
 	
-
-    
     //accounts
     Route::resource('accounts', AccountController::class);
     Route::delete('accounts/destory', [AccountController::class, 'destroy'])->name('accounts.massDestroy');

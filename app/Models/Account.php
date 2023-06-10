@@ -8,14 +8,28 @@ class Account extends Model
 {
     protected $fillable = [
         'name',
+        'detail',
+        'account_type_id',
         'company_id',
         'branch_id',
+        'created_by',
+        'updated_by',
         'active'
     ];
 
     public function getNameAttribute($value)
     {
         return ucwords($value);
+    }
+
+    public function account_type()
+    {
+        return $this->belongsTo(Account_type::class, 'account_type_id', 'id');
+    }
+
+    public function ledger()
+    {
+        return $this->hasMany(Ledger::class, 'id', 'account_id');
     }
 
     public function company()

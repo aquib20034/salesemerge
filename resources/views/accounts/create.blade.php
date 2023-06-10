@@ -23,8 +23,7 @@
                         </div>
                     </div>
                     <!--begin::Form-->
-                            <!-- {!! Form::open(array('route' => 'accounts.store','method'=>'POST','id'=>'form','enctype'=>'multipart/form-data')) !!} -->
-                            {!! Form::open(array('id'=>'form','enctype'=>'multipart/form-data')) !!}
+                            {!! Form::open(array('route' => 'accounts.store','method'=>'POST','id'=>'form','enctype'=>'multipart/form-data')) !!}
 
                             {{  Form::hidden('created_by', Auth::user()->id ) }}
                             {{  Form::hidden('company_id', Auth::user()->company_id ) }}
@@ -65,7 +64,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                        <!-- <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                             <div class="form-group">
                                                 {!! Html::decode(Form::label('contact_no','Contact No')) !!}
                                                 {!! Form::number('contact_no', null, array('placeholder' => 'Enter contact no','class' => 'form-control')) !!}
@@ -93,7 +92,7 @@
                                                     {!! "<span class='span_danger'>". $errors->first('previous_amount')."</span>"!!} 
                                                 @endif
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>  
 
