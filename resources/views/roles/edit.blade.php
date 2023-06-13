@@ -39,10 +39,10 @@
                                         <table id="myTable" class="table table-separate table-head-custom dt-responsive" style="width: 100%;" cellspacing="0">
                                             <tr>
                                                 <th> <label> Role Name</label></th>
-                                                <th>List</th>
-                                                <th>Create</th>
-                                                <th>Edit</th>
-                                                <th>Show</th>
+                                                <th>List/ Show</th>
+                                                <th>Create/ Store</th>
+                                                <th>Edit/ Update</th>
+                                                <th>Delete</th>
                                             </tr>
                                             <?php   $i=0;
                                                 $val = $permission[0]['name'];
@@ -67,7 +67,8 @@
                                                         </label>
                                                     </div> -->
                                                     <span class="switch switch-sm switch-icon switch-success">
-                                                        <label>
+                                                        <label> 
+                                                            <!-- {{  $currentVal}} -->
                                                             {{ Form::checkbox('permission[]', $value->id, in_array($value->id, $rolePermissions) ? true : false, array('class' => 'form-control', 'data-toggle'=>'toggle', 'data-onstyle'=>'success', 'data-style' => 'btn-round')) }}
                                                             <span></span>
                                                         </label>
@@ -93,8 +94,13 @@
                                                         </label>
                                                     </span>
                                                 </td>
-                                                <?php if ($LastVal == 'profile'){ echo "<td> </td><td> </td><td></td>";}}?>
-                                                <?php } ?>
+
+                                                
+                                                <?php 
+                                                    // if ($LastVal == 'profile')
+                                                    //     { echo "<td> </td><td> </td><td></td>";}
+                                                    ?>
+                                                <?php }} ?>
                                             </tr>
                                         </table>
 

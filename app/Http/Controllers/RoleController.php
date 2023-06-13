@@ -102,11 +102,14 @@ class RoleController extends Controller
     {
         $company_id         = Auth::user()->company_id;
         $role               = Role::where('company_id',$company_id)->findOrFail($id);
-        $permission         = Permission::get();
+        $permission         = Permission::orderBy('id')->get();
         $rolePermissions    = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$id)
                                 ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
                                 ->all();
 
+                            
+
+                                   
         return view('roles.edit',compact('role','permission','rolePermissions'));
     }
 
