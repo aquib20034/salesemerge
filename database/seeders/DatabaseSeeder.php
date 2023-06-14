@@ -9,6 +9,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             AccountTypeSeeder::class,
+            TransactionTypeSeeder::class,
             CountrySeeder::class,
             CitySeeder::class,
             PermissionSeeder::class,

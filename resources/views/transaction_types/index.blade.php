@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title','Accounts')
+@section('title',isset($title) ? $title : "")
 @section('content')
     @include( '../sweet_script')
     <div class="page-inner">
@@ -12,8 +12,8 @@
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <h4 class="card-title">Manage @yield('title')</h4>
-                            @can('account-create')
-                                <a  href="{{ route('accounts.create') }}" class="btn btn-primary btn-xs ml-auto">
+                            @can(isset($permissions['create']) ?$permissions['create'] : "")
+                                <a  href="{{ route($page.'.create') }}" class="btn btn-primary btn-xs ml-auto">
                                 <i class="fa fa-plus"></i> New</a>
                             @endcan
                         </div>
@@ -24,7 +24,6 @@
                                 <thead>
                                     <tr>
                                         <th>Name</th>
-                                        <th>Type</th>
                                         <th width="8%">Active</th>
                                         <th width="5%">Action</th>
                                     </tr>
@@ -43,17 +42,16 @@
     <script>
         $(function () {
             let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-            @can('account-delete')
-                deleteButton = DeleteButtonCall("{{ route('accounts.massDestroy') }}")
+            @can('transaction_type-delete')
+                deleteButton = DeleteButtonCall("{{ route('transaction_types.massDestroy') }}")
             @endcan
             dtButtons.push(deleteButton)
             let data = [
                 { data: 'name', name: 'name' },
-                { data: 'account_type', name: 'account_type' },
                 { data: 'active', name: 'active' },
                 { data: 'actions', name: '{{ trans('global.actions') }}',orderable:false,searchable:false }
             ]
-            DataTableCall('#myTable', "{{ route('accounts.index') }}", dtButtons, data)
+            DataTableCall('#myTable', "{{ route('transaction_types.index') }}", dtButtons, data)
         });
     </script>
 @endsection

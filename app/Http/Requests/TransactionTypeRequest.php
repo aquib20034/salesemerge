@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class AccountRequest extends FormRequest
+class TransactionTypeRequest extends FormRequest
 {
     public function authorize()
     {
@@ -16,9 +16,6 @@ class AccountRequest extends FormRequest
         if((isset($this->action)) && (($this->action) == "store") ){
             $con    =   [
                             'name'                  => 'required|min:2|regex:/^([^0-9]*)$/',
-                            'account_type_id'       => 'required|numeric|min:1|exists:account_types,id',
-                            'group_head_id'         => 'required|numeric|min:1|exists:account_types,id',
-                            'child_head_id'         => 'required|numeric|min:1|exists:account_types,id',
                             'company_id'            => 'required|numeric|min:1|exists:companies,id',
                             'branch_id'             => 'required|numeric|min:1|exists:branches,id',
                         ];
@@ -28,7 +25,6 @@ class AccountRequest extends FormRequest
         }else{
             $con    =   [
                             'name'                  => 'required|min:2|regex:/^([^0-9]*)$/',
-                            'account_type_id'       => 'required|numeric|min:1|exists:account_types,id',
                             // 'company_id'            => 'required|numeric|min:1|exists:companies,id',
                             // 'branch_id'             => 'required|numeric|min:1|exists:branches,id',
                         ];
