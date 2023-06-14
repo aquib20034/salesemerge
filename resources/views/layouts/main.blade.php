@@ -340,8 +340,16 @@
                                 <span class="caret"></span>
                             </a>
                             <div class="collapse" id="accounts" style="">
-
                                 <ul class="nav nav-collapse">
+
+                                    @can('account_type-list')
+                                        <li class="nav-item @if('account_types' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                            <a  href="{{url('/account_types')}}">
+                                                <span class="sub-item">Account types</span>
+                                            </a>
+                                        </li>
+                                    @endcan
+
                                     @can('account-list')
                                         <li class="nav-item @if('accounts' == url_explode(request()->path()) ) {{'active'}} @endif">
                                             <a  href="{{url('/accounts')}}">

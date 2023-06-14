@@ -62,7 +62,7 @@ class AccountTypeController extends Controller
     public function create()
     {
         $company_id     = Auth::user()->company_id;
-        $account_types     = AccountType::where('company_id',$company_id)->pluck('name','id')->all();
+        $account_types  = AccountType::where('company_id',$company_id)->pluck('name','id')->all();
         return view('account_types.create',compact('account_types'));
     }
 
