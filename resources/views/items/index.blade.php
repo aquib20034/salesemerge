@@ -36,7 +36,7 @@
                                         <th width="5%">Action</th>
                                     </tr>
                                 </thead>
-                            
+
                                 <tbody>
                                 </tbody>
                             </table>
@@ -52,8 +52,8 @@
             let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
             @can('item-delete')
                 deleteButton = DeleteButtonCall("{{ route('items.massDestroy') }}")
-            @endcan
             dtButtons.push(deleteButton)
+            @endcan
             let data = [
                 { data: 'name', name: 'name' },
                 { data: 'manufacturer_id', name: 'manufacturer_id' },
@@ -64,7 +64,6 @@
                 { data: 'free_piece', name: 'free_piece' },
                 { data: 'purchase_price', name: 'purchase_price' },
                 { data: 'sell_price', name: 'sell_price' },
-              
                 { data: 'active', name: 'active' },
                 { data: 'actions', name: '{{ trans('global.actions') }}',orderable:false,searchable:false }
             ]

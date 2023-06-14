@@ -31,7 +31,7 @@
                                         <th width="5%">Action</th>
                                     </tr>
                                 </thead>
-                            
+
                                 <tbody>
                                 </tbody>
                             </table>
@@ -47,8 +47,8 @@
             let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
             @can('user-delete')
                 deleteButton = DeleteButtonCall("{{ route('users.massDestroy') }}")
-            @endcan
             dtButtons.push(deleteButton)
+            @endcan
             let data = [
                 { data: 'name', name: 'name' },
                 { data: 'email', name: 'email' },
