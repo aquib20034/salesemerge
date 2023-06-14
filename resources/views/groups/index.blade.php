@@ -29,7 +29,7 @@
                                         <th width="5%">Action</th>
                                     </tr>
                                 </thead>
-                            
+
                                 <tbody>
                                 </tbody>
                             </table>
@@ -45,8 +45,8 @@
             let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
             @can('group-delete')
                 deleteButton = DeleteButtonCall("{{ route('groups.massDestroy') }}")
-            @endcan
             dtButtons.push(deleteButton)
+            @endcan
             let data = [
                 { data: 'name', name: 'name' },
                 { data: 'parent_id', name: 'parent_id' },

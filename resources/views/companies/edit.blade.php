@@ -375,8 +375,8 @@
             let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
             @can('company-delete')
                 deleteButton = DeleteButtonCall("{{ route('branches.massDestroy') }}")
-            @endcan
             dtButtons.push(deleteButton)
+            @endcan
             let data = [
                 // { data: 'placeholder', name: 'placeholder' },
                 { data: 'name', name: 'name' },
@@ -398,7 +398,6 @@
             $('#form_branch').submit(function(e) {
                 e.preventDefault();
                 var formData = new FormData(this);
-                console.log(formData)
                 $.ajax({
                     type: 'POST',
                     url: "{{ route('branches.store') }}",
@@ -414,7 +413,7 @@
                             this.reset();
                             toastr.success(data.success);
                             $('#spinner-div').hide();
-                            $('#BranchUpdate').modal('hide');
+                            $('#BranchAdd').modal('hide');
                             $('.datatable-Branch').DataTable().ajax.reload()
                         }
                     },
@@ -459,7 +458,7 @@
                         this.reset();
                         toastr.success(data.success);
                         $('#spinner-div').hide();
-                        $('#BranchAdd').modal('hide');
+                        $('#BranchUpdate').modal('hide');
                         $('.datatable-Branch').DataTable().ajax.reload()
                     }
                 },
