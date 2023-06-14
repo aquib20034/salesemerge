@@ -43,8 +43,8 @@
                 let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
                 @can('role-delete')
                     deleteButton = DeleteButtonCall("{{ route('roles.massDestroy') }}")
-                @endcan
                 dtButtons.push(deleteButton)
+                @endcan
                 let data = [
                     { data: 'name', name: 'name' },
                     { data: 'actions', name: '{{ trans('global.actions') }}',orderable:false,searchable:false }
@@ -53,3 +53,6 @@
             });
         </script>
 @endsection
+
+
+
