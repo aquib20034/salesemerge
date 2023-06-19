@@ -12,6 +12,8 @@ class Account extends Model
         'account_type_id',
         'group_head_id',
         'child_head_id',
+        'account_limit',
+        'city_id',
         'company_id',
         'branch_id',
         'created_by',
@@ -33,6 +35,12 @@ class Account extends Model
         return $type_name;
 
     }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city_id', 'id');
+    }
+
     public function account_type()
     {
         return $this->belongsTo(AccountType::class, 'account_type_id', 'id');
@@ -58,8 +66,18 @@ class Account extends Model
     //     return $this->hasMany(Ledger::class);
     // }
 
-    public function company()
-    {
+    public function opening_transaction($account_id){
+        $trnx   =   Transaction::where('account_id',$account_id)
+                        ->where('detail', 'Account opening')
+                        ->select('id','account_id')
+                        ->first();
+
+        return $trnx;
+        return $trnx->ledger->amount ?? 0;
+
+    }
+
+    public function company(){
         return $this->belongsTo(Company::class, 'company_id', 'id');
     }
 

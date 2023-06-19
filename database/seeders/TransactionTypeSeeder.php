@@ -9,6 +9,7 @@ class TransactionTypeSeeder extends Seeder
     public function run()
     {
         $data = [
+            'Account opening Voucher',
             'Cash Receiving Voucher',
             'Cash Payment Voucher',
             'Bank Deposit Voucher',

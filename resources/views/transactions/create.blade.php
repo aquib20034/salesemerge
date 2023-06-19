@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title','Account')
+@section('title','Transactions')
 @section('content')
 <style>
     .cls_form{
@@ -9,7 +9,26 @@
     @include( '../sweet_script')
     <div class="page-inner">
         <div class="page-header">
-            <h4 class="page-title">@yield('title')</h4>
+            <h4 class="page-title">@yield('title') -- No completed</h4>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex align-items-center">
+                            <h4 class="card-title">Select transaction voucher</h4>
+                            <div class="col-md-3">
+                                {!! Form::select('transaction_type_id', [0=>"---select---"]+$transaction_types,null, array('class' => 'form-control','id'=>'transaction_type_id')) !!}
+                            </div>
+                            
+                            <!-- <a  href="{{ route('transactions.index') }}" class="btn btn-primary btn-xs ml-auto">
+                                <i class="fas fa-arrow-left"></i>
+                            </a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="row">
             <div class="col-md-12">

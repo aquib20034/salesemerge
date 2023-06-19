@@ -10,7 +10,7 @@ class Ledger extends Model
         'name',
         'account_id',
         'tranasction_id',
-        'transaction_type',
+        'amount_type',
         'amount'
     ];
 
