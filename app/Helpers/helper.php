@@ -75,7 +75,7 @@ function hp_cash_in_hand(){
                     ->where('account_type_id',1) // Assets
                     ->where('group_head_id',2) // Current Assets
                     ->where('child_head_id',3) // Cash in Hand
-                    ->select('name','current_balance')
+                    ->select('id','name','current_balance')
                     ->first();
 
 }

@@ -13,7 +13,7 @@ use App\Models\Transaction;
 use App\Models\AccountType;
 use Illuminate\Http\Request;
 use App\Http\Requests\AccountRequest;
-use App\Http\Requests\OpeningBalanceRequest;
+use App\Http\Requests\TransactionRequest;
 
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,9 +21,11 @@ use Symfony\Component\HttpFoundation\Response;
 class TransactionController extends Controller
 {
     var $account_opening_text;
+    var $today;
     function __construct()
     {
         $this->account_opening_text = "Account opening";
+        $this->today                = date('Y-m-d H:i:s');
         $this->middleware('permission:transaction-list', ['only' => ['index','show']]);
         $this->middleware('permission:transaction-create', ['only' => ['create','store']]);
         $this->middleware('permission:transaction-edit', ['only' => ['edit','update']]);
@@ -54,20 +56,103 @@ class TransactionController extends Controller
                                             ));
     }
 
-
-    public function store(AccountRequest $request)
+    public function store(TransactionRequest $request)
     {
-         // Validate the request data
-         $validated = $request->validated();
+        try {
+            // Start a database transaction
+            DB::beginTransaction();
+                $msg                    = "Record added successfully.";
+                $csh_in_hnd_account_id  = isset(hp_cash_in_hand()->id) ? hp_cash_in_hand()->id : 0;
 
-         // Create a new account
-         $account = Account::create($request->all());
+                // Validate the request data
+                $validated = $request->validated();
 
-         return redirect()
-            // ->route('accounts.index')
-            ->back()
-            ->with('success', 'Record added successfully.');
+                if ($request->filled('transaction_type_id') && ($request->transaction_type_id == 2)) {
+                    // Process cash receiving voucher
+                    $this->processCashReceivingVoucher($request, $csh_in_hnd_account_id);
+                } elseif ($request->filled('transaction_type_id') && ($request->transaction_type_id == 3)) {
+                    // Process cash payment voucher
+                    $this->processCashPaymentVoucher($request, $csh_in_hnd_account_id);
+                }
+            // Commit the transaction
+            DB::commit();
+            return response()->json(['status' => 200, 'msg' => $msg]);
+        } catch (\Exception $e) {
+            // Roll back the transaction if an exception occurs
+            DB::rollBack();
+            hp_send_exception($e);
 
+            return response()->json([
+                'code' => 401,
+                'errors' => [0 => "Something went wrong."]
+            ], 401);
+        }
+    }
+
+
+    // Process cash receiving voucher
+    private function processCashReceivingVoucher($request, $csh_in_hnd_account_id)
+    {
+        if ($request->filled('account_ids')) {
+            foreach ($request->account_ids as $key => $account_id) {
+
+                $payee                  = Account::select('name')->findOrFail($account_id);
+                $transaction_type_id    = $request->filled('transaction_type_id') ? $request->transaction_type_id : 0;
+                $detail                 = isset($request->details[$key]) ? $request->details[$key] : null;
+                $amount                 = isset($request->amounts[$key]) ? $request->amounts[$key] : 0;
+                $detail2                = $detail ."; Payee: " . ((isset($payee->name)) ? $payee->name : "");
+
+                // Create credit transaction
+                $this->createCustomTransaction($account_id, $transaction_type_id, $detail, 'C', $amount);
+
+                // Create debit transaction
+                $this->createCustomTransaction($csh_in_hnd_account_id, $transaction_type_id, $detail2, 'D', $amount);
+
+            }
+        }
+    }
+
+    // Process cash payment voucher
+    private function processCashPaymentVoucher($request, $csh_in_hnd_account_id)
+    {
+        if ($request->filled('account_ids')) {
+            foreach ($request->account_ids as $key => $account_id) {
+                $receiver               = Account::select('name')->findOrFail($account_id);
+                $transaction_type_id    = $request->filled('transaction_type_id') ? $request->transaction_type_id : 0;
+                $detail                 = isset($request->details[$key]) ? $request->details[$key] : null;
+                $amount                 = isset($request->amounts[$key]) ? $request->amounts[$key] : 0;
+                $detail2                = $detail ."; Receiver: " . ((isset($receiver->name)) ? $receiver->name : "");
+
+                // Create credit transaction
+                $this->createCustomTransaction($csh_in_hnd_account_id, $transaction_type_id, $detail2, 'C', $amount);
+
+                // Create debit transaction
+                $this->createCustomTransaction($account_id, $transaction_type_id, $detail, 'D', $amount);
+            }
+        }
+    }
+
+
+     // create custom transaction
+    private function createCustomTransaction($account_id, $transaction_type_id, $detail, $amount_type, $amount)
+    {
+        $trnx                       = new Transaction();
+        $trnx->account_id           = $account_id;
+        $trnx->transaction_type_id  = $transaction_type_id;
+        $trnx->detail               = $detail;
+        $trnx->transaction_date     = $this->today;
+        $trnx->save();
+
+        $ledger                     = new Ledger();
+        $ledger->transaction_id     = $trnx->id;
+        $ledger->account_id         = $account_id;
+        $ledger->amount_type        = $amount_type;
+        $ledger->amount             = $amount;
+        $ledger->save();
+
+        $account                    = Account::where('id', $account_id)->first();
+        $account->current_balance   = hp_current_balance($account->id);
+        $account->save();
     }
 
 
