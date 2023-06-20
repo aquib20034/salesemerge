@@ -159,6 +159,14 @@ class AccountController extends Controller
                     }
                     
                 }
+
+                // update current balance of account
+                $account                        = Account::where('id',$request->account_id)->first();
+                $account->current_balance       = hp_current_balance($account->id); 
+                $account->save();
+
+
+                
             // Commit the transaction
             DB::commit();
             return response()->json(['status' => 200,'msg'=>$msg]);

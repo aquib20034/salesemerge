@@ -29,7 +29,16 @@
 	<!-- <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}"> -->
 	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.5.1/sweetalert2.all.js" ></script> -->
 	<script src="{{ asset('assets/js/sweetalert2.all.js') }}" ></script>
+
+    
+    
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 	<style>
+        .select2-container{
+            width:250px !important;
+            /* width:100% !important; */
+
+        }
 	.span_danger{
 		color:red;
 	}
@@ -520,6 +529,8 @@
 
     <!--   Core JS Files   -->
     <script src="{{ asset('assets/js/core/jquery.3.2.1.min.js') }}"></script>
+    
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
     <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
     <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
 

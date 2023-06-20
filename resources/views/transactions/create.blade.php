@@ -5,125 +5,50 @@
     .cls_form{
         display:none;
     }
+    .cls_label{
+        font-weight:900;
+
+    }
 </style>
     @include( '../sweet_script')
     <div class="page-inner">
-        <div class="page-header">
-            <h4 class="page-title">@yield('title') -- No completed</h4>
-        </div>
-        
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex align-items-center">
-                            <h4 class="card-title">Select transaction voucher</h4>
-                            <div class="col-md-3">
-                                {!! Form::select('transaction_type_id', [0=>"---select---"]+$transaction_types,null, array('class' => 'form-control','id'=>'transaction_type_id')) !!}
+                             <h4 class="page-title">@yield('title') vouchers</h4>
+                            <div  class="ml-auto">
+                                <span class="cls_label">Select transaction voucher</span>
+                                {!! Form::select('transaction_type_id', [0=>"---select---"]+$transaction_types,null, array('class' => 'form-control cls_transaction_type','id'=>'transaction_type_id')) !!}
                             </div>
-                            
-                            <!-- <a  href="{{ route('transactions.index') }}" class="btn btn-primary btn-xs ml-auto">
-                                <i class="fas fa-arrow-left"></i>
-                            </a> -->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <h4 class="card-title">Add @yield('title')</h4>
-                            <a  href="{{ route('accounts.index') }}" class="btn btn-primary btn-xs ml-auto">
-                                <i class="fas fa-arrow-left"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <!--begin::Form-->
-                        {!! Form::open(array('route' => 'accounts.store','method'=>'POST','id'=>'form','enctype'=>'multipart/form-data')) !!}
 
-                            {{  Form::hidden('created_by', Auth::user()->id ) }}
-                            {{  Form::hidden('company_id', Auth::user()->company_id ) }}
-                            {{  Form::hidden('branch_id', Auth::user()->branch_id ) }}
-                            {{  Form::hidden('action', "store" ) }}
-
-                            <div class="card-body">
-                                <div class="row">
-
-                                    <!-- Head of Account SelectBox -->
-                                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 cls_head_div">
-                                        <div class="form-group">
-                                            {!! Html::decode(Form::label('account_type_id','Head of accounts / Account type<span class="text-danger">*</span>')) !!}
-                                            {!! Form::select('account_type_id', ['0'=>'--select--']+$account_types,[], array('class' => 'form-control cls_head')) !!}
-                                            @if ($errors->has('account_type_id'))  
-                                                {!! "<span class='span_danger'>". $errors->first('account_type_id')."</span>"!!} 
-                                            @endif
-                                        </div>
-                                    </div>
-
-                                    <!-- Group Head SelectBox -->
-                                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 cls_group_div"></div>
-
-                                    <!-- Child Head SelectBox -->
-                                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 cls_child_div"></div>
-
-                                    
-                                </div>
-
-                                <!-- Form to create accounts -->
-                                <div class="cls_form">
-                                    <div class="row">
-                                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                            <div class="form-group">
-                                                {!! Html::decode(Form::label('name','Account name <span class="text-danger">*</span>')) !!}
-                                                {{ Form::text('name', null, array('id'=>'name','placeholder' => 'Enter account name','class' => 'form-control','autofocus' => ''  )) }}
-                                                @if ($errors->has('name'))  
-                                                    {!! "<span class='span_danger'>". $errors->first('name')."</span>"!!} 
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                            <div class="form-group">
-                                                {!! Html::decode(Form::label('city_id','City ')) !!}
-                                                {!! Form::select('city_id', $cities,null, array('class' => 'form-control','id'=>'city_id')) !!}
-                                                @if ($errors->has('city_id'))  
-                                                    {!! "<span class='span_danger'>". $errors->first('city_id')."</span>"!!} 
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                        
-                                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                            <div class="form-group">
-                                                {!! Html::decode(Form::label('account_limit','Account Limit')) !!}
-                                                {!! Form::number('account_limit', null, array('placeholder' => 'Enter account limit','class' => 'form-control')) !!}
-                                                @if ($errors->has('account_limit'))  
-                                                    {!! "<span class='span_danger'>". $errors->first('account_limit')."</span>"!!} 
-                                                @endif
-                                            </div>
-                                        </div> 
-
-                                    </div>
-                                </div>  
-
-                            </div>
-
-                            <div class="card-footer">
-                                <div class="row">
-                                    <div class="col-lg-12 text-right">
-                                        <button type="submit" class="btn btn-primary btn-xs mr-2">Save</button>
-                                        <button type="reset" class="btn btn-danger btn-xs">Cancel</button>
-                                    </div>
-                                </div>
-                            </div>
-                        {!! Form::close() !!}
-                    <!--end::Form-->
-                </div>
-            </div>
+        <div class="cls_form form_2">
+            <x-vouchers.cash_receiving/>
         </div>
+
+        <div class="cls_form form_3">
+            <x-vouchers.cash_payment/>
+        </div>
+       
+        <div class="cls_form form_4">
+            <x-vouchers.bank_deposit/>
+        </div>
+
+        <div class="cls_form form_5">
+            <x-vouchers.bank_payment/>
+        </div>
+
+        <div class="cls_form form_6">
+            <x-vouchers.journal/>
+        </div>
+
+
     </div>
     {!! JsValidator::formRequest('App\Http\Requests\AccountRequest', '#form'); !!}
 
@@ -166,10 +91,16 @@
                 });
             }
 
-            $(document).on('change','.cls_head', function(){
-                ajax_call(($(this).val()), 'group')
-                $('.cls_child_div').html("");
+            $(document).on('change','.cls_transaction_type', function(){
                 $('.cls_form').hide();
+
+                var id = ($(this).val());
+                $('.form_'+id).show();
+                
+                $('.select2').focus();
+
+
+                // console.log("id" + id);
             })
 
 

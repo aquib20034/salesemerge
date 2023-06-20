@@ -14,6 +14,7 @@ class Account extends Model
         'child_head_id',
         'account_limit',
         'city_id',
+        'current_balance',
         'company_id',
         'branch_id',
         'created_by',

@@ -22,6 +22,7 @@ class CreateAccountsTable extends Migration
             $table->unsignedInteger('child_head_id')->nullable();
             $table->unsignedInteger('account_limit')->nullable();
             $table->unsignedInteger('city_id')->nullable();
+            $table->bigInteger('current_balance')->nullable();
             $table->unsignedInteger('company_id')->nullable();
             $table->unsignedInteger('branch_id')->nullable();
             $table->unsignedInteger('created_by')->nullable();
