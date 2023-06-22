@@ -24,9 +24,16 @@
 
 
                             <div class="col col_head">
-                                {!! Html::decode(Form::label('account_balance','Account balance')) !!}</br>
-                                <span class="cls_label cls_current_balance">33333</span>
-                                {!! Form::hidden('account_balance', (hp_cash_in_hand()->current_balance) ?? "", array('id' => 'account_balance','class' => 'form-control','readonly' => '' )) !!}
+                                {!! Html::decode(Form::label('cih_balance','User Login Branch CIH')) !!}</br>
+                                <span class="cls_label cls_cih_balance"></span>
+                                {!! Form::hidden('cih_balance', (hp_cash_in_hand()->current_balance) ?? "", array('id' => 'cih_balance','class' => 'form-control','readonly' => '' )) !!}
+                            </div>
+
+
+                            <div class="col col_head">
+                                {!! Html::decode(Form::label('selected_account_balance','Account balance')) !!}</br>
+                                <span class="cls_label cls_selected_account_balance"></span>
+                                {!! Form::hidden('selected_account_balance', 0, array('id' => 'selected_account_balance','class' => 'form-control','readonly' => '' )) !!}
                             </div>
                         </div>
                     </div>

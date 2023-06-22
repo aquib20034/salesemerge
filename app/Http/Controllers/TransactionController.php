@@ -151,7 +151,7 @@ class TransactionController extends Controller
         $ledger->save();
 
         $account                    = Account::where('id', $account_id)->first();
-        $account->current_balance   = hp_current_balance($account->id);
+        $account->current_balance   = hp_calc_current_balance($account->id);
         $account->save();
     }
 

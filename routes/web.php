@@ -85,6 +85,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('transactions', TransactionController::class);
     Route::delete('transactions/destory', [TransactionController::class, 'destroy'])->name('transactions.massDestroy');
     
+    Route::get('/get-current-balance/{account_id}',  [App\Http\Controllers\HelperController::class, 'getCurrentBalance'])->name('get.current.balance');
+
+
+
     //profiles
     Route::resource('profiles', ProfileController::class);
     Route::delete('profiles/destory', [ProfileController::class, 'destroy'])->name('profiles.massDestroy');

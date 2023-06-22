@@ -88,7 +88,7 @@ function hp_accounts(){
 
 }
 
-function hp_current_balance($account_id)
+function hp_calc_current_balance($account_id)
 {
     $debits = Ledger::where('account_id', $account_id)
                     ->where('amount_type', 'D')
@@ -99,4 +99,14 @@ function hp_current_balance($account_id)
                      ->sum('amount');
 
     return $debits - $credits;
+}
+
+
+function hp_current_balance($account_id)
+{
+    $account = Account::select('current_balance')
+                        ->where('id', $account_id)
+                        ->first();
+
+    return (isset($account->current_balance) ? $account->current_balance : 0);
 }

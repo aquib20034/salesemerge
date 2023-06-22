@@ -34,7 +34,7 @@
                                         <tbody>
                                                 <tr>
                                                     <td>
-                                                        {!! Form::select("account_ids[]", ["Please select"]+hp_accounts() ,[], array("class" => "form-control select2")) !!}
+                                                        {!! Form::select("account_ids[]", ["Please select"]+hp_accounts() ,[], array("class" => "form-control select2 cls_csh_pymnt_account_ids")) !!}
                                                     </td>
                                                     <td>
                                                         {{ Form::text("details[]", null, array("placeholder" => "Enter details","class" => "form-control")) }}
@@ -69,31 +69,91 @@
 <script>
         $(document).ready(function () {  
 
+            async function getAccountCurrentBalance(account_id) {
+                // console.log("sending request");
+                try {
+                    const response = await $.ajax({
+                        url: "{{ url('get-current-balance') }}/" + account_id,
+                        method: 'GET'
+                    });
+
+                    // console.log("result: success:: ", response);
+
+                    $("#selected_account_balance").val(response);
+                    $(".cls_selected_account_balance").html(response);
+                } catch (error) {
+                    console.log(error.responseText);
+                }
+            }
+
+            function setInputs(entrd_amnt){
+                if (isNaN(entrd_amnt)) {
+                    entrd_amnt = 0;
+                }
+                var sltd_acnt_bal = parseFloat($("#selected_account_balance").val());
+                var calc_amnt = sltd_acnt_bal + entrd_amnt;
+                // console.log("calc_amnt: ", calc_amnt);
+
+                $(".cls_selected_account_balance").html(calc_amnt);
+                // console.log("focus finished");
+            }
+
+           
+           
+            $(document).on('click', '.cls_csh_pymnt_amnt', async function() {
+                // Get the current value of cls_csh_pymnt_amnt
+                var currentValue = $(this).val();
+
+                // Find the sibling element with class cls_csh_pymnt_account_ids
+                var siblingAccount = $(this).closest('tr').find('.cls_csh_pymnt_account_ids');
+
+                // Get the current balance from the sibling element
+                var account_id = siblingAccount.val();
+
+                await getAccountCurrentBalance(account_id);
+
+                // console.log("account_id: ", account_id);
+                var entrd_amnt = parseFloat($(this).val());
+                setInputs(entrd_amnt)
+            });
+
+            $(document).on('change', '.cls_csh_pymnt_account_ids', function() {
+                var account_id = $(this).val(); 
+                // console.log("change");
+                getAccountCurrentBalance(account_id);
+            });
+            
+
+
             $(document).on('change', '.cls_csh_pymnt_amnt', function() {
-                var inputs = $(".cls_csh_pymnt_amnt");
-                var amount = 0;
+                var inputs      = $(".cls_csh_pymnt_amnt");
+                var amount      = 0;
+                var amnt        = 0;
+
+                var entrd_amnt  = parseFloat($(this).val());
+                setInputs(entrd_amnt);
 
                 for (var i = 0; i < inputs.length; i++) {
                     amnt = parseFloat($(inputs[i]).val());
 
                     if (isNaN(amnt)) { // Check if the value is not set or NaN
-                        amnt = 0; // Set account_balance to 0 if it's not set
+                        amnt = 0; // Set cih_balance to 0 if it's not set
                     }
                     amount +=amnt;
                 }
                 
                 amount = amount.toFixed(2); // Fix the decimal places after the sum
-                var account_balance = parseFloat($("#account_balance").val()); // Convert the balance to a float
-
-                if (isNaN(account_balance)) { // Check if the value is not set or NaN
-                    account_balance = 0; // Set account_balance to 0 if it's not set
+                var cih_balance = parseFloat($("#cih_balance").val()); // Convert the balance to a float
+                
+                if (isNaN(cih_balance)) { // Check if the value is not set or NaN
+                    cih_balance = 0; // Set cih_balance to 0 if it's not set
                 }
 
-                var balance = account_balance - parseFloat(amount); // Convert amount to a number and add it to account_balance
+                var balance = cih_balance - parseFloat(amount); // Convert amount to a number and add it to cih_balance
 
-                $(".cls_current_balance").html(balance);
+                $(".cls_cih_balance").html(balance);
 
-                // console.log("account_balance: ", account_balance);
+                // console.log("cih_balance: ", cih_balance);
                 // console.log("Input Amount: ", amount);
                 // console.log("balance: ", balance);
             });
@@ -143,7 +203,7 @@
                 $('#tbl_csh_pymnt tbody tr:last').after(
                                                 '<tr>'+
                                                     '<td>'+
-                                                        '{!! Form::select("account_ids[]", ["Please select"]+hp_accounts() ,[], array("class" => "form-control select2")) !!}' +
+                                                        '{!! Form::select("account_ids[]", ["Please select"]+hp_accounts() ,[], array("class" => "form-control select2 cls_csh_pymnt_account_ids")) !!}' +
                                                     '</td>'+
                                                     '<td>'+
                                                         '{{ Form::text("details[]", null, array("placeholder" => "Enter details","class" => "form-control")) }}' +
