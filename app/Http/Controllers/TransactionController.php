@@ -67,12 +67,21 @@ class TransactionController extends Controller
                 // Validate the request data
                 $validated = $request->validated();
 
-                if ($request->filled('transaction_type_id') && ($request->transaction_type_id == 2)) {
+                if ($request->filled('transaction_type_id') && ($request->transaction_type_id == 2)) { // cash receiving voucher
                     // Process cash receiving voucher
                     $this->processCashReceivingVoucher($request, $csh_in_hnd_account_id);
-                } elseif ($request->filled('transaction_type_id') && ($request->transaction_type_id == 3)) {
+                } elseif ($request->filled('transaction_type_id') && ($request->transaction_type_id == 3)) { // cash payment voucher
                     // Process cash payment voucher
                     $this->processCashPaymentVoucher($request, $csh_in_hnd_account_id);
+                }elseif ($request->filled('transaction_type_id') && ($request->transaction_type_id == 4)) { // bank deposit voucher
+                    // Process cash payment voucher
+                    $this->processBankDepositVoucher($request);
+                }elseif ($request->filled('transaction_type_id') && ($request->transaction_type_id == 5)) { // bank payment voucher
+                    // Process cash payment voucher
+                    $this->processBankPaymentVoucher($request);
+                }elseif ($request->filled('transaction_type_id') && ($request->transaction_type_id == 6)) { // journal voucher
+                    // Process cash payment voucher
+                    $this->processJournalVoucher($request);
                 }
             // Commit the transaction
             DB::commit();
@@ -103,10 +112,10 @@ class TransactionController extends Controller
                 $detail2                = $detail ."; Payee: " . ((isset($payee->name)) ? $payee->name : "");
 
                 // Create credit transaction
-                $this->createCustomTransaction($account_id, $transaction_type_id, $detail, 'C', $amount);
+                $this->createCustomTransaction(null,null, $account_id, $transaction_type_id, $detail, 'C', $amount);
 
                 // Create debit transaction
-                $this->createCustomTransaction($csh_in_hnd_account_id, $transaction_type_id, $detail2, 'D', $amount);
+                $this->createCustomTransaction(null,null, $csh_in_hnd_account_id, $transaction_type_id, $detail2, 'D', $amount);
 
             }
         }
@@ -124,23 +133,95 @@ class TransactionController extends Controller
                 $detail2                = $detail ."; Receiver: " . ((isset($receiver->name)) ? $receiver->name : "");
 
                 // Create credit transaction
-                $this->createCustomTransaction($csh_in_hnd_account_id, $transaction_type_id, $detail2, 'C', $amount);
+                $this->createCustomTransaction(null,null, $csh_in_hnd_account_id, $transaction_type_id, $detail2, 'C', $amount);
 
                 // Create debit transaction
-                $this->createCustomTransaction($account_id, $transaction_type_id, $detail, 'D', $amount);
+                $this->createCustomTransaction(null,null, $account_id, $transaction_type_id, $detail, 'D', $amount);
+            }
+        }
+    }
+
+    // Process bank deposit voucher
+    private function processBankDepositVoucher($request)
+    {
+        if ($request->filled('account_ids')) {
+            foreach ($request->account_ids as $key => $account_id) {
+
+                $payee                  = Account::select('name')->findOrFail($account_id);
+                $transaction_type_id    = $request->filled('transaction_type_id') ? $request->transaction_type_id : 0;
+                $detail                 = isset($request->details[$key]) ? $request->details[$key] : null;
+                $amount                 = isset($request->amounts[$key]) ? $request->amounts[$key] : 0;
+                $detail2                = $detail ."; Depositor: " . ((isset($payee->name)) ? $payee->name : "");
+                $method                 = $request->filled('method') ? $request->method : 0;
+                $transaction_date       = $request->filled('transaction_date') ? $request->transaction_date : null;
+
+                // Create credit transaction
+                $this->createCustomTransaction($method, $transaction_date, $account_id, $transaction_type_id, $detail, 'C', $amount);
+
+                // Create debit transaction
+                $bank_id               = $request->filled('bank_id') ? $request->bank_id : 0;
+                $this->createCustomTransaction($method, $transaction_date, $bank_id, $transaction_type_id, $detail2, 'D', $amount);
+
+            }
+        }
+    }
+
+    // Process cash payment voucher
+    private function processBankPaymentVoucher($request)
+    {
+        if ($request->filled('account_ids')) {
+            foreach ($request->account_ids as $key => $account_id) {
+                $receiver               = Account::select('name')->findOrFail($account_id);
+                $transaction_type_id    = $request->filled('transaction_type_id') ? $request->transaction_type_id : 0;
+                $detail                 = isset($request->details[$key]) ? $request->details[$key] : null;
+                $amount                 = isset($request->amounts[$key]) ? $request->amounts[$key] : 0;
+                $detail2                = $detail ."; Receiver: " . ((isset($receiver->name)) ? $receiver->name : "");
+                $method                 = $request->filled('method') ? $request->method : 0;
+                $transaction_date       = $request->filled('transaction_date') ? $request->transaction_date : null;
+
+                // Create credit transaction
+                $bank_id               = $request->filled('bank_id') ? $request->bank_id : 0;
+                $this->createCustomTransaction($method, $transaction_date, $bank_id, $transaction_type_id, $detail2, 'C', $amount);
+
+                // Create debit transaction
+                $this->createCustomTransaction($method, $transaction_date, $account_id, $transaction_type_id, $detail, 'D', $amount);
             }
         }
     }
 
 
-     // create custom transaction
-    private function createCustomTransaction($account_id, $transaction_type_id, $detail, $amount_type, $amount)
+    // Process cash payment voucher
+    private function processJournalVoucher($request)
+    {
+        if ($request->filled('account_ids')) {
+            foreach ($request->account_ids as $key => $account_id) {
+                $payee                  = Account::select('name')->findOrFail($account_id);
+                $transaction_type_id    = $request->filled('transaction_type_id') ? $request->transaction_type_id : 0;
+                $detail                 = isset($request->details[$key]) ? $request->details[$key] : null;
+                $amount                 = isset($request->amounts[$key]) ? $request->amounts[$key] : 0;
+                $detail2                = $detail ."; payee: " . ((isset($payee->name)) ? $payee->name : "");
+
+                // Create credit transaction
+                $this->createCustomTransaction(null,null, $account_id, $transaction_type_id, $detail, 'C', $amount);
+            }
+
+            $dbt_acnt_id             = $request->filled('dbt_acnt_id') ? $request->dbt_acnt_id : 0;
+            $dbt_detail              = $request->filled('dbt_detail') ? $request->dbt_detail : null;
+            $dbt_amount              = $request->filled('dbt_amount') ? $request->dbt_amount : 0;
+            // Create debit transaction
+            $this->createCustomTransaction(null,null, $dbt_acnt_id, $transaction_type_id, $dbt_detail, 'D', $dbt_amount);
+        }
+    }
+
+    // create custom transaction
+    private function createCustomTransaction($method=null,$transaction_date=null, $account_id, $transaction_type_id, $detail, $amount_type, $amount)
     {
         $trnx                       = new Transaction();
         $trnx->account_id           = $account_id;
         $trnx->transaction_type_id  = $transaction_type_id;
         $trnx->detail               = $detail;
-        $trnx->transaction_date     = $this->today;
+        $trnx->method               = $method;
+        $trnx->transaction_date     = (isset($transaction_date)) ? $transaction_date : $this->today;
         $trnx->save();
 
         $ledger                     = new Ledger();

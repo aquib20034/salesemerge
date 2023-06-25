@@ -1,129 +1,108 @@
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <div class="row">
-                    
-                    <div class="col-3 col_head">
-                        {!! Html::decode(Form::label('bank_id','Bank Account Name')) !!} </br>
-                        {!! Form::select("bank_id[]", ["Please select"]+hp_banks() ,[], array("class" => "form-control select2 cls_bank_id")) !!}
-                    </div>
-         
-                    <div class="col-3 col_head">
-                        {!! Html::decode(Form::label('trnx_type','Transaction type')) !!} </br>
-                        <div class="custom-control custom-radio">
-                            <input type="radio" id="cash" name="gender" class="custom-control-input">
-                            <label class="custom-control-label" for="cash">Cash</label>
-                        </div>
-
-                        <div class="custom-control custom-radio">
-                            <input type="radio" id="cheque" name="gender" class="custom-control-input">
-                            <label class="custom-control-label" for="cheque">Cheque</label>
-                        </div>
-
-                        <div class="custom-control custom-radio">
-                            <input type="radio" id="online" name="gender" class="custom-control-input">
-                            <label class="custom-control-label" for="online">Online</label>
-                        </div>
-                    </div> 
-
-                    <div class="col-2 col_head">
-                        {!! Html::decode(Form::label('transaction_date','Transaction date')) !!}</br>
-                        {!! Form::date('transaction_date', hp_today(), array('id' => 'transaction_date','class' => 'form-control' )) !!}
-                    </div> 
-
-                    
-                    <div class="col-2 col_head">
-                        {!! Html::decode(Form::label('selected_bank_balance','Selected Bank Balance')) !!}</br>
-                        <span class="cls_label cls_selected_bank_balance"></span>
-                        {!! Form::hidden('selected_bank_balance', (hp_cash_in_hand()->current_balance) ?? "", array('id' => 'selected_bank_balance','class' => 'form-control','readonly' => '' )) !!}
-                    </div>
-
-                    <div class="col-2 col_head">
-                        {!! Html::decode(Form::label('selected_account_balance','Account balance')) !!}</br>
-                        <span class="cls_label cls_selected_account_balance"></span>
-                        {!! Form::hidden('selected_account_balance', 0, array('id' => 'selected_account_balance','class' => 'form-control','readonly' => '' )) !!}
+<!--begin::Form-->
+{!! Form::open(array('id'=>'bnk_dpst_form','enctype'=>'multipart/form-data')) !!}
+    {{  Form::hidden('created_by', Auth::user()->id ) }}
+    {{  Form::hidden('company_id', Auth::user()->company_id ) }}
+    {{  Form::hidden('branch_id', Auth::user()->branch_id ) }}
+    {{  Form::hidden('action', "store" ) }}
+    {{  Form::hidden('transaction_type_id', 0 , array("class" => "cls_transaction_type")) }}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex align-items-center">
+                        <h4 class="card-title">Bank deposit Voucher</h4>
                     </div>
                 </div>
-
-               
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
-                <div class="d-flex align-items-center">
-                    <h4 class="card-title">Cash receiving</h4>
-                </div>
-            </div>
-            <!--begin::Form-->
-                {!! Form::open(array('id'=>'bnk_dpst_form','enctype'=>'multipart/form-data')) !!}
-
-                    {{  Form::hidden('created_by', Auth::user()->id ) }}
-                    {{  Form::hidden('company_id', Auth::user()->company_id ) }}
-                    {{  Form::hidden('branch_id', Auth::user()->branch_id ) }}
-                    {{  Form::hidden('action', "store" ) }}
-                    {{  Form::hidden('transaction_type_id', 0 , array("class" => "cls_transaction_type")) }}
-
-                    <div class="card-body">
-                        
-
-                        <div class="row">
-                                <div class="col">
-                                    <table class="table" id="tbl_bnk_dpst">
-                                        <thead>
-                                            <tr>
-                                                <th width="25%">Account</th>
-                                                <th width="60%">Detail</th>
-                                                <th width="15%">Amount</th>
-                                                <th width="10%"><a class="text-light btn btn-primary btn-xs add_bnk_dpst" id="">+</a></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                    <td>
-                                                        {!! Form::select("account_ids[]", ["Please select"]+hp_accounts() ,[], array("class" => "form-control select2 cls_bnk_dpst_account_ids")) !!}
-                                                    </td>
-                                                    <td>
-                                                        {{ Form::text("details[]", null, array("placeholder" => "Enter details","class" => "form-control")) }}
-                                                    </td>
-                                                    <td>
-                                                        {{ Form::number("amounts[]", null, array("placeholder" => "amounts","class" => "form-control cls_bnk_dpst_amnt","min"=>0, "step"=>"any")) }}
-                                                    </td>
-                                                    <td>
-                                                        <a class="text-light btn btn-danger btn-xs del_bnk_dpst">-</a>
-                                                    </td>
-                                                </tr>
-                                        </tbody>
-                                    </table>
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-3 col_head">
+                            {!! Html::decode(Form::label('bank_ids','Bank Account Name')) !!} </br>
+                            {!! Form::select("bank_id", ["Please select"]+hp_banks() ,[], array("class" => "form-control select2 cls_bank_id")) !!}
+                        </div>
+            
+                        <div class="col-3 col_head">
+                            {!! Html::decode(Form::label('method','Transaction method')) !!} </br>
+                            @foreach(($methods = hp_methods())  as $key => $method)
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="bnk-dpst-{{$key}}" value ="{{$key}}" name="method" class="custom-control-input">
+                                    <label class="custom-control-label" for="bnk-dpst-{{$key}}">{{$method}}</label>
                                 </div>
-                            </div>
-                    </div>
+                            @endforeach
+                        </div> 
 
-                    <div class="card-footer">
-                        <div class="row">
-                            <div class="col-lg-12 text-right">
-                                <button type="submit" class="btn btn-primary btn-xs mr-2" id="btn_bnk_dpst">Save</button>
-                                <button type="reset" class="btn btn-danger btn-xs">Cancel</button>
-                            </div>
+                        <div class="col-2 col_head">
+                            {!! Html::decode(Form::label('transaction_date','Transaction date')) !!}</br>
+                            {!! Form::date('transaction_date', hp_today(), array('id' => 'transaction_date','class' => 'form-control' )) !!}
+                        </div> 
+
+                        
+                        <div class="col-2 col_head">
+                            {!! Html::decode(Form::label('selected_bank_balance','Selected Bank Balance')) !!}</br>
+                            <span class="cls_label cls_selected_bank_balance">0</span>
+                            {!! Form::hidden('selected_bank_balance', (hp_cash_in_hand()->current_balance) ?? "", array('id' => 'selected_bank_balance','class' => 'form-control','readonly' => '' )) !!}
+                        </div>
+
+                        <div class="col-2 col_head">
+                            {!! Html::decode(Form::label('selected_account_balance','Account balance')) !!}</br>
+                            <span class="cls_label cls_selected_account_balance"></span>
+                            {!! Form::hidden('selected_account_balance', 0, array('id' => 'selected_account_balance','class' => 'form-control','readonly' => '' )) !!}
                         </div>
                     </div>
-                {!! Form::close() !!}
-            <!--end::Form-->
+
+                
+                </div>
+          
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <table class="table" id="tbl_bnk_dpst">
+                                <thead>
+                                    <tr>
+                                        <th width="25%">Account</th>
+                                        <th width="60%">Detail</th>
+                                        <th width="15%">Amount</th>
+                                        <th width="10%"><a class="text-light btn btn-primary btn-xs add_bnk_dpst" id="">+</a></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        <tr>
+                                            <td>
+                                                {!! Form::select("account_ids[]", ["Please select"]+hp_accounts() ,[], array("class" => "form-control select2 cls_bnk_dpst_account_ids")) !!}
+                                            </td>
+                                            <td>
+                                                {{ Form::text("details[]", null, array("placeholder" => "Enter details","class" => "form-control")) }}
+                                            </td>
+                                            <td>
+                                                {{ Form::number("amounts[]", null, array("placeholder" => "amounts","class" => "form-control cls_bnk_dpst_amnt","min"=>0, "step"=>"any")) }}
+                                            </td>
+                                            <td>
+                                                <a class="text-light btn btn-danger btn-xs del_bnk_dpst">-</a>
+                                            </td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-lg-12 text-right">
+                            <button type="submit" class="btn btn-primary btn-xs mr-2" id="btn_bnk_dpst">Save</button>
+                            <button type="reset" class="btn btn-danger btn-xs">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-
+{!! Form::close() !!}
+<!--end::Form-->
 <script>
         $(document).ready(function () {  
 
-            async function getAccountCurrentBalance(account_id) {
+            async function getAccountCurrentBalance(account_id, place) {
                 // console.log("sending request");
                 try {
                     const response = await $.ajax({
@@ -133,8 +112,8 @@
 
                     // console.log("result: success:: ", response);
 
-                    $("#selected_account_balance").val(response);
-                    $(".cls_selected_account_balance").html(response);
+                    $("#"+place).val(response);
+                    $(".cls_"+place).html(response);
                 } catch (error) {
                     console.log(error.responseText);
                 }
@@ -152,8 +131,7 @@
                 // console.log("focus finished");
             }
 
-           
-           
+            // 
             $(document).on('click', '.cls_bnk_dpst_amnt', async function() {
                 // Get the current value of cls_bnk_dpst_amnt
                 var currentValue = $(this).val();
@@ -164,21 +142,32 @@
                 // Get the current balance from the sibling element
                 var account_id = siblingAccount.val();
 
-                await getAccountCurrentBalance(account_id);
+                await getAccountCurrentBalance(account_id, 'selected_account_balance');
 
                 // console.log("account_id: ", account_id);
                 var entrd_amnt = parseFloat($(this).val());
                 setInputs(entrd_amnt)
             });
 
-            $(document).on('change', '.cls_bnk_dpst_account_ids', function() {
+            // Fetch Account Balance & set inputs
+            $(document).on('change', '.cls_bnk_dpst_account_ids', async function() {
                 var account_id = $(this).val(); 
                 // console.log("change");
-                getAccountCurrentBalance(account_id);
+               await getAccountCurrentBalance(account_id,'selected_account_balance');
+            });
+            
+
+            // Fetch Bank Balance & set inputs
+            $(document).on('change', '.cls_bank_id', async function() {
+                var account_id = $(this).val(); 
+                // console.log("change");
+                await getAccountCurrentBalance(account_id,'selected_bank_balance');
             });
             
 
 
+
+            
             $(document).on('change', '.cls_bnk_dpst_amnt', function() {
                 var inputs      = $(".cls_bnk_dpst_amnt");
                 var amount      = 0;
@@ -197,15 +186,15 @@
                 }
                 
                 amount = amount.toFixed(2); // Fix the decimal places after the sum
-                var cih_balance = parseFloat($("#cih_balance").val()); // Convert the balance to a float
+                var selected_bank_balance = parseFloat($("#selected_bank_balance").val()); // Convert the balance to a float
                 
-                if (isNaN(cih_balance)) { // Check if the value is not set or NaN
-                    cih_balance = 0; // Set cih_balance to 0 if it's not set
+                if (isNaN(selected_bank_balance)) { // Check if the value is not set or NaN
+                    selected_bank_balance = 0; // Set selected_bank_balance to 0 if it's not set
                 }
 
-                var balance = cih_balance + parseFloat(amount); // Convert amount to a number and add it to cih_balance
+                var balance = selected_bank_balance + parseFloat(amount); // Convert amount to a number and add it to selected_bank_balance
 
-                $(".cls_cih_balance").html(balance);
+                $(".cls_selected_bank_balance").html(balance);
 
                 // console.log("cih_balance: ", cih_balance);
                 // console.log("Input Amount: ", amount);
@@ -254,6 +243,8 @@
 
 
              $(document).on('click','.add_bnk_dpst', function(){
+
+                console.log("test");
                 $('#tbl_bnk_dpst tbody tr:last').after(
                                                 '<tr>'+
                                                     '<td>'+

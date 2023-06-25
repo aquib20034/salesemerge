@@ -48,10 +48,83 @@ class TransactionRequest extends FormRequest
                             ];
 
                 return $con; 
-            }
 
-        }else{
-            $con    =   [
+            }else if((isset($this->transaction_type_id)) && (($this->transaction_type_id) == 4) ){ // bank deposit voucher
+
+                $con    =   [
+
+                                'bank_id'                => 'required|numeric|min:1',
+                                'method'                 => 'required|string|in:cash,cheque,online',
+                                'transaction_date'       => 'required|date|after_or_equal:today',
+
+
+                                'account_ids'           => 'required|array|min:1',
+                                'account_ids.*'         => 'required|numeric|min:1|distinct',
+
+                                'details'               => 'required|array|min:1',
+                                'details.*'             => 'required|string',
+
+                                'amounts'                => 'required|array|min:1',
+                                'amounts.*'              => 'required|numeric|min:0',
+
+                                'company_id'            => 'required|numeric|min:1|exists:companies,id',
+                                'branch_id'             => 'required|numeric|min:1|exists:branches,id',
+                            ];
+
+                return $con; 
+
+            }else if((isset($this->transaction_type_id)) && (($this->transaction_type_id) == 5) ){ // bank payment voucher
+
+                $con    =   [
+
+                            'bank_id'                => 'required|numeric|min:1',
+                            'method'                 => 'required|string|in:cash,cheque,online',
+                            'transaction_date'       => 'required|date|after_or_equal:today',
+
+
+                            'account_ids'           => 'required|array|min:1',
+                            'account_ids.*'         => 'required|numeric|min:1|distinct',
+
+                            'details'               => 'required|array|min:1',
+                            'details.*'             => 'required|string',
+
+                            'amounts'                => 'required|array|min:1',
+                            'amounts.*'              => 'required|numeric|min:0',
+
+                            'company_id'            => 'required|numeric|min:1|exists:companies,id',
+                            'branch_id'             => 'required|numeric|min:1|exists:branches,id',
+                        ];
+
+                return $con; 
+
+            }else if((isset($this->transaction_type_id)) && (($this->transaction_type_id) == 6) ){ // Journal voucher
+                $con    =   [
+
+                            // 'method'                 => 'required|string|in:cash,cheque,online',
+                            // 'bank_id'                => 'required|numeric|min:1',
+                            // 'transaction_date'       => 'required|date|after_or_equal:today',
+
+                            'dbt_acnt_id'            => 'required|numeric|min:1|exists:accounts,id',
+                            'dbt_detail'             => 'required|string',
+                            'dbt_amount'             => 'required|numeric|min:0',
+                            
+                            'account_ids'            => 'required|array|min:1',
+                            'account_ids.*'          => 'required|numeric|min:1|distinct',
+
+                            'details'                => 'required|array|min:1',
+                            'details.*'              => 'required|string',
+
+                            'amounts'                => 'required|array|min:1',
+                            'amounts.*'              => 'required|numeric|min:0',
+
+                            'company_id'             => 'required|numeric|min:1|exists:companies,id',
+                            'branch_id'              => 'required|numeric|min:1|exists:branches,id',
+                        ];
+
+                return $con; 
+
+            }else{
+                $con    =   [
                             'name'                  => 'required|min:2',
                             'account_type_id'       => 'required|numeric|min:1|exists:account_types,id',
                             'account_type_id'       => 'required|numeric|min:1|exists:account_types,id',
@@ -61,7 +134,8 @@ class TransactionRequest extends FormRequest
                             'branch_id'             => 'required|numeric|min:1|exists:branches,id',
                         ];
 
-            return $con; 
+                return $con; 
+            }
         }
     }
 
