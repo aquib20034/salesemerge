@@ -88,6 +88,14 @@ function hp_accounts(){
 
 }
 
+function hp_banks(){
+    return Account::where('company_id',hp_company_id())
+                    ->where('branch_id',hp_branch_id())
+                    ->pluck('name','id')
+                    ->all();
+
+}
+
 function hp_calc_current_balance($account_id)
 {
     $debits = Ledger::where('account_id', $account_id)

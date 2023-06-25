@@ -1,39 +1,57 @@
-
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
                 <div class="row">
                     
-                    <div class="col col_head">
-                        {!! Html::decode(Form::label('transaction_id','Transaction ID')) !!} </br>
-                        <span class="cls_label class_transaction_id">{{hp_next_transaction_id()}}</span>
-                        {{ Form::hidden('transaction_id', hp_next_transaction_id(), array('id'=>'transaction_id','class' => 'form-control','readonly' => ''  )) }}
+                    <div class="col-3 col_head">
+                        {!! Html::decode(Form::label('bank_id','Bank Account Name')) !!} </br>
+                        {!! Form::select("bank_id[]", ["Please select"]+hp_banks() ,[], array("class" => "form-control select2 cls_bank_id")) !!}
                     </div>
-                    
-                    <div class="col col_head">
+         
+                    <div class="col-3 col_head">
+                        {!! Html::decode(Form::label('trnx_type','Transaction type')) !!} </br>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="cash" name="gender" class="custom-control-input">
+                            <label class="custom-control-label" for="cash">Cash</label>
+                        </div>
+
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="cheque" name="gender" class="custom-control-input">
+                            <label class="custom-control-label" for="cheque">Cheque</label>
+                        </div>
+
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="online" name="gender" class="custom-control-input">
+                            <label class="custom-control-label" for="online">Online</label>
+                        </div>
+                    </div> 
+
+                    <div class="col-2 col_head">
                         {!! Html::decode(Form::label('transaction_date','Transaction date')) !!}</br>
-                        <span class="cls_label cls_date">{{hp_today()}}</span>
-                        {!! Form::hidden('transaction_date', hp_today(), array('id' => 'transaction_date','class' => 'form-control','readonly' => '' )) !!}
+                        {!! Form::date('transaction_date', hp_today(), array('id' => 'transaction_date','class' => 'form-control' )) !!}
                     </div> 
 
-                    <div class="col col_head">
-                        {!! Html::decode(Form::label('account_name','User Login Branch CIH')) !!}</br>
-                        <span class="cls_label cls_account_name">{{ (hp_cash_in_hand()->name) ?? ""}}</span>
-                        {!! Form::hidden('account_name', (hp_cash_in_hand()->name) ?? "", array('id' => 'account_name','class' => 'form-control','readonly' => '' )) !!}
-                    </div> 
+                    
+                    <div class="col-2 col_head">
+                        {!! Html::decode(Form::label('selected_bank_balance','Selected Bank Balance')) !!}</br>
+                        <span class="cls_label cls_selected_bank_balance"></span>
+                        {!! Form::hidden('selected_bank_balance', (hp_cash_in_hand()->current_balance) ?? "", array('id' => 'selected_bank_balance','class' => 'form-control','readonly' => '' )) !!}
+                    </div>
 
-
-                    <div class="col col_head">
-                        {!! Html::decode(Form::label('account_balance','Account balance')) !!}</br>
-                        <span class="cls_label cls_current_balance">33333</span>
-                        {!! Form::hidden('account_balance', (hp_cash_in_hand()->current_balance) ?? "", array('id' => 'account_balance','class' => 'form-control','readonly' => '' )) !!}
+                    <div class="col-2 col_head">
+                        {!! Html::decode(Form::label('selected_account_balance','Account balance')) !!}</br>
+                        <span class="cls_label cls_selected_account_balance"></span>
+                        {!! Form::hidden('selected_account_balance', 0, array('id' => 'selected_account_balance','class' => 'form-control','readonly' => '' )) !!}
                     </div>
                 </div>
+
+               
             </div>
         </div>
     </div>
 </div>
+
 
 
 <div class="row">
@@ -70,7 +88,7 @@
                                         <tbody>
                                                 <tr>
                                                     <td>
-                                                        {!! Form::select("account_ids[]", ["Please select"]+hp_accounts() ,[], array("class" => "form-control select2")) !!}
+                                                        {!! Form::select("account_ids[]", ["Please select"]+hp_accounts() ,[], array("class" => "form-control select2 cls_bnk_dpst_account_ids")) !!}
                                                     </td>
                                                     <td>
                                                         {{ Form::text("details[]", null, array("placeholder" => "Enter details","class" => "form-control")) }}
@@ -104,36 +122,92 @@
 
 <script>
         $(document).ready(function () {  
+
+            async function getAccountCurrentBalance(account_id) {
+                // console.log("sending request");
+                try {
+                    const response = await $.ajax({
+                        url: "{{ url('get-current-balance') }}/" + account_id,
+                        method: 'GET'
+                    });
+
+                    // console.log("result: success:: ", response);
+
+                    $("#selected_account_balance").val(response);
+                    $(".cls_selected_account_balance").html(response);
+                } catch (error) {
+                    console.log(error.responseText);
+                }
+            }
+
+            function setInputs(entrd_amnt){
+                if (isNaN(entrd_amnt)) {
+                    entrd_amnt = 0;
+                }
+                var sltd_acnt_bal = parseFloat($("#selected_account_balance").val());
+                var calc_amnt = sltd_acnt_bal - entrd_amnt;
+                // console.log("calc_amnt: ", calc_amnt);
+
+                $(".cls_selected_account_balance").html(calc_amnt);
+                // console.log("focus finished");
+            }
+
            
+           
+            $(document).on('click', '.cls_bnk_dpst_amnt', async function() {
+                // Get the current value of cls_bnk_dpst_amnt
+                var currentValue = $(this).val();
+
+                // Find the sibling element with class cls_bnk_dpst_account_ids
+                var siblingAccount = $(this).closest('tr').find('.cls_bnk_dpst_account_ids');
+
+                // Get the current balance from the sibling element
+                var account_id = siblingAccount.val();
+
+                await getAccountCurrentBalance(account_id);
+
+                // console.log("account_id: ", account_id);
+                var entrd_amnt = parseFloat($(this).val());
+                setInputs(entrd_amnt)
+            });
+
+            $(document).on('change', '.cls_bnk_dpst_account_ids', function() {
+                var account_id = $(this).val(); 
+                // console.log("change");
+                getAccountCurrentBalance(account_id);
+            });
+            
+
 
             $(document).on('change', '.cls_bnk_dpst_amnt', function() {
-                var inputs = $(".cls_bnk_dpst_amnt");
-                var amount = 0;
-                var amnt   = 0;
+                var inputs      = $(".cls_bnk_dpst_amnt");
+                var amount      = 0;
+                var amnt        = 0;
+
+                var entrd_amnt  = parseFloat($(this).val());
+                setInputs(entrd_amnt);
 
                 for (var i = 0; i < inputs.length; i++) {
                     amnt = parseFloat($(inputs[i]).val());
 
                     if (isNaN(amnt)) { // Check if the value is not set or NaN
-                        amnt = 0; // Set account_balance to 0 if it's not set
+                        amnt = 0; // Set cih_balance to 0 if it's not set
                     }
                     amount +=amnt;
                 }
                 
                 amount = amount.toFixed(2); // Fix the decimal places after the sum
-                var account_balance = parseFloat($("#account_balance").val()); // Convert the balance to a float
+                var cih_balance = parseFloat($("#cih_balance").val()); // Convert the balance to a float
                 
-                if (isNaN(account_balance)) { // Check if the value is not set or NaN
-                    account_balance = 0; // Set account_balance to 0 if it's not set
+                if (isNaN(cih_balance)) { // Check if the value is not set or NaN
+                    cih_balance = 0; // Set cih_balance to 0 if it's not set
                 }
 
+                var balance = cih_balance + parseFloat(amount); // Convert amount to a number and add it to cih_balance
 
+                $(".cls_cih_balance").html(balance);
 
-                var balance = account_balance + parseFloat(amount); // Convert amount to a number and add it to account_balance
-
-                $(".cls_current_balance").html(balance);
-
-                // console.log("account_balance: ", account_balance);
+                // console.log("cih_balance: ", cih_balance);
                 // console.log("Input Amount: ", amount);
                 // console.log("balance: ", balance);
             });
@@ -183,7 +257,7 @@
                 $('#tbl_bnk_dpst tbody tr:last').after(
                                                 '<tr>'+
                                                     '<td>'+
-                                                        '{!! Form::select("account_ids[]", ["Please select"]+hp_accounts() ,[], array("class" => "form-control select2")) !!}' +
+                                                        '{!! Form::select("account_ids[]", ["Please select"]+hp_accounts() ,[], array("class" => "form-control select2 cls_bnk_dpst_account_ids")) !!}' +
                                                     '</td>'+
                                                     '<td>'+
                                                         '{{ Form::text("details[]", null, array("placeholder" => "Enter details","class" => "form-control")) }}' +

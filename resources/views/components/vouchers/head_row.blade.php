@@ -4,7 +4,7 @@
                     <div class="card-header">
                         <div class="row">
                             
-                            <div class="col col_head">
+                            <!-- <div class="col col_head">
                                 {!! Html::decode(Form::label('transaction_id','Transaction ID')) !!} </br>
                                 <span class="cls_label class_transaction_id">{{hp_next_transaction_id()}}</span>
                                 {{ Form::hidden('transaction_id', hp_next_transaction_id(), array('id'=>'transaction_id','class' => 'form-control','readonly' => ''  )) }}
@@ -14,7 +14,7 @@
                                 {!! Html::decode(Form::label('transaction_date','Transaction date')) !!}</br>
                                 <span class="cls_label cls_date">{{hp_today()}}</span>
                                 {!! Form::hidden('transaction_date', hp_today(), array('id' => 'transaction_date','class' => 'form-control','readonly' => '' )) !!}
-                            </div> 
+                            </div>  -->
 
                             <div class="col col_head">
                                 {!! Html::decode(Form::label('account_name','User Login Branch CIH')) !!}</br>
