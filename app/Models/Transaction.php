@@ -8,15 +8,23 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction extends Model
 {
     protected $fillable = [
-        'detail',
         'account_id',
-        'transaction_date'
+        'transaction_type_id',
+        'transaction_date',
+        'detail',
     ];
 
     public function ledger()
+{
+    return $this->hasOne(Ledger::class, 'transaction_id', 'id');
+}
+
+
+    public function transactionType()
     {
-        return $this->belongsTo(Ledger::class, 'transaction_id', 'id');
+        return $this->belongsTo(TransactionType::class, 'transaction_type_id', 'id');
     }
+
 
     public function getTransactionDateAttribute($value)
     {

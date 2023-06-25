@@ -9,7 +9,7 @@
     @include( '../sweet_script')
     <div class="page-inner">
         <div class="page-header">
-            <h4 class="page-title">@yield('title') -- No completed</h4>
+            <h4 class="page-title">@yield('title')</h4>
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -49,6 +49,8 @@
 
                                     <!-- Child Head SelectBox -->
                                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 cls_child_div"></div>
+
+                                    
                                 </div>
 
                                 <!-- Form to create accounts -->
@@ -64,48 +66,27 @@
                                             </div>
                                         </div>
 
-
                                         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                             <div class="form-group">
-                                                {!! Html::decode(Form::label('transaction_type','Transaction type <span class="text-danger">*</span>')) !!}
-                                                {!! Form::select('transaction_type', $transaction_types,null, array('class' => 'form-control')) !!}
-                                                @if ($errors->has('transaction_type'))  
-                                                    {!! "<span class='span_danger'>". $errors->first('transaction_type')."</span>"!!} 
+                                                {!! Html::decode(Form::label('city_id','City ')) !!}
+                                                {!! Form::select('city_id', $cities,null, array('class' => 'form-control','id'=>'city_id')) !!}
+                                                @if ($errors->has('city_id'))  
+                                                    {!! "<span class='span_danger'>". $errors->first('city_id')."</span>"!!} 
                                                 @endif
                                             </div>
                                         </div>
+
                                         
                                         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                             <div class="form-group">
-                                                {!! Html::decode(Form::label('amount','Amount')) !!}
-                                                {!! Form::number('amount', 0, array('placeholder' => 'Enter amount','class' => 'form-control')) !!}
-                                                @if ($errors->has('amount'))  
-                                                    {!! "<span class='span_danger'>". $errors->first('amount')."</span>"!!} 
+                                                {!! Html::decode(Form::label('account_limit','Account Limit')) !!}
+                                                {!! Form::number('account_limit', null, array('placeholder' => 'Enter account limit','class' => 'form-control')) !!}
+                                                @if ($errors->has('account_limit'))  
+                                                    {!! "<span class='span_danger'>". $errors->first('account_limit')."</span>"!!} 
                                                 @endif
                                             </div>
                                         </div> 
 
-                                        <!-- 
-                                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                                <div class="form-group">
-                                                    {!! Html::decode(Form::label('contact_no','Contact No')) !!}
-                                                    {!! Form::number('contact_no', null, array('placeholder' => 'Enter contact no','class' => 'form-control')) !!}
-                                                    @if ($errors->has('contact_no'))  
-                                                        {!! "<span class='span_danger'>". $errors->first('contact_no')."</span>"!!} 
-                                                    @endif
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                                <div class="form-group">
-                                                    {!! Html::decode(Form::label('city_id','City ')) !!}
-                                                    {!! Form::select('city_id', $cities,null, array('class' => 'form-control')) !!}
-                                                    @if ($errors->has('city_id'))  
-                                                        {!! "<span class='span_danger'>". $errors->first('city_id')."</span>"!!} 
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        -->
                                     </div>
                                 </div>  
 

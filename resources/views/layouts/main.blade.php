@@ -29,7 +29,16 @@
 	<!-- <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}"> -->
 	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.5.1/sweetalert2.all.js" ></script> -->
 	<script src="{{ asset('assets/js/sweetalert2.all.js') }}" ></script>
+
+    
+    
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 	<style>
+        .select2-container{
+            width:250px !important;
+            /* width:100% !important; */
+
+        }
 	.span_danger{
 		color:red;
 	}
@@ -120,7 +129,7 @@
 
 			<!-- Navbar Header -->
 			<nav class="navbar navbar-header navbar-expand-lg">
-				
+
 
 				<div class="container-fluid">
 					<!-- <div class="collapse" id="search-nav">
@@ -137,7 +146,7 @@
 					</div> -->
 
                     <div style="color:white; font-weight:bold;font-size:24px; text-transform: uppercase;">
-                        {{isset(Auth::user()->branch->name) ? Auth::user()->branch->name : ""}}, 
+                        {{isset(Auth::user()->branch->name) ? Auth::user()->branch->name : ""}},
                         {{isset(Auth::user()->company->name) ? Auth::user()->company->name : ""}}
                     </div>
 					<ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
@@ -210,7 +219,7 @@
 								<span>
                                     {{Auth::user()->name}}
 									<span class="user-level">
-                                        {{isset(Auth::user()->branch->name) ? Auth::user()->branch->name : ""}}, 
+                                        {{isset(Auth::user()->branch->name) ? Auth::user()->branch->name : ""}},
                                         {{isset(Auth::user()->company->name) ? Auth::user()->company->name : ""}}
                                     </span>
 								</span>
@@ -237,7 +246,7 @@
                             <div class="collapse" id="General" style="">
                                 <ul class="nav nav-collapse">
                                     @can('company-edit')
-                                        <?php 
+                                        <?php
                                             $company_id = isset( Auth::user()->company_id) ?  Auth::user()->company_id : 0;
                                         ?>
                                         <li class="nav-item @if('companies' == url_explode(request()->path()) ) {{'active'}} @endif">
@@ -272,11 +281,28 @@
                                     @endcan
 
                                     @can('city-list')
-                                        <!-- <li class="nav-item @if('cities' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                        <li class="nav-item @if('cities' == url_explode(request()->path()) ) {{'active'}} @endif">
                                             <a  href="{{url('/cities')}}">
                                                 <span class="sub-item">Cities</span>
                                             </a>
-                                        </li> -->
+                                        </li>
+                                    @endcan
+
+                                    
+                                    @can('transaction_type-list')
+                                        <li class="nav-item @if('transaction_types' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                            <a  href="{{url('/transaction_types')}}">
+                                                <span class="sub-item">Transaction types</span>
+                                            </a>
+                                        </li>
+                                    @endcan
+
+                                    @can('account_type-list')
+                                        <li class="nav-item @if('account_types' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                            <a  href="{{url('/account_types')}}">
+                                                <span class="sub-item">Account types</span>
+                                            </a>
+                                        </li>
                                     @endcan
                                 </ul>
                             </div>
@@ -336,32 +362,46 @@
                         <li class="nav-item">
                             <a data-toggle="collapse" href="#accounts" class="collapsed" aria-expanded="false">
                                 <i class="fas fa-money-bill-wave"></i>
-                                <p>Accounts Setup</p>
+                                <p>Accounts System</p>
                                 <span class="caret"></span>
                             </a>
                             <div class="collapse" id="accounts" style="">
                                 <ul class="nav nav-collapse">
 
-                                    @can('account_type-list')
-                                        <li class="nav-item @if('account_types' == url_explode(request()->path()) ) {{'active'}} @endif">
-                                            <a  href="{{url('/account_types')}}">
-                                                <span class="sub-item">Account types</span>
+
+                                
+                                    @can('account-create')
+                                        <li class="nav-item {{ (request()->is('accounts/create') || request()->is('accounts/store')) ? 'active':''}}">
+                                            <a  href="{{url('/accounts/create')}}">
+                                                <span class="sub-item">Create new account</span>
                                             </a>
                                         </li>
                                     @endcan
 
+
                                     @can('account-list')
-                                        <li class="nav-item @if('accounts' == url_explode(request()->path()) ) {{'active'}} @endif">
+                                        <li class="nav-item {{ (request()->is('accounts')) ? 'active':''}}">
                                             <a  href="{{url('/accounts')}}">
-                                                <span class="sub-item">Accounts</span>
+                                                <span class="sub-item">Add opening balance</span>
                                             </a>
                                         </li>
                                     @endcan
+
+                                    @can('transaction-create')
+                                        <li class="nav-item {{ (request()->is('transactions/create')) ? 'active':''}}">
+                                            <a  href="{{url('/transactions/create')}}">
+                                                <span class="sub-item">Transactions</span>
+                                            </a>
+                                        </li>
+                                    @endcan
+
+
+
                                 </ul>
                             </div>
                         </li>
 
-                        <!-- 
+                        <!--
                         <li class="nav-item">
                             <a data-toggle="collapse" href="#Purchase&Sell" class="collapsed" aria-expanded="false">
                                 <i class="fas fa-shopping-cart"></i>
@@ -439,7 +479,7 @@
                                 </ul>
                             </div>
                         </li>
-                        
+
                         @can('report-list')
 							<li class="nav-section">
 								<span class="sidebar-mini-icon">
@@ -477,7 +517,7 @@
 			</div>
 		</div>
 	</div>
-    <div id= "spinner-div" 
+    <div id= "spinner-div"
          style="width:100%;
             height: 100%;
             position: fixed;
@@ -489,6 +529,8 @@
 
     <!--   Core JS Files   -->
     <script src="{{ asset('assets/js/core/jquery.3.2.1.min.js') }}"></script>
+    
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
     <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
     <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
 
