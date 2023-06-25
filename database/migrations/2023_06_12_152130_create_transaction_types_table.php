@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAmountTypesTable extends Migration
+class CreateTransactionTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateAmountTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('amount_types', function (Blueprint $table) {
+        Schema::create('transaction_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->nullable();
-            $table->unsignedInteger('merchant_id')->nullable();
-            $table->unsignedInteger('station_id')->nullable();
+            $table->unsignedInteger('company_id')->nullable();
+            $table->unsignedInteger('branch_id')->nullable();
             $table->boolean('active')->default(1)->nullable()->comment('null = inactive and 1 = active'); 
             $table->softDeletes();
             $table->timestamps();
@@ -31,6 +31,6 @@ class CreateAmountTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('amount_types');
+        Schema::dropIfExists('transaction_types');
     }
 }

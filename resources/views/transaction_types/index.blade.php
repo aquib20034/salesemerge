@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title','Items')
+@section('title',isset($title) ? $title : "")
 @section('content')
     @include( '../sweet_script')
     <div class="page-inner">
@@ -12,8 +12,8 @@
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <h4 class="card-title">Manage @yield('title')</h4>
-                            @can('item-create')
-                                <a  href="{{ route('items.create') }}" class="btn btn-primary btn-xs ml-auto">
+                            @can(isset($permissions['create']) ?$permissions['create'] : "")
+                                <a  href="{{ route($page.'.create') }}" class="btn btn-primary btn-xs ml-auto">
                                 <i class="fa fa-plus"></i> New</a>
                             @endcan
                         </div>
@@ -24,19 +24,11 @@
                                 <thead>
                                     <tr>
                                         <th>Name</th>
-                                        <th>Manufacturer</th>
-                                        <th>Category</th>
-                                        <th>Group</th>
-                                        <th>Unit</th>
-                                        <th>Total piece</th>
-                                        <th>Free piece</th>
-                                        <th>Purchase price</th>
-                                        <th>Sell price</th>
                                         <th width="8%">Active</th>
                                         <th width="5%">Action</th>
                                     </tr>
                                 </thead>
-
+                            
                                 <tbody>
                                 </tbody>
                             </table>
@@ -50,24 +42,16 @@
     <script>
         $(function () {
             let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-            @can('item-delete')
-                deleteButton = DeleteButtonCall("{{ route('items.massDestroy') }}")
-            dtButtons.push(deleteButton)
+            @can('transaction_type-delete')
+                deleteButton = DeleteButtonCall("{{ route('transaction_types.massDestroy') }}")
             @endcan
+            dtButtons.push(deleteButton)
             let data = [
                 { data: 'name', name: 'name' },
-                { data: 'manufacturer_id', name: 'manufacturer_id' },
-                { data: 'category_id', name: 'category_id' },
-                { data: 'group_id', name: 'group_id' },
-                { data: 'unit_id', name: 'unit_id' },
-                { data: 'tot_piece', name: 'tot_piece' },
-                { data: 'free_piece', name: 'free_piece' },
-                { data: 'purchase_price', name: 'purchase_price' },
-                { data: 'sell_price', name: 'sell_price' },
                 { data: 'active', name: 'active' },
                 { data: 'actions', name: '{{ trans('global.actions') }}',orderable:false,searchable:false }
             ]
-            DataTableCall('#myTable', "{{ route('items.index') }}", dtButtons, data)
+            DataTableCall('#myTable', "{{ route('transaction_types.index') }}", dtButtons, data)
         });
     </script>
 @endsection

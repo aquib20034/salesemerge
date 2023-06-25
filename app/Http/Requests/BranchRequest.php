@@ -15,17 +15,17 @@ class BranchRequest extends FormRequest
     {
         if((isset($this->action)) && (($this->action) == "store") ){
             $con    =   [
-                            'name'                  => 'required|min:2|string',
+                            'name'                  => 'required|unique:branches,name|min:2|string',
                             'mobile_no'             => 'required|unique:branches,mobile_no,NULL,id,deleted_at,NULL|digits:11|numeric',
                             'company_id'            => 'required|numeric|min:1|exists:companies,id',
                             'created_by'            => 'required|numeric|min:1|exists:users,id',
                         ];
 
-                        
+
             if(isset($this->phone_no)){
                 $con['phone_no']     = 'required|digits:11|numeric';
             }
-            return $con; 
+            return $con;
 
         }else{
             $con    =   [
@@ -38,8 +38,8 @@ class BranchRequest extends FormRequest
                 $con['phone_no']     = 'required|digits:11|numeric';
             }
 
-            return $con; 
+            return $con;
         }
     }
 }
-    
+

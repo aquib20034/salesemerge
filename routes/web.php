@@ -69,13 +69,26 @@ Route::group(['middleware' => ['auth']], function() {
     Route::delete('account_types/destory', [AccountTypeController::class, 'destroy'])->name('account_types.massDestroy');
 	
 
-    
+     //transaction_types
+    Route::resource('transaction_types', TransactionTypeController::class);
+    Route::delete('transaction_types/destory', [TransactionTypeController::class, 'destroy'])->name('transaction_types.massDestroy');
+     
+
     //accounts
     Route::resource('accounts', AccountController::class);
     Route::delete('accounts/destory', [AccountController::class, 'destroy'])->name('accounts.massDestroy');
     Route::get('/get_children/{parent_id}/{type}', [App\Http\Controllers\AccountController::class, 'get_children']);
+    Route::post('accounts/add_upd_opening_balance', [App\Http\Controllers\AccountController::class, 'add_upd_opening_balance'])->name('add_upd_opening_balance');
+
     
+    //transactions
+    Route::resource('transactions', TransactionController::class);
+    Route::delete('transactions/destory', [TransactionController::class, 'destroy'])->name('transactions.massDestroy');
     
+    Route::get('/get-current-balance/{account_id}',  [App\Http\Controllers\HelperController::class, 'getCurrentBalance'])->name('get.current.balance');
+
+
+
     //profiles
     Route::resource('profiles', ProfileController::class);
     Route::delete('profiles/destory', [ProfileController::class, 'destroy'])->name('profiles.massDestroy');
@@ -93,28 +106,28 @@ Route::group(['middleware' => ['auth']], function() {
 
 
 
-	Route::resource('/customer_types', App\Http\Controllers\Customer_typeController::class);
-	Route::get('/customer_typeList', [App\Http\Controllers\Customer_typeController::class, 'list']);
-	Route::delete('/customer_typeDelete', [App\Http\Controllers\Customer_typeController::class, 'destroy']);
+	// Route::resource('/customer_types', App\Http\Controllers\Customer_typeController::class);
+	// Route::get('/customer_typeList', [App\Http\Controllers\Customer_typeController::class, 'list']);
+	// Route::delete('/customer_typeDelete', [App\Http\Controllers\Customer_typeController::class, 'destroy']);
 
 
-	Route::resource('/stocks', App\Http\Controllers\StockController::class);
-	Route::get('/stockList', [App\Http\Controllers\StockController::class, 'list']);
-	Route::delete('/stockDelete', [App\Http\Controllers\StockController::class, 'destroy']);
+	// Route::resource('/stocks', App\Http\Controllers\StockController::class);
+	// Route::get('/stockList', [App\Http\Controllers\StockController::class, 'list']);
+	// Route::delete('/stockDelete', [App\Http\Controllers\StockController::class, 'destroy']);
 
-	Route::resource('/sells', App\Http\Controllers\SellController::class);
-	Route::get('/sellList', [App\Http\Controllers\SellController::class, 'list']);
-	Route::delete('/sellDelete', [App\Http\Controllers\SellController::class, 'destroy']);
-	Route::post('/fetch_item_unit_detail', [App\Http\Controllers\SellController::class, 'fetch_item_unit_detail']);
+	// Route::resource('/sells', App\Http\Controllers\SellController::class);
+	// Route::get('/sellList', [App\Http\Controllers\SellController::class, 'list']);
+	// Route::delete('/sellDelete', [App\Http\Controllers\SellController::class, 'destroy']);
+	// Route::post('/fetch_item_unit_detail', [App\Http\Controllers\SellController::class, 'fetch_item_unit_detail']);
 
-	Route::resource('/payment_methods', App\Http\Controllers\Payment_methodController::class);
-	Route::get('/payment_methodList', [App\Http\Controllers\Payment_methodController::class, 'list']);
-	Route::delete('/payment_methodDelete', [App\Http\Controllers\Payment_methodController::class, 'destroy']);
+	// Route::resource('/payment_methods', App\Http\Controllers\Payment_methodController::class);
+	// Route::get('/payment_methodList', [App\Http\Controllers\Payment_methodController::class, 'list']);
+	// Route::delete('/payment_methodDelete', [App\Http\Controllers\Payment_methodController::class, 'destroy']);
 
 
 
-	Route::resource('/reports', App\Http\Controllers\ReportController::class);
-	Route::resource('/vouchers', App\Http\Controllers\VoucherController::class);
+	// Route::resource('/reports', App\Http\Controllers\ReportController::class);
+	// Route::resource('/vouchers', App\Http\Controllers\VoucherController::class);
 
 	// Route::resource('/amount_types', App\Http\Controllers\Amount_typeController::class);
 	// Route::get('/amount_typeList', [App\Http\Controllers\Amount_typeController::class, 'list']);
