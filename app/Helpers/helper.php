@@ -43,6 +43,15 @@ function hp_amount_types(){
    return array('D' => 'Debit','C' =>'Credit') ;
 }
 
+// get all amount types
+function hp_methods(){
+    return array(
+                    'cash'      => 'Cash',
+                    'cheque'    => 'Cheque',
+                    'online'    => 'Online'
+                ) ;
+ }
+
 // get all transaction types
 function hp_transaction_types($flag){
     if($flag){
@@ -91,6 +100,9 @@ function hp_accounts(){
 function hp_banks(){
     return Account::where('company_id',hp_company_id())
                     ->where('branch_id',hp_branch_id())
+                    ->where('account_type_id',1) // Assets
+                    ->where('group_head_id',2) // Current Assets
+                    ->where('child_head_id',4) //Bank Accounts
                     ->pluck('name','id')
                     ->all();
 

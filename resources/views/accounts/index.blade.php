@@ -137,7 +137,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary btn-xs">Save</button>
+                    <button type="submit" class="btn btn-primary btn-xs" id="btn_submit">Save</button>
                 </div>
                 {!! Form::close() !!}
                 <!--end::Form-->
@@ -203,6 +203,7 @@
                     contentType: false,
                     processData: false,
                     beforeSend:function(){
+                        $("#btn_submit").prop("disabled", true);
                         $("#spinner-div").show();
                     },
                     success: function(data) {
@@ -210,10 +211,14 @@
                         AlertCall(data, $('#myTable').DataTable().ajax.reload());
                         $("#modalForm")[0].reset();
                         $("#addOpeningBalanceModal").modal("hide"); 
+                        $("#btn_submit").prop("disabled", false);
+
 
                     },
                     error: function(data) {
                         handle_error(data);
+                        $("#btn_submit").prop("disabled", false);
+
                     }
                 });
             });

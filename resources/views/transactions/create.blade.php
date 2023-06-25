@@ -73,7 +73,6 @@
             </div>
         </div>
 
-
         <div class="cls_form form_2">
             <x-vouchers.cash_receiving/>
         </div>
