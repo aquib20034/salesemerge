@@ -38,7 +38,7 @@
                         
                         <div class="col-2 col_head">
                             {!! Html::decode(Form::label('selected_bank_balance','Selected Bank Balance')) !!}</br>
-                            <span class="cls_label cls_selected_bank_balance"></span>
+                            <span class="cls_label cls_selected_bank_balance">0</span>
                             {!! Form::hidden('selected_bank_balance', (hp_cash_in_hand()->current_balance) ?? "", array('id' => 'selected_bank_balance','class' => 'form-control','readonly' => '' )) !!}
                         </div>
 

@@ -79,6 +79,9 @@ class TransactionController extends Controller
                 }elseif ($request->filled('transaction_type_id') && ($request->transaction_type_id == 5)) { // bank payment voucher
                     // Process cash payment voucher
                     $this->processBankPaymentVoucher($request);
+                }elseif ($request->filled('transaction_type_id') && ($request->transaction_type_id == 6)) { // journal voucher
+                    // Process cash payment voucher
+                    $this->processJournalVoucher($request);
                 }
             // Commit the transaction
             DB::commit();
@@ -163,7 +166,6 @@ class TransactionController extends Controller
         }
     }
 
-
     // Process cash payment voucher
     private function processBankPaymentVoucher($request)
     {
@@ -188,7 +190,30 @@ class TransactionController extends Controller
     }
 
 
-     // create custom transaction
+    // Process cash payment voucher
+    private function processJournalVoucher($request)
+    {
+        if ($request->filled('account_ids')) {
+            foreach ($request->account_ids as $key => $account_id) {
+                $payee                  = Account::select('name')->findOrFail($account_id);
+                $transaction_type_id    = $request->filled('transaction_type_id') ? $request->transaction_type_id : 0;
+                $detail                 = isset($request->details[$key]) ? $request->details[$key] : null;
+                $amount                 = isset($request->amounts[$key]) ? $request->amounts[$key] : 0;
+                $detail2                = $detail ."; payee: " . ((isset($payee->name)) ? $payee->name : "");
+
+                // Create credit transaction
+                $this->createCustomTransaction(null,null, $account_id, $transaction_type_id, $detail, 'C', $amount);
+            }
+
+            $dbt_acnt_id             = $request->filled('dbt_acnt_id') ? $request->dbt_acnt_id : 0;
+            $dbt_detail              = $request->filled('dbt_detail') ? $request->dbt_detail : null;
+            $dbt_amount              = $request->filled('dbt_amount') ? $request->dbt_amount : 0;
+            // Create debit transaction
+            $this->createCustomTransaction(null,null, $dbt_acnt_id, $transaction_type_id, $dbt_detail, 'D', $dbt_amount);
+        }
+    }
+
+    // create custom transaction
     private function createCustomTransaction($method=null,$transaction_date=null, $account_id, $transaction_type_id, $detail, $amount_type, $amount)
     {
         $trnx                       = new Transaction();

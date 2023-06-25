@@ -73,6 +73,7 @@
             </div>
         </div>
 
+
         <div class="cls_form form_2">
             <x-vouchers.cash_receiving/>
         </div>
@@ -111,7 +112,8 @@
                 $(".cls_cih_balance").html($("#cih_balance").val());
 
                 $(".cls_selected_account_balance").html(0);
-
+                $(".cls_selected_bank_balance").html(0);
+                
                 $('.cls_form').hide();
                 var id = ($(this).val());
                 $('.form_'+id).show();
