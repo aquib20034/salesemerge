@@ -20,6 +20,9 @@ class CreateTransactionsTable extends Migration
             $table->timestamp('transaction_date')->nullable();
             $table->string('method')->nullable();
             $table->text('detail')->nullable();
+            $table->unsignedInteger('company_id')->nullable();
+            $table->unsignedInteger('branch_id')->nullable();
+            $table->unsignedInteger('created_by')->nullable();
             $table->timestamps();
         });
     }

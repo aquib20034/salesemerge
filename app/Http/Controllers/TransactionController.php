@@ -222,6 +222,9 @@ class TransactionController extends Controller
         $trnx->detail               = $detail;
         $trnx->method               = $method;
         $trnx->transaction_date     = (isset($transaction_date)) ? $transaction_date : $this->today;
+        $trnx->created_by           = Auth::user()->id;
+        $trnx->company_id           = Auth::user()->company_id;
+        $trnx->branch_id            = Auth::user()->branch_id;
         $trnx->save();
 
         $ledger                     = new Ledger();

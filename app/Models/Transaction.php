@@ -13,17 +13,31 @@ class Transaction extends Model
         'transaction_date',
         'method',
         'detail',
+        'company_id',
+        'branch_id',
+        'created_by'
     ];
 
     public function ledger()
-{
-    return $this->hasOne(Ledger::class, 'transaction_id', 'id');
-}
+    {
+        return $this->hasOne(Ledger::class, 'transaction_id', 'id');
+    }
+
+    public function account()
+    {
+        return $this->belongsTo(Account::class, 'account_id', 'id');
+    }
 
 
     public function transactionType()
     {
         return $this->belongsTo(TransactionType::class, 'transaction_type_id', 'id');
+    }
+
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
     }
 
 

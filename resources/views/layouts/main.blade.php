@@ -401,6 +401,26 @@
                             </div>
                         </li>
 
+                        <li class="nav-item">
+                            <a data-toggle="collapse" href="#accountLedgers" class="collapsed" aria-expanded="false">
+                                <i class="fas fa-file"></i>
+                                <p>Financial reports</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="accountLedgers" style="">
+                                <ul class="nav nav-collapse">
+                                
+                                    @can('account_ledger-list')
+                                        <li class="nav-item {{ (request()->is('account_ledgers')) ? 'active':''}}">
+                                            <a  href="{{url('/account_ledgers')}}">
+                                                <span class="sub-item">Account ledger</span>
+                                            </a>
+                                        </li>
+                                    @endcan
+
+                                </ul>
+                            </div>
+                        </li>
                         <!--
                         <li class="nav-item">
                             <a data-toggle="collapse" href="#Purchase&Sell" class="collapsed" aria-expanded="false">
