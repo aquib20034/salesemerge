@@ -70,6 +70,11 @@ class PermissionSeeder extends Seeder
             'account-edit',
             'account-delete',
 
+            'account_ledger-list',
+            'account_ledger-create',
+            'account_ledger-edit',
+            'account_ledger-delete',
+
             'account_type-list',
             'account_type-create',
             'account_type-edit',

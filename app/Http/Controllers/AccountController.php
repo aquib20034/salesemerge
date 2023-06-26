@@ -114,6 +114,10 @@ class AccountController extends Controller
                     $trnx->transaction_type_id  = $request->filled('transaction_type_id') ? $request->transaction_type_id : 0;
                     $trnx->detail               = $this->account_opening_text;
                     $trnx->transaction_date     = date('Y-m-d H:i:s');
+                    $trnx->company_id           = Auth::user()->company_id;
+                    $trnx->branch_id            = Auth::user()->branch_id;
+                    $trnx->created_by           = Auth::user()->id;
+
                     $trnx->save();
 
                     // Create a new ledger entry
@@ -135,6 +139,9 @@ class AccountController extends Controller
                         $trnx->transaction_type_id  = $request->filled('transaction_type_id') ? $request->transaction_type_id : 0;
                         $trnx->detail               = $this->account_opening_text;
                         // $trnx->transaction_date     = date('Y-m-d H:i:s');
+                        // $trnx->company_id           = Auth::user()->company_id;
+                        // $trnx->branch_id            = Auth::user()->branch_id;
+                        // $trnx->created_by           = Auth::user()->id;
                         $trnx->save();
                     }else{
                         return response()->json(array(
