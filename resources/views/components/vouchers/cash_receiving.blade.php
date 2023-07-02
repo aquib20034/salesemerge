@@ -1,13 +1,13 @@
-<x-vouchers.head_row/>
 
 <div class="row">
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header">
+            <!-- <div class="card-header">
                 <div class="d-flex align-items-center">
                     <h4 class="card-title">Cash receiving</h4>
                 </div>
-            </div>
+            </div> -->
+            <x-vouchers.head_row/>
             <!--begin::Form-->
                 {!! Form::open(array('id'=>'csh_rcvng_form','enctype'=>'multipart/form-data')) !!}
 
@@ -65,6 +65,8 @@
         </div>
     </div>
 </div>
+
+
 
 <script>
         $(document).ready(function () {  

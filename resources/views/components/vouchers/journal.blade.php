@@ -8,16 +8,13 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
+                <!-- <div class="card-header">
                     <div class="d-flex align-items-center">
                         <h4 class="card-title">Journal voucher</h4>
                     </div>
-                </div>
+                </div> -->
                 <div class="card-header">
                     <div class="row">
-                      
-
-                        
                         <div class="col col_head">
                             {!! Html::decode(Form::label('selected_crdt_acnt_bal','Selected credit account balance')) !!}</br>
                             <span class="cls_label cls_selected_crdt_acnt_bal">0</span>
@@ -30,11 +27,8 @@
                             {!! Form::hidden('selected_account_balance', 0, array('id' => 'selected_account_balance','class' => 'form-control','readonly' => '' )) !!}
                         </div>
                     </div>
-
-                
                 </div>
           
-
                 <div class="card-body">
                     <div class="row">
                         <div class="col">

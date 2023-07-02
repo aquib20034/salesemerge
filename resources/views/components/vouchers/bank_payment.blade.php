@@ -8,11 +8,11 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
+                <!-- <div class="card-header">
                     <div class="d-flex align-items-center">
                         <h4 class="card-title">Bank payment Voucher</h4>
                     </div>
-                </div>
+                </div> -->
                 <div class="card-header">
                     <div class="row">
                         <div class="col-3 col_head">
@@ -32,7 +32,7 @@
 
                         <div class="col-2 col_head">
                             {!! Html::decode(Form::label('transaction_date','Transaction date')) !!}</br>
-                            {!! Form::date('transaction_date', hp_today(), array('id' => 'transaction_date','class' => 'form-control' )) !!}
+                            {!! Form::date('transaction_date', hp_today(), array('id' => 'transaction_date','class' => 'form-control cls_transaction_date' )) !!}
                         </div> 
 
                         
