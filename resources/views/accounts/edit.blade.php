@@ -27,7 +27,7 @@
 
                             {{  Form::hidden('updated_by', Auth::user()->id ) }}
                             {{  Form::hidden('company_id', Auth::user()->company_id ) }}
-                            {{  Form::hidden('branch_id', Auth::user()->branch_id ) }}
+                            
                             {{  Form::hidden('action', "update" ) }}
 
                             <div class="card-body">
@@ -93,6 +93,16 @@
                                                 {{ Form::text('name', null, array('id'=>'name','placeholder' => 'Enter account name','class' => 'form-control','autofocus' => ''  )) }}
                                                 @if ($errors->has('name'))  
                                                     {!! "<span class='span_danger'>". $errors->first('name')."</span>"!!} 
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                {!! Html::decode(Form::label('branch_id','Branch <span class="text-danger">*</span>')) !!}
+                                                {!! Form::select('branch_id', $branches,$data->branch_id, array('class' => 'form-control')) !!}
+                                                @if ($errors->has('branch_id'))  
+                                                    {!! "<span class='span_danger'>". $errors->first('branch_id')."</span>"!!} 
                                                 @endif
                                             </div>
                                         </div>

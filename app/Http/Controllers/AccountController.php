@@ -104,9 +104,11 @@ class AccountController extends Controller
 
     public function create()
     {
+        $company_id         = hp_company_id();
         $cities             = hp_cities();
         // $amount_types       = hp_amount_types();
         // $transaction_types  = hp_transaction_types(false);  // false: get only Account opening voucher
+        $branches           = hp_branches($company_id);
         $account_types      = AccountType::where('company_id',hp_company_id())
                                 ->whereNull('parent_id')
                                 ->pluck('name','id')
@@ -115,6 +117,7 @@ class AccountController extends Controller
         return view('accounts.create',compact(
                                                 'cities',
                                                 'account_types',
+                                                'branches'
                                                 // 'amount_types',
                                                 // 'transaction_types'
                                             ));
