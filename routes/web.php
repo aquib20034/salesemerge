@@ -78,16 +78,25 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('accounts', AccountController::class);
     Route::delete('accounts/destory', [AccountController::class, 'destroy'])->name('accounts.massDestroy');
     Route::get('/get_children/{parent_id}/{type}', [App\Http\Controllers\AccountController::class, 'get_children']);
-    Route::post('accounts/add_upd_opening_balance', [App\Http\Controllers\AccountController::class, 'add_upd_opening_balance'])->name('add_upd_opening_balance');
+    Route::get('/get_ledger/{transaction_type_id}/{from_date}/{to_date}', [App\Http\Controllers\AccountLedgerController::class, 'get_ledger']);
+     
+    
 
     
     //transactions
     Route::resource('transactions', TransactionController::class);
     Route::delete('transactions/destory', [TransactionController::class, 'destroy'])->name('transactions.massDestroy');
     Route::get('/get-current-balance/{account_id}',  [App\Http\Controllers\HelperController::class, 'getCurrentBalance'])->name('get.current.balance');
-
+    Route::get('/get_last_trnx_id/{trnx_type_id}', [App\Http\Controllers\HelperController::class, 'get_last_trnx_id'])->name('get.last.trnx.id');
 
     
+    
+    //account_openings
+    Route::resource('account_openings', AccountOpeningController::class);
+    Route::delete('account_openings/destory', [AccountOpeningController::class, 'destroy'])->name('account_openings.massDestroy');
+    Route::post('accounts/add_upd_opening_balance', [App\Http\Controllers\AccountOpeningController::class, 'add_upd_opening_balance'])->name('add_upd_opening_balance');
+
+     
     //account_ledgers
     Route::resource('account_ledgers', AccountLedgerController::class);
     Route::delete('account_ledgers/destory', [AccountLedgerController::class, 'destroy'])->name('account_ledgers.massDestroy');

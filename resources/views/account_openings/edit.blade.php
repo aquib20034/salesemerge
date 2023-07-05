@@ -2,9 +2,9 @@
 @section('title','Account')
 @section('content')
 <style>
-    .cls_form{
+    /* .cls_form{
         display:none;
-    }
+    } */
 </style>
     @include( '../sweet_script')
     <div class="page-inner">
@@ -16,18 +16,19 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex align-items-center">
-                            <h4 class="card-title">Add @yield('title')</h4>
+                            <h4 class="card-title">Edit @yield('title')</h4>
                             <a  href="{{ route('accounts.index') }}" class="btn btn-primary btn-xs ml-auto">
                                 <i class="fas fa-arrow-left"></i>
                             </a>
                         </div>
                     </div>
                     <!--begin::Form-->
-                        {!! Form::open(array('route' => 'accounts.store','method'=>'POST','id'=>'form','enctype'=>'multipart/form-data')) !!}
+                        {!! Form::model($data, ['method' => 'PATCH','id'=>'form','enctype'=>'multipart/form-data','route' => ['accounts.update', $data->id]]) !!}
 
-                            {{  Form::hidden('created_by', Auth::user()->id ) }}
+                            {{  Form::hidden('updated_by', Auth::user()->id ) }}
                             {{  Form::hidden('company_id', Auth::user()->company_id ) }}
-                            {{  Form::hidden('action', "store" ) }}
+                            {{  Form::hidden('branch_id', Auth::user()->branch_id ) }}
+                            {{  Form::hidden('action', "update" ) }}
 
                             <div class="card-body">
                                 <div class="row">
@@ -36,7 +37,7 @@
                                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 cls_head_div">
                                         <div class="form-group">
                                             {!! Html::decode(Form::label('account_type_id','Head of accounts / Account type<span class="text-danger">*</span>')) !!}
-                                            {!! Form::select('account_type_id', ['0'=>'--select--']+$account_types,[], array('class' => 'form-control cls_head')) !!}
+                                            {!! Form::select('account_type_id', ['0'=>'--select--']+$account_types,$data->account_type_id, array('class' => 'form-control cls_head')) !!}
                                             @if ($errors->has('account_type_id'))  
                                                 {!! "<span class='span_danger'>". $errors->first('account_type_id')."</span>"!!} 
                                             @endif
@@ -44,12 +45,43 @@
                                     </div>
 
                                     <!-- Group Head SelectBox -->
-                                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 cls_group_div"></div>
+                                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 cls_group_div">
+                                        <div class="form-group">
+                                            {!! Html::decode(Form::label('group_head_id','Group head<span class="text-danger">*</span>')) !!}
+                                            {!! Form::select('group_head_id', ['0'=>"--select--"]+$group_heads,$data->group_head_id, array('class' => 'form-control cls_group')) !!}
+                                            @if ($errors->has('group_head_id'))  
+                                                {!! "<span class='span_danger'>". $errors->first('group_head_id')."</span>"!!} 
+                                            @endif
+                                        </div>
+                                    </div>
 
                                     <!-- Child Head SelectBox -->
-                                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 cls_child_div"></div>
+                                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 cls_child_div">
+                                        <div class="form-group">
+                                            {!! Html::decode(Form::label('child_head_id','Child head<span class="text-danger">*</span>')) !!}
+                                            {!! Form::select('child_head_id', ['0'=>"--select--"]+$child_heads,$data->child_head_id, array('class' => 'form-control cls_child')) !!}
+                                            @if ($errors->has('child_head_id'))  
+                                                {!! "<span class='span_danger'>". $errors->first('child_head_id')."</span>"!!} 
+                                            @endif
+                                        </div>
+                                    </div>
 
-                                    
+                                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                        <div class="form-group">
+                                            {!! Html::decode(Form::label('active','Active<span class="text-danger">*</span>')) !!}<br>
+                                            <span class="switch switch-sm switch-icon switch-success">
+                                            <?php $actv = (isset($data->active) && ($data->active == "Active") || ($data->active == 1)) ? 1 : 0; ?>
+                                                <label>
+                                                    {!! Form::checkbox('active',1,$actv,  array('class' => 'form-control', 'data-toggle'=>'toggle', 'data-onstyle'=>'success', 'data-style' => 'btn-round')) !!}
+                                                    <span></span>
+                                                </label>
+                                            </span>
+                                        
+                                            @if ($errors->has('active'))  
+                                                {!! "<span class='span_danger'>". $errors->first('active')."</span>"!!} 
+                                            @endif
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <!-- Form to create accounts -->
@@ -67,18 +99,8 @@
 
                                         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                             <div class="form-group">
-                                                {!! Html::decode(Form::label('branch_id','Branch <span class="text-danger">*</span>')) !!}
-                                                {!! Form::select('branch_id', $branches,[], array('class' => 'form-control')) !!}
-                                                @if ($errors->has('branch_id'))  
-                                                    {!! "<span class='span_danger'>". $errors->first('branch_id')."</span>"!!} 
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                            <div class="form-group">
                                                 {!! Html::decode(Form::label('city_id','City ')) !!}
-                                                {!! Form::select('city_id', $cities,null, array('class' => 'form-control','id'=>'city_id')) !!}
+                                                {!! Form::select('city_id', $cities,$data->city_id, array('class' => 'form-control','id'=>'city_id')) !!}
                                                 @if ($errors->has('city_id'))  
                                                     {!! "<span class='span_danger'>". $errors->first('city_id')."</span>"!!} 
                                                 @endif
@@ -95,10 +117,8 @@
                                                 @endif
                                             </div>
                                         </div> 
-
                                     </div>
                                 </div>  
-
                             </div>
 
                             <div class="card-footer">

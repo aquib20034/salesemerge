@@ -105,17 +105,32 @@ class TransactionController extends Controller
         if ($request->filled('account_ids')) {
             foreach ($request->account_ids as $key => $account_id) {
 
-                $payee                  = Account::select('name')->findOrFail($account_id);
-                $transaction_type_id    = $request->filled('transaction_type_id') ? $request->transaction_type_id : 0;
-                $detail                 = isset($request->details[$key]) ? $request->details[$key] : null;
-                $amount                 = isset($request->amounts[$key]) ? $request->amounts[$key] : 0;
-                $detail2                = $detail ."; Payee: " . ((isset($payee->name)) ? $payee->name : "");
+                $data                           = array();
+                $account                          = Account::select('name')->findOrFail($account_id);
+
+                $data['method']                 = null;
+                $data['reference_id']           = null;
+                $data['transaction_date']       = null;
+                $data['transaction_type_id']    = ($request->filled('transaction_type_id') ? $request->transaction_type_id : 0);
+                $data['amount']                 = (isset($request->amounts[$key]) ? $request->amounts[$key] : 0);
+                
+                $data['custom_id']              = hp_last_trnx_custom_id($data['transaction_type_id']); // Call the helper function;
+                $data['account_id']             = $account_id;
+                $data['amount_type']            = 'C';
+                $data['detail']                 = (isset($request->details[$key]) ? $request->details[$key] : null);
 
                 // Create credit transaction
-                $this->createCustomTransaction(null,null, $account_id, $transaction_type_id, $detail, 'C', $amount);
+                $ref_trnx_id                    = $this->createCustomTransaction($data);
+                
+                $data['custom_id']              = null; // reference trnx doesnot have custom trnx id
+                $data['account_id']             = $csh_in_hnd_account_id;
+                $data['amount_type']            = 'D';
+                $data['detail']                 = "Payee: " . ((isset($account->name)) ? $account->name : "");
+                $data['reference_id']           = $ref_trnx_id;
 
+                
                 // Create debit transaction
-                $this->createCustomTransaction(null,null, $csh_in_hnd_account_id, $transaction_type_id, $detail2, 'D', $amount);
+                $this->createCustomTransaction($data);
 
             }
         }
@@ -126,117 +141,193 @@ class TransactionController extends Controller
     {
         if ($request->filled('account_ids')) {
             foreach ($request->account_ids as $key => $account_id) {
-                $receiver               = Account::select('name')->findOrFail($account_id);
-                $transaction_type_id    = $request->filled('transaction_type_id') ? $request->transaction_type_id : 0;
-                $detail                 = isset($request->details[$key]) ? $request->details[$key] : null;
-                $amount                 = isset($request->amounts[$key]) ? $request->amounts[$key] : 0;
-                $detail2                = $detail ."; Receiver: " . ((isset($receiver->name)) ? $receiver->name : "");
+
+                $data                           = array();
+                $account                        = Account::select('name')->findOrFail($account_id);
+
+                $data['method']                 = null;
+                $data['reference_id']           = null;
+                $data['transaction_date']       = null;
+                $data['transaction_type_id']    = ($request->filled('transaction_type_id') ? $request->transaction_type_id : 0);
+                $data['amount']                 = (isset($request->amounts[$key]) ? $request->amounts[$key] : 0);
+                
+                $data['custom_id']              = hp_last_trnx_custom_id($data['transaction_type_id']); // Call the helper function;
+                $data['account_id']             = $account_id;
+                $data['amount_type']            = 'D';
+                $data['detail']                 = (isset($request->details[$key]) ? $request->details[$key] : null);
+
+                
+                // Create debit transaction
+                $ref_trnx_id                    = $this->createCustomTransaction($data);
+
+                $data['custom_id']              = null; // reference trnx doesnot have custom trnx id
+                $data['account_id']             = $csh_in_hnd_account_id;
+                $data['amount_type']            = 'C';
+                $data['detail']                 = "Receiver: " . ((isset($account->name)) ? $account->name : "");
+                $data['reference_id']           = $ref_trnx_id;
 
                 // Create credit transaction
-                $this->createCustomTransaction(null,null, $csh_in_hnd_account_id, $transaction_type_id, $detail2, 'C', $amount);
-
-                // Create debit transaction
-                $this->createCustomTransaction(null,null, $account_id, $transaction_type_id, $detail, 'D', $amount);
+                $this->createCustomTransaction($data);
             }
         }
     }
+
+    
 
     // Process bank deposit voucher
     private function processBankDepositVoucher($request)
     {
         if ($request->filled('account_ids')) {
             foreach ($request->account_ids as $key => $account_id) {
+                $data                           = array();
+                $account                        = Account::select('name')->findOrFail($account_id);
 
-                $payee                  = Account::select('name')->findOrFail($account_id);
-                $transaction_type_id    = $request->filled('transaction_type_id') ? $request->transaction_type_id : 0;
-                $detail                 = isset($request->details[$key]) ? $request->details[$key] : null;
-                $amount                 = isset($request->amounts[$key]) ? $request->amounts[$key] : 0;
-                $detail2                = $detail ."; Depositor: " . ((isset($payee->name)) ? $payee->name : "");
-                $method                 = $request->filled('method') ? $request->method : 0;
-                $transaction_date       = $request->filled('transaction_date') ? $request->transaction_date : null;
+                $data['method']                 = $request->filled('method') ? $request->method : 0;
+                $data['reference_id']           = null;
+                $data['transaction_date']       = $request->filled('transaction_date') ? $request->transaction_date : null;
+                $data['transaction_type_id']    = ($request->filled('transaction_type_id') ? $request->transaction_type_id : 0);
+                $data['amount']                 = (isset($request->amounts[$key]) ? $request->amounts[$key] : 0);
+                
+                $data['custom_id']              = hp_last_trnx_custom_id($data['transaction_type_id']); // Call the helper function;
+                $data['account_id']             = $account_id;
+                $data['amount_type']            = 'C';
+                $data['detail']                 = (isset($request->details[$key]) ? $request->details[$key] : null);
 
                 // Create credit transaction
-                $this->createCustomTransaction($method, $transaction_date, $account_id, $transaction_type_id, $detail, 'C', $amount);
+                $ref_trnx_id                    = $this->createCustomTransaction($data);
+
+
+                // $data['custom_id']              = null; // reference trnx doesnot have custom trnx id
+                $data['account_id']             = $request->filled('bank_id') ? $request->bank_id : 0;
+                $data['amount_type']            = 'D';
+                $data['detail']                 = "Depositor: " . ((isset($account->name)) ? $account->name : "");
+                // $data['reference_id']           = $ref_trnx_id;
 
                 // Create debit transaction
-                $bank_id               = $request->filled('bank_id') ? $request->bank_id : 0;
-                $this->createCustomTransaction($method, $transaction_date, $bank_id, $transaction_type_id, $detail2, 'D', $amount);
+                $this->createCustomTransaction($data);
 
             }
         }
     }
 
-    // Process cash payment voucher
+
+    // Process bank payment voucher  -- Bank credit and user debit
     private function processBankPaymentVoucher($request)
     {
         if ($request->filled('account_ids')) {
             foreach ($request->account_ids as $key => $account_id) {
-                $receiver               = Account::select('name')->findOrFail($account_id);
-                $transaction_type_id    = $request->filled('transaction_type_id') ? $request->transaction_type_id : 0;
-                $detail                 = isset($request->details[$key]) ? $request->details[$key] : null;
-                $amount                 = isset($request->amounts[$key]) ? $request->amounts[$key] : 0;
-                $detail2                = $detail ."; Receiver: " . ((isset($receiver->name)) ? $receiver->name : "");
-                $method                 = $request->filled('method') ? $request->method : 0;
-                $transaction_date       = $request->filled('transaction_date') ? $request->transaction_date : null;
+                $data                           = array();
+                $account                        = Account::select('name')->findOrFail($account_id);
+                
+                $data['cheque_no']              = $request->filled('cheque_no') ? $request->cheque_no : null;
+                $data['method']                 = null;
+                $data['reference_id']           = null;
+                $data['transaction_date']       = $request->filled('transaction_date') ? $request->transaction_date : null;
+                $data['transaction_type_id']    = ($request->filled('transaction_type_id') ? $request->transaction_type_id : 0);
+                $data['amount']                 = (isset($request->amounts[$key]) ? $request->amounts[$key] : 0);
+                
+                $data['custom_id']              = hp_last_trnx_custom_id($data['transaction_type_id']); // Call the helper function;
+                $data['account_id']             = $account_id;
+                $data['amount_type']            = 'D';
+                $data['detail']                 = (isset($request->details[$key]) ? $request->details[$key] : null);
 
                 // Create credit transaction
-                $bank_id               = $request->filled('bank_id') ? $request->bank_id : 0;
-                $this->createCustomTransaction($method, $transaction_date, $bank_id, $transaction_type_id, $detail2, 'C', $amount);
+                $ref_trnx_id                    = $this->createCustomTransaction($data);
+
+
+                // $data['custom_id']              = null; // reference trnx doesnot have custom trnx id
+                $data['account_id']             = $request->filled('bank_id') ? $request->bank_id : 0;
+                $data['amount_type']            = 'C';
+                $data['detail']                 = "Receiver: " . ((isset($account->name)) ? $account->name : "");
+                // $data['reference_id']           = $ref_trnx_id;
 
                 // Create debit transaction
-                $this->createCustomTransaction($method, $transaction_date, $account_id, $transaction_type_id, $detail, 'D', $amount);
+                $this->createCustomTransaction($data);
+
             }
         }
     }
-
 
     // Process cash payment voucher
     private function processJournalVoucher($request)
     {
+
+        // dd($request);
+        $transaction_type_id    = $request->filled('transaction_type_id') ? $request->transaction_type_id : 0;
+        $custom_id              = hp_last_trnx_custom_id($transaction_type_id); // Call the helper function;
         if ($request->filled('account_ids')) {
             foreach ($request->account_ids as $key => $account_id) {
-                $payee                  = Account::select('name')->findOrFail($account_id);
-                $transaction_type_id    = $request->filled('transaction_type_id') ? $request->transaction_type_id : 0;
-                $detail                 = isset($request->details[$key]) ? $request->details[$key] : null;
-                $amount                 = isset($request->amounts[$key]) ? $request->amounts[$key] : 0;
-                $detail2                = $detail ."; payee: " . ((isset($payee->name)) ? $payee->name : "");
+                $data                           = array();
+                $data['amount_type']            = 'C'; 
+                $data['custom_id']              = $custom_id;
+                $data['account_id']             = $account_id;
+                $data['transaction_type_id']    = $transaction_type_id;
+                $data['detail']                 = (isset($request->details[$key]) ? $request->details[$key] : null);
+                $data['amount']                 = (isset($request->amounts[$key]) ? $request->amounts[$key] : 0);
 
                 // Create credit transaction
-                $this->createCustomTransaction(null,null, $account_id, $transaction_type_id, $detail, 'C', $amount);
+                $ref_trnx_id                    = $this->createCustomTransaction($data);
             }
 
-            $dbt_acnt_id             = $request->filled('dbt_acnt_id') ? $request->dbt_acnt_id : 0;
-            $dbt_detail              = $request->filled('dbt_detail') ? $request->dbt_detail : null;
-            $dbt_amount              = $request->filled('dbt_amount') ? $request->dbt_amount : 0;
+
+            foreach ($request->dbt_acnt_ids as $key => $account_id) {
+                $data                           = array();
+                $data['amount_type']            = 'D'; 
+                $data['custom_id']              = $custom_id;
+                $data['account_id']             = $account_id;
+                $data['transaction_type_id']    = $transaction_type_id;
+                $data['detail']                 = (isset($request->dbt_details[$key]) ? $request->dbt_details[$key] : null);
+                $data['amount']                 = (isset($request->dbt_amounts[$key]) ? $request->dbt_amounts[$key] : 0);
+
+                // Create debit transaction
+                $ref_trnx_id                    = $this->createCustomTransaction($data);
+            }
+
+            // $data['amount_type']            = 'D';
+            // $data['custom_id']              = $custom_id;
+            // $data['account_id']             = $request->filled('dbt_acnt_id') ? $request->dbt_acnt_id : 0;
+            // $data['detail']                 = $request->filled('dbt_detail') ? $request->dbt_detail : null;
+            // $data['amount']                 = $request->filled('dbt_amount') ? $request->dbt_amount : 0;
+
             // Create debit transaction
-            $this->createCustomTransaction(null,null, $dbt_acnt_id, $transaction_type_id, $dbt_detail, 'D', $dbt_amount);
+            // $this->createCustomTransaction($data);
         }
     }
 
+
+   
+
     // create custom transaction
-    private function createCustomTransaction($method=null,$transaction_date=null, $account_id, $transaction_type_id, $detail, $amount_type, $amount)
+    private function createCustomTransaction($data)
     {
+        // $custom_id=null,$reference_id=null,$method=null,$transaction_date=null, $account_id, $transaction_type_id, $detail, $amount_type, $amount
+
         $trnx                       = new Transaction();
-        $trnx->account_id           = $account_id;
-        $trnx->transaction_type_id  = $transaction_type_id;
-        $trnx->detail               = $detail;
-        $trnx->method               = $method;
-        $trnx->transaction_date     = (isset($transaction_date)) ? $transaction_date : $this->today;
+        $trnx->cheque_no            = isset($data['cheque_no']) ? ($data['cheque_no']) : null;
+        $trnx->custom_id            = isset($data['custom_id']) ? ($data['custom_id']) : null;
+        $trnx->account_id           = isset($data['account_id']) ? ($data['account_id']) : null;
+        $trnx->transaction_type_id  = isset($data['transaction_type_id']) ? ($data['transaction_type_id']) : null;
+        $trnx->reference_id         = isset($data['reference_id']) ? ($data['reference_id']) : null;
+        $trnx->detail               = isset($data['detail']) ? ($data['detail']) : null;
+        $trnx->method               = isset($data['method']) ? ($data['method']) : null;
+        $trnx->transaction_date     = isset($data['transaction_date']) ? concatenate_time_to_date($data['transaction_date']) : $this->today;
         $trnx->created_by           = Auth::user()->id;
         $trnx->company_id           = Auth::user()->company_id;
         $trnx->branch_id            = Auth::user()->branch_id;
         $trnx->save();
 
         $ledger                     = new Ledger();
-        $ledger->transaction_id     = $trnx->id;
-        $ledger->account_id         = $account_id;
-        $ledger->amount_type        = $amount_type;
-        $ledger->amount             = $amount;
+        $ledger->transaction_id     = isset($trnx->id) ? ($trnx->id) : null;
+        $ledger->account_id         = isset($data['account_id']) ? ($data['account_id']) : null;
+        $ledger->amount_type        = isset($data['amount_type']) ? ($data['amount_type']) : null;
+        $ledger->amount             = isset($data['amount']) ? ($data['amount']) : null;
         $ledger->save();
 
-        $account                    = Account::where('id', $account_id)->first();
-        $account->current_balance   = hp_calc_current_balance($account->id);
+        $account                    = Account::where('id', $ledger->account_id)->first();
+        $account->current_balance   = hp_calc_current_balance($ledger->account_id);
         $account->save();
+
+        return $trnx->id;
     }
 
 
