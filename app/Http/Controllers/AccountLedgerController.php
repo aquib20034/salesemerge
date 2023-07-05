@@ -58,6 +58,15 @@ class AccountLedgerController extends Controller
                 }
                 return "";
             });
+            $table->editColumn('custom_id', function ($row) {
+                if(isset($row->custom_id)){
+                    if(isset($row->transactionType->name)){
+                        return get_first_letters($row->transactionType->name) . " - " . $row->custom_id;
+                    }
+                    return $row->custom_id;
+                }
+                return "";
+            });
 
             $table->editColumn('account_id', function ($row) {
                 if(isset($row->account_id)){
@@ -102,20 +111,26 @@ class AccountLedgerController extends Controller
                 return $balance;
             });
 
-            $table->editColumn('actions', function ($row) {
-                $viewGate       = 'account_ledger-list';
-                $editGate       = 'account_ledger-edit';
-                $deleteGate     = 'account_ledger-delete';
-                $crudRoutePart  = 'account_ledgers';
 
-                return view('partials.datatableActions', compact(
-                    'viewGate',
-                    'editGate',
-                    'deleteGate',
-                    'crudRoutePart',
-                    'row'
-                ));
+            $table->editColumn('actions', function ($row) {
+                return "Coming soon!";
             });
+
+
+            // $table->editColumn('actions', function ($row) {
+            //     $viewGate       = 'account_ledger-list';
+            //     $editGate       = 'account_ledger-edit';
+            //     $deleteGate     = 'account_ledger-delete';
+            //     $crudRoutePart  = 'account_ledgers';
+
+            //     return view('partials.datatableActions', compact(
+            //         'viewGate',
+            //         'editGate',
+            //         'deleteGate',
+            //         'crudRoutePart',
+            //         'row'
+            //     ));
+            // });
 
             $table->rawColumns(['actions', 'placeholder']);
             return $table->make(true);
