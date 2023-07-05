@@ -41,6 +41,7 @@ class AccountLedgerController extends Controller
 
             $company_id = Auth::user()->company_id;
             $query      = Transaction::where('company_id',$company_id)
+                            ->whereNull('reference_id')
                             // ->where('account_id',1)
                             ->orderBy('id','ASC')
                             ->get();
