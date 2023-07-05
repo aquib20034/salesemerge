@@ -62,11 +62,11 @@
                                 
                         <div class="row">
 
-                            <div class="col-2" style="text-align: left;">
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12" style="text-align: left;">
                                 <div class="cls_table_heading_3">New vouchers</div>
                             </div>
                             
-                            <div class="col-2">
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                 <div class="row">
                                     <div class="col-3">
                                         {!! Html::decode(Form::label('from_date', 'From')) !!}
@@ -77,7 +77,7 @@
                                 </div>
                             </div>
                                 
-                            <div class="col-2">
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                 <div class="row">
                                     <div class="col-3">
                                         {!! Html::decode(Form::label('to_date', 'To')) !!}
@@ -90,7 +90,7 @@
 
 
                                             
-                            <div class="col-3">
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                 <div class="row">
                                     <div class="col-3">
                                         {!! Html::decode(Form::label('tt_id', 'Type')) !!}
@@ -103,17 +103,17 @@
                         
                             
 
-                            <div class="col-1">
+                            <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12" style="text-align: center;">
                                 <button type="" class="btn btn-primary btn-xs" id="btn_table">
                                     <i class="fas fa-sync-alt"></i>
-                                    Load transaction
+                                    Load vouchers
                                 </button>
                             </div>  
                             
-                            <div class="col-2" style="text-align: right;">
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12" style="text-align: center;">
                                 <a  href="{{ route('transactions.create') }}" class="btn btn-success btn-xs ml-auto">
                                     <i class="fa fa-plus"></i> 
-                                    Add new transaction
+                                    Add voucher
                                 </a>
                             </div> 
                         </div>  
@@ -124,9 +124,9 @@
                                 <thead>
                                     <tr>
                                         <th>Account title</th>
-                                        <th>Trnx date</th>
+                                        <th>Date</th>
                                         <th>Type</th>
-                                        <th>Trnx Id</th>  <!-- custom id -->
+                                        <th>Id</th>  <!-- custom id -->
                                         <th>Detail</th>
                                         <th>Debit</th>
                                         <th>Credit</th>

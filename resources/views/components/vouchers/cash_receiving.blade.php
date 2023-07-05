@@ -18,10 +18,9 @@
                     {{  Form::hidden('transaction_type_id', 0 , array("class" => "cls_transaction_type")) }}
 
                     <div class="card-body">
-                        
-
                         <div class="row">
-                                <div class="col">
+                            <div class="col">
+                                <div class="table-responsive">
                                     <table class="table table_2" id="tbl_csh_rcvng">
                                         <thead>
                                             <tr>
@@ -50,6 +49,7 @@
                                     </table>
                                 </div>
                             </div>
+                        </div>
                     </div>
 
                     <div class="card-footer">
