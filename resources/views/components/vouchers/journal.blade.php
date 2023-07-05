@@ -15,13 +15,13 @@
                 </div> -->
                 <div class="card-header">
                     <div class="row">
-                        <div class="col col_head">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col_head">
                             {!! Html::decode(Form::label('selected_crdt_acnt_bal','Selected credit account balance')) !!}</br>
                             <span class="cls_label cls_selected_crdt_acnt_bal">0</span>
                             {!! Form::hidden('selected_crdt_acnt_bal', (hp_cash_in_hand()->current_balance) ?? "", array('id' => 'selected_crdt_acnt_bal','class' => 'form-control','readonly' => '' )) !!}
                         </div>
 
-                        <div class="col col_head">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col_head">
                             {!! Html::decode(Form::label('selected_account_balance','Account balance')) !!}</br>
                             <span class="cls_label cls_selected_account_balance">0</span>
                             {!! Form::hidden('selected_account_balance', 0, array('id' => 'selected_account_balance','class' => 'form-control','readonly' => '' )) !!}
@@ -38,32 +38,34 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <table class="table"  id="tbl_jrnl_dbt">
-                                <thead>
-                                    <tr>
-                                        <th width="25%">Debit account</th>
-                                        <th width="60%">Debit detail</th>
-                                        <th width="15%">Debit Amount</th>
-                                        <th width="10%"><a class="text-light btn btn-primary btn-xs add_jrnl_dbt" id="">+</a></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                            <div class="table-responsive">
+                                <table class="table"  id="tbl_jrnl_dbt">
+                                    <thead>
                                         <tr>
-                                            <td>
-                                                {!! Form::select("dbt_acnt_ids[]", ["Please select"]+hp_accounts() ,[], array("class" => "form-control select2 cls_dbt_acnt_id")) !!}
-                                            </td>
-                                            <td>
-                                                {{ Form::text("dbt_details[]", null, array("placeholder" => "Enter detail","class" => "form-control")) }}
-                                            </td>
-                                            <td>
-                                                {{ Form::number("dbt_amounts[]", null, array("placeholder" => "amount","class" => "form-control cls_dbt_amount","min"=>0, "step"=>"any")) }}
-                                            </td>
-                                            <td>
-                                                <a class="text-light btn btn-danger btn-xs del_jrnl_dbt">-</a>
-                                            </td>
+                                            <th width="25%">Debit account</th>
+                                            <th width="60%">Debit detail</th>
+                                            <th width="15%">Debit Amount</th>
+                                            <th width="10%"><a class="text-light btn btn-primary btn-xs add_jrnl_dbt" id="">+</a></th>
                                         </tr>
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                            <tr>
+                                                <td>
+                                                    {!! Form::select("dbt_acnt_ids[]", ["Please select"]+hp_accounts() ,[], array("class" => "form-control select2 cls_dbt_acnt_id")) !!}
+                                                </td>
+                                                <td>
+                                                    {{ Form::text("dbt_details[]", null, array("placeholder" => "Enter detail","class" => "form-control")) }}
+                                                </td>
+                                                <td>
+                                                    {{ Form::number("dbt_amounts[]", null, array("placeholder" => "amount","class" => "form-control cls_dbt_amount","min"=>0, "step"=>"any")) }}
+                                                </td>
+                                                <td>
+                                                    <a class="text-light btn btn-danger btn-xs del_jrnl_dbt">-</a>
+                                                </td>
+                                            </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
 
@@ -77,32 +79,34 @@
 
                     <div class="row">
                         <div class="col">
-                            <table class="table table_6" id="tbl_jrnl">
-                                <thead>
-                                    <tr>
-                                        <th width="25%">Credit account</th>
-                                        <th width="60%">Credit details</th>
-                                        <th width="15%">Credit amounts</th>
-                                        <th width="10%"><a class="text-light btn btn-primary btn-xs add_jrnl" id="">+</a></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                            <div class="table-responsive">
+                                <table class="table table_6" id="tbl_jrnl">
+                                    <thead>
                                         <tr>
-                                            <td>
-                                                {!! Form::select("account_ids[]", ["Please select"]+hp_accounts() ,[], array("class" => "form-control select2 cls_jrnl_account_ids")) !!}
-                                            </td>
-                                            <td>
-                                                {{ Form::text("details[]", null, array("placeholder" => "Enter details","class" => "form-control")) }}
-                                            </td>
-                                            <td>
-                                                {{ Form::number("amounts[]", null, array("placeholder" => "amounts","class" => "form-control cls_jrnl_amnt","min"=>0, "step"=>"any")) }}
-                                            </td>
-                                            <td>
-                                                <a class="text-light btn btn-danger btn-xs del_jrnl btn_del">-</a>
-                                            </td>
+                                            <th width="25%">Credit account</th>
+                                            <th width="60%">Credit details</th>
+                                            <th width="15%">Credit amounts</th>
+                                            <th width="10%"><a class="text-light btn btn-primary btn-xs add_jrnl" id="">+</a></th>
                                         </tr>
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                            <tr>
+                                                <td>
+                                                    {!! Form::select("account_ids[]", ["Please select"]+hp_accounts() ,[], array("class" => "form-control select2 cls_jrnl_account_ids")) !!}
+                                                </td>
+                                                <td>
+                                                    {{ Form::text("details[]", null, array("placeholder" => "Enter details","class" => "form-control")) }}
+                                                </td>
+                                                <td>
+                                                    {{ Form::number("amounts[]", null, array("placeholder" => "amounts","class" => "form-control cls_jrnl_amnt","min"=>0, "step"=>"any")) }}
+                                                </td>
+                                                <td>
+                                                    <a class="text-light btn btn-danger btn-xs del_jrnl btn_del">-</a>
+                                                </td>
+                                            </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

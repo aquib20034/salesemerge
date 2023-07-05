@@ -15,30 +15,30 @@
                 </div> -->
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-3 col_head">
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 col_head">
                             {!! Html::decode(Form::label('bank_ids','Bank Account Name')) !!} </br>
                             {!! Form::select("bank_id", ["Please select"]+hp_banks() ,[], array("class" => "form-control select2 cls_bank_id")) !!}
                         </div>
             
-                        <div class="col-3 col_head">
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 col_head">
                             {!! Html::decode(Form::label('method','Cheque#')) !!} </br>
                             {!! Form::text('cheque_no',  null, array('placeholder' => 'Enter cheque#', 'id' => 'cheque_no','class' => 'form-control' )) !!}
 
                         </div> 
 
-                        <div class="col-2 col_head">
+                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 col_head">
                             {!! Html::decode(Form::label('transaction_date','Transaction date')) !!}</br>
                             {!! Form::date('transaction_date', hp_today(), array('id' => 'transaction_date','class' => 'form-control cls_transaction_date' )) !!}
                         </div> 
 
                         
-                        <div class="col-2 col_head">
+                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 col_head">
                             {!! Html::decode(Form::label('selected_bank_balance','Selected Bank Balance')) !!}</br>
                             <span class="cls_label cls_selected_bank_balance">0</span>
                             {!! Form::hidden('selected_bank_balance', (hp_cash_in_hand()->current_balance) ?? "", array('id' => 'selected_bank_balance','class' => 'form-control','readonly' => '' )) !!}
                         </div>
 
-                        <div class="col-2 col_head">
+                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 col_head">
                             {!! Html::decode(Form::label('selected_account_balance','Account balance')) !!}</br>
                             <span class="cls_label cls_selected_account_balance"></span>
                             {!! Form::hidden('selected_account_balance', 0, array('id' => 'selected_account_balance','class' => 'form-control','readonly' => '' )) !!}
@@ -49,32 +49,34 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-                            <table class="table table_5" id="tbl_bnk_pymnt">
-                                <thead>
-                                    <tr>
-                                        <th width="25%">Account</th>
-                                        <th width="60%">Detail</th>
-                                        <th width="15%">Amount</th>
-                                        <th width="10%"><a class="text-light btn btn-primary btn-xs add_bnk_pymnt btn_add" id="">+</a></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            {!! Form::select("account_ids[]", ["Please select"]+hp_accounts() ,[], array("class" => "form-control select2 cls_bnk_pymnt_account_ids")) !!}
-                                        </td>
-                                        <td>
-                                            {{ Form::text("details[]", null, array("placeholder" => "Enter details","class" => "form-control")) }}
-                                        </td>
-                                        <td>
-                                            {{ Form::number("amounts[]", null, array("placeholder" => "amounts","class" => "form-control cls_bnk_pymnt_amnt","min"=>0, "step"=>"any")) }}
-                                        </td>
-                                        <td>
-                                            <a class="text-light btn btn-danger btn-xs del_bnk_pymnt btn_del">-</a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table_5" id="tbl_bnk_pymnt">
+                                    <thead>
+                                        <tr>
+                                            <th width="25%">Account</th>
+                                            <th width="60%">Detail</th>
+                                            <th width="15%">Amount</th>
+                                            <th width="10%"><a class="text-light btn btn-primary btn-xs add_bnk_pymnt btn_add" id="">+</a></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                {!! Form::select("account_ids[]", ["Please select"]+hp_accounts() ,[], array("class" => "form-control select2 cls_bnk_pymnt_account_ids")) !!}
+                                            </td>
+                                            <td>
+                                                {{ Form::text("details[]", null, array("placeholder" => "Enter details","class" => "form-control")) }}
+                                            </td>
+                                            <td>
+                                                {{ Form::number("amounts[]", null, array("placeholder" => "amounts","class" => "form-control cls_bnk_pymnt_amnt","min"=>0, "step"=>"any")) }}
+                                            </td>
+                                            <td>
+                                                <a class="text-light btn btn-danger btn-xs del_bnk_pymnt btn_del">-</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
