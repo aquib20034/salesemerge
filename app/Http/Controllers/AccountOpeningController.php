@@ -85,6 +85,8 @@ class AccountOpeningController extends Controller
     public function add_upd_opening_balance(OpeningBalanceRequest $request)
     {
 
+
+
         try {
             // Start a database transaction
             DB::beginTransaction();
@@ -95,10 +97,14 @@ class AccountOpeningController extends Controller
 
                 if($request->filled('action') && ($request->action == "store")){
 
+                    $transaction_type_id        = $request->filled('transaction_type_id') ? $request->transaction_type_id : 0;
+                    $trnx_custom_id             = hp_last_trnx_custom_id($transaction_type_id); // Call the helper function
+
                     // Create a new transaction
                     $trnx                       = new Transaction();
                     $trnx->account_id           = $request->filled('account_id') ? $request->account_id : 0; 
-                    $trnx->transaction_type_id  = $request->filled('transaction_type_id') ? $request->transaction_type_id : 0;
+                    $trnx->transaction_type_id  = $transaction_type_id;
+                    $trnx->custom_id            = $trnx_custom_id;
                     $trnx->detail               = $this->account_opening_text;
                     $trnx->transaction_date     = date('Y-m-d H:i:s');
                     $trnx->company_id           = Auth::user()->company_id;

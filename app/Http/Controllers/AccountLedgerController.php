@@ -33,6 +33,10 @@ class AccountLedgerController extends Controller
 
     public function index(Request $request)
     {
+
+        // $td = hp_last_trnx_custom_id(2); // Call the helper function;;
+
+        // dd($td);
         if ($request->ajax()) {
 
             $company_id = Auth::user()->company_id;
@@ -125,8 +129,9 @@ class AccountLedgerController extends Controller
         $company_id = Auth::user()->company_id;
         $query      = Transaction::where('company_id',$company_id)
                         ->where('transaction_type_id',$transaction_type_id)
-                        ->whereDate('updated_at','>=',$from_date)
-                        ->whereDate('updated_at','<=',$to_date)
+                        ->whereDate('transaction_date','>=',$from_date)
+                        ->whereDate('transaction_date','<=',$to_date)
+                        ->whereNull('reference_id')
                         // ->where('account_id',1)
                         ->orderBy('id','ASC')
                         ->get();
@@ -135,6 +140,18 @@ class AccountLedgerController extends Controller
         $table->addColumn('srno', '');
         $table->addColumn('placeholder', '&nbsp;');
         $table->addColumn('actions', '&nbsp;');
+
+
+        $table->editColumn('custom_id', function ($row) {
+            if(isset($row->custom_id)){
+                if(isset($row->transactionType->name)){
+                    return get_first_letters($row->transactionType->name) . " - " . $row->custom_id;
+                }
+                return $row->custom_id;
+            }
+            return "";
+        });
+
 
         $table->editColumn('transaction_type_id', function ($row) {
             if(isset($row->transaction_type_id)){
@@ -178,22 +195,29 @@ class AccountLedgerController extends Controller
             return "";
         });
 
+        $table->editColumn('actions', function ($row) {
+            return "Coming soon!";
+        });
+
+        
+        // $table->editColumn('actions', function ($row) {
+        //     $viewGate       = 'account_ledger-list';
+        //     $editGate       = 'account_ledger-edit';
+        //     $deleteGate     = 'account_ledger-delete';
+            
+        //     $crudRoutePart  = 'account_ledgers';
+
+        //     return view('partials.datatableActions', compact(
+        //         'viewGate',
+        //         'editGate',
+        //         'deleteGate',
+        //         'crudRoutePart',
+        //         'row'
+        //     ));
+        // });
+
         
 
-        $table->editColumn('actions', function ($row) {
-            $viewGate       = 'account_ledger-list';
-            $editGate       = 'account_ledger-edit';
-            $deleteGate     = 'account_ledger-delete';
-            $crudRoutePart  = 'account_ledgers';
-
-            return view('partials.datatableActions', compact(
-                'viewGate',
-                'editGate',
-                'deleteGate',
-                'crudRoutePart',
-                'row'
-            ));
-        });
 
         $table->rawColumns(['actions', 'placeholder']);
         return $table->make(true);

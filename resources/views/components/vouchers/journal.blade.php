@@ -32,27 +32,34 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-                            <table class="table" id="">
+                            <h2>Debit Accounts</h2>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <table class="table"  id="tbl_jrnl_dbt">
                                 <thead>
                                     <tr>
                                         <th width="25%">Debit account</th>
                                         <th width="60%">Debit detail</th>
                                         <th width="15%">Debit Amount</th>
-                                        <th width="10%"></th>
+                                        <th width="10%"><a class="text-light btn btn-primary btn-xs add_jrnl_dbt" id="">+</a></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                         <tr>
                                             <td>
-                                                {!! Form::select("dbt_acnt_id", ["Please select"]+hp_accounts() ,[], array("class" => "form-control select2 cls_dbt_acnt_id")) !!}
+                                                {!! Form::select("dbt_acnt_ids[]", ["Please select"]+hp_accounts() ,[], array("class" => "form-control select2 cls_dbt_acnt_id")) !!}
                                             </td>
                                             <td>
-                                                {{ Form::text("dbt_detail", null, array("placeholder" => "Enter detail","class" => "form-control")) }}
+                                                {{ Form::text("dbt_details[]", null, array("placeholder" => "Enter detail","class" => "form-control")) }}
                                             </td>
                                             <td>
-                                                {{ Form::number("dbt_amount", null, array("placeholder" => "amount","class" => "form-control cls_dbt_amount","min"=>0, "step"=>"any")) }}
+                                                {{ Form::number("dbt_amounts[]", null, array("placeholder" => "amount","class" => "form-control cls_dbt_amount","min"=>0, "step"=>"any")) }}
                                             </td>
                                             <td>
+                                                <a class="text-light btn btn-danger btn-xs del_jrnl_dbt">-</a>
                                             </td>
                                         </tr>
                                 </tbody>
@@ -60,9 +67,17 @@
                         </div>
                     </div>
 
+                    
                     <div class="row">
                         <div class="col">
-                            <table class="table" id="tbl_jrnl">
+                            <h2>Credit Accounts</h2>
+                            <hr>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <table class="table table_6" id="tbl_jrnl">
                                 <thead>
                                     <tr>
                                         <th width="25%">Credit account</th>
@@ -83,7 +98,7 @@
                                                 {{ Form::number("amounts[]", null, array("placeholder" => "amounts","class" => "form-control cls_jrnl_amnt","min"=>0, "step"=>"any")) }}
                                             </td>
                                             <td>
-                                                <a class="text-light btn btn-danger btn-xs del_jrnl">-</a>
+                                                <a class="text-light btn btn-danger btn-xs del_jrnl btn_del">-</a>
                                             </td>
                                         </tr>
                                 </tbody>
@@ -216,6 +231,8 @@
             }
 
             function compareDebitCredit(){
+
+                // credit amount calc 
                 var amnt        = 0;
                 var amount      = 0;
                 var inputs      = $(".cls_jrnl_amnt");
@@ -227,19 +244,45 @@
                     }
                     amount +=amnt;
                 }
-                
                 amount                      = amount.toFixed(2); // Fix the decimal places after the sum
-                var selected_dbt_acnt_bal   = parseFloat($(".cls_dbt_amount").val()); // Convert the balance to a float
-                console.log("selected_dbt_acnt_bal", selected_dbt_acnt_bal);
                 
-                if (isNaN(selected_dbt_acnt_bal)) { // Check if the value is not set or NaN
-                    selected_dbt_acnt_bal = 0; // Set selected_dbt_acnt_bal to 0 if it's not set
+                
+                // debit amount calc  
+                var dbt_amnt        = 0;
+                var dbt_amount      = 0;
+                var dbt_inputs      = $(".cls_dbt_amount");
+                
+                for (var i = 0; i < dbt_inputs.length; i++) {
+                    dbt_amnt = parseFloat($(dbt_inputs[i]).val());
+                    if (isNaN(dbt_amnt)) { // Check if the value is not set or NaN
+                        dbt_amnt = 0; // Set cih_balance to 0 if it's not set
+                    }
+                    dbt_amount +=dbt_amnt;
                 }
-
-                if(selected_dbt_acnt_bal == parseFloat(amount)){
+                dbt_amount                      = dbt_amount.toFixed(2); // Fix the decimal places after the sum
+                
+                
+                
+                if( parseFloat(dbt_amount) == parseFloat(amount)){
                     return true;
                 }
                 return false;
+                
+                
+                
+                
+                
+                // var selected_dbt_acnt_bal   = parseFloat($(".cls_dbt_amount").val()); // Convert the balance to a float
+                // console.log("selected_dbt_acnt_bal", selected_dbt_acnt_bal);
+                
+                // if (isNaN(selected_dbt_acnt_bal)) { // Check if the value is not set or NaN
+                //     selected_dbt_acnt_bal = 0; // Set selected_dbt_acnt_bal to 0 if it's not set
+                // }
+
+                // if(selected_dbt_acnt_bal == parseFloat(amount)){
+                //     return true;
+                // }
+                // return false;
             }
 
             $('#jrnl_form').submit(function(e) {
@@ -279,37 +322,77 @@
             });
 
 
-             $(document).on('click','.add_jrnl', function(){
+            // BEGIN :: Credit Acount table Add and delete row functions
+                $(document).on('click','.add_jrnl', function(){
+                    $('#tbl_jrnl tbody tr:last').after(
+                                                    '<tr>'+
+                                                        '<td>'+
+                                                            '{!! Form::select("account_ids[]", ["Please select"]+hp_accounts() ,[], array("class" => "form-control select2 cls_jrnl_account_ids")) !!}' +
+                                                        '</td>'+
+                                                        '<td>'+
+                                                            '{{ Form::text("details[]", null, array("placeholder" => "Enter details","class" => "form-control")) }}' +
+                                                        '</td>'+
+                                                        '<td>'+
+                                                            '{{ Form::number("amounts[]", null, array("placeholder" => "amounts","class" => "form-control cls_jrnl_amnt","min"=>0, "step"=>"any")) }}' +
+                                                        '</td>'+
+                                                        '<td>'+
+                                                            '<a class="text-light btn btn-danger btn-xs del_jrnl btn_del">-</a>'+
+                                                        '</td>'+
+                                                    '</tr>'
+                        );
+                        $('.select2').select2();
+                
+                });
+                $(document).on('click','.del_jrnl', function(){
 
-                console.log("test");
-                $('#tbl_jrnl tbody tr:last').after(
-                                                '<tr>'+
-                                                    '<td>'+
-                                                        '{!! Form::select("account_ids[]", ["Please select"]+hp_accounts() ,[], array("class" => "form-control select2 cls_jrnl_account_ids")) !!}' +
-                                                    '</td>'+
-                                                    '<td>'+
-                                                        '{{ Form::text("details[]", null, array("placeholder" => "Enter details","class" => "form-control")) }}' +
-                                                    '</td>'+
-                                                    '<td>'+
-                                                        '{{ Form::number("amounts[]", null, array("placeholder" => "amounts","class" => "form-control cls_jrnl_amnt","min"=>0, "step"=>"any")) }}' +
-                                                    '</td>'+
-                                                    '<td>'+
-                                                        '<a class="text-light btn btn-danger btn-xs del_jrnl">-</a>'+
-                                                    '</td>'+
-                                                '</tr>'
-                    );
-                    $('.select2').select2();
-               
-            });
-            $(document).on('click','.del_jrnl', function(){
+                    var rowCount = $('#tbl_jrnl tr').length;
+                    if(rowCount > 2){
+                        $(this).closest('tr').remove();
+                        // let trnx_id  = $(".class_transaction_id").html();
+                        // $(".class_transaction_id").html(--trnx_id);
+                    }else{
+                        toastr.error("All rows can not be deleted");
+                    }
+                });
+            // END :: Credit Acount table Add and delete row functions
 
-                var rowCount = $('#tbl_jrnl tr').length;
-                if(rowCount > 2){
-                    $(this).closest('tr').remove();
-                }else{
-                    toastr.error("All rows can not be deleted");
-                }
-            });
+
+
+            // BEGIN :: Debit Acount table Add and delete row functions
+
+                $(document).on('click','.add_jrnl_dbt', function(){
+                    $('#tbl_jrnl_dbt tbody tr:last').after(
+                                                    '<tr>'+
+                                                        '<td>'+
+                                                            '{!! Form::select("dbt_acnt_ids[]", ["Please select"]+hp_accounts() ,[], array("class" => "form-control select2 cls_dbt_acnt_id cls_dbt_acnt_ids")) !!}' +
+                                                        '</td>'+
+                                                        '<td>'+
+                                                            '{{ Form::text("dbt_details[]", null, array("placeholder" => "Enter detail","class" => "form-control")) }}' +
+                                                        '</td>'+
+                                                        '<td>'+
+                                                            '{{ Form::number("dbt_amounts[]", null, array("placeholder" => "amount","class" => "form-control cls_dbt_amount","min"=>0, "step"=>"any")) }}' +
+                                                        '</td>'+
+                                                        '<td>'+
+                                                            '<a class="text-light btn btn-danger btn-xs del_jrnl_dbt">-</a>'+
+                                                        '</td>'+
+                                                    '</tr>'
+                        );
+                        $('.select2').select2();
+                
+                });
+                $(document).on('click','.del_jrnl_dbt', function(){
+
+                    var rowCount = $('#tbl_jrnl_dbt tr').length;
+                    if(rowCount > 2){
+                        $(this).closest('tr').remove();
+                        // let trnx_id  = $(".class_transaction_id").html();
+                        // $(".class_transaction_id").html(--trnx_id);
+                    }else{
+                        toastr.error("All rows can not be deleted");
+                    }
+                });
+
+            // END :: Debit Acount table Add and delete row functions
          
         });
     </script>

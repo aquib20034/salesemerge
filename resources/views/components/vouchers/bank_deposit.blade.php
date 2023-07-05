@@ -56,13 +56,13 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-                            <table class="table" id="tbl_bnk_dpst">
+                            <table class="table table_4" id="tbl_bnk_dpst">
                                 <thead>
                                     <tr>
                                         <th width="25%">Account</th>
                                         <th width="60%">Detail</th>
                                         <th width="15%">Amount</th>
-                                        <th width="10%"><a class="text-light btn btn-primary btn-xs add_bnk_dpst" id="">+</a></th>
+                                        <th width="10%"><a class="text-light btn btn-primary btn-xs add_bnk_dpst btn_add" id="">+</a></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -77,7 +77,7 @@
                                                 {{ Form::number("amounts[]", null, array("placeholder" => "amounts","class" => "form-control cls_bnk_dpst_amnt","min"=>0, "step"=>"any")) }}
                                             </td>
                                             <td>
-                                                <a class="text-light btn btn-danger btn-xs del_bnk_dpst">-</a>
+                                                <a class="text-light btn btn-danger btn-xs del_bnk_dpst btn_del">-</a>
                                             </td>
                                         </tr>
                                 </tbody>
@@ -243,8 +243,6 @@
 
 
              $(document).on('click','.add_bnk_dpst', function(){
-
-                console.log("test");
                 $('#tbl_bnk_dpst tbody tr:last').after(
                                                 '<tr>'+
                                                     '<td>'+
@@ -257,7 +255,7 @@
                                                         '{{ Form::number("amounts[]", null, array("placeholder" => "amounts","class" => "form-control cls_bnk_dpst_amnt","min"=>0, "step"=>"any")) }}' +
                                                     '</td>'+
                                                     '<td>'+
-                                                        '<a class="text-light btn btn-danger btn-xs del_bnk_dpst">-</a>'+
+                                                        '<a class="text-light btn btn-danger btn-xs del_bnk_dpst btn_del">-</a>'+
                                                     '</td>'+
                                                 '</tr>'
                     );
@@ -269,6 +267,8 @@
                 var rowCount = $('#tbl_bnk_dpst tr').length;
                 if(rowCount > 2){
                     $(this).closest('tr').remove();
+                    let trnx_id  = $(".class_transaction_id").html();
+                    $(".class_transaction_id").html(--trnx_id);
                 }else{
                     toastr.error("All rows can not be deleted");
                 }

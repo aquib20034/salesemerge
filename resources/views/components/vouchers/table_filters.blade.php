@@ -1,86 +1,86 @@
 <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header"  style="background-color: #d1cdcd38;">
-                        <!-- <div class="d-flex align-items-center"> -->
-                             <!-- <h4 class="page-title">@yield('title') vouchers</h4> -->
-                            <!-- <div  class="ml-auto"> -->
-                                
-                            <div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header"  style="background-color: #d1cdcd38;">
+                <!-- <div class="d-flex align-items-center"> -->
+                        <!-- <h4 class="page-title">@yield('title') vouchers</h4> -->
+                    <!-- <div  class="ml-auto"> -->
+                        
+                <div class="row">
 
-                                <div class="col-3" style="text-align: left;">
-                                    <div class="cls_table_heading_3">New vouchers</div>
-                                </div>
-                                
-                                <div class="col-2">
-                                    <div class="row">
-                                        <div class="col-3">
-                                            {!! Html::decode(Form::label('from_date', 'From')) !!}
-                                        </div>
-                                        <div class="col-9">
-                                            {!! Form::date('from_date', hp_today(), array('id' => 'from_date', 'class' => 'form-control cls_transaction_date')) !!}
-                                        </div>
-                                    </div>
-                                </div>
-                                    
-                                <div class="col-2">
-                                    <div class="row">
-                                        <div class="col-3">
-                                            {!! Html::decode(Form::label('to_date', 'To')) !!}
-                                        </div>
-                                        <div class="col-9">
-                                            {!! Form::date('to_date', hp_today(), array('id' => 'to_date', 'class' => 'form-control cls_transaction_date')) !!}
-                                        </div>
-                                    </div>
-                                    
-                                </div> 
-
-
-                                               
-                                <div class="col-4">
-                                    <div class="row">
-                                        <div class="col-4">
-                                            {!! Html::decode(Form::label('tt_id', 'Trnx type')) !!}
-                                        </div>
-                                        <div class="col-8">
-                                            {!! Form::select('tt_id', [0=>"---Select transaction voucher---"]+hp_transaction_types(TRUE),null, array('class' => 'cls_tt form-control','id'=>'tt_id')) !!}
-                                        </div>
-                                    </div>
-                                    
-                                </div> 
-                          
-                                
-
-                                <div class="col-1" style="text-align: right;">
-                                    <button type="" class="btn btn-primary btn-xs" id="btn_table">Search</button>
-                                </div>  
-                            </div>  
+                    <div class="col-3" style="text-align: left;">
+                        <div class="cls_table_heading_3">New vouchers</div>
                     </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table id="myTable" class="table table-hover" style="width: 100%;" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>Account title</th>
-                                        <th>Trnx date</th>
-                                        <th>Trnx Id</th>
-                                        <th>Type</th>
-                                        <th>detail</th>
-                                        <th>Debit</th>
-                                        <th>Credit</th>
-                                        <th>Created by</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                            
-                                <tbody>
-                                </tbody>
-                            </table>
+                    
+                    <div class="col-2">
+                        <div class="row">
+                            <div class="col-3">
+                                {!! Html::decode(Form::label('from_date', 'From')) !!}
+                            </div>
+                            <div class="col-9">
+                                {!! Form::date('from_date', hp_today(), array('id' => 'from_date', 'class' => 'form-control cls_transaction_date')) !!}
+                            </div>
                         </div>
                     </div>
+                        
+                    <div class="col-2">
+                        <div class="row">
+                            <div class="col-3">
+                                {!! Html::decode(Form::label('to_date', 'To')) !!}
+                            </div>
+                            <div class="col-9">
+                                {!! Form::date('to_date', hp_today(), array('id' => 'to_date', 'class' => 'form-control cls_transaction_date')) !!}
+                            </div>
+                        </div>
+                        
+                    </div> 
+
+
+                                    
+                    <div class="col-4">
+                        <div class="row">
+                            <div class="col-4">
+                                {!! Html::decode(Form::label('tt_id', 'Trnx type')) !!}
+                            </div>
+                            <div class="col-8">
+                                {!! Form::select('tt_id', [0=>"---Select transaction voucher---"]+hp_transaction_types(TRUE),null, array('class' => 'cls_tt form-control','id'=>'tt_id')) !!}
+                            </div>
+                        </div>
+                        
+                    </div> 
+                
+                    
+
+                    <div class="col-1" style="text-align: right;">
+                        <button type="" class="btn btn-primary btn-xs" id="btn_table">Search</button>
+                    </div>  
+                </div>  
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="myTable" class="table table-hover" style="width: 100%;" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Account title</th>
+                                <th>Trnx date</th>
+                                <th>Trnx Id</th>
+                                <th>Type</th>
+                                <th>detail</th>
+                                <th>Debit</th>
+                                <th>Credit</th>
+                                <th>Created by</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
     <script>
         

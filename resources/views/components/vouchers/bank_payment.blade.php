@@ -21,13 +21,9 @@
                         </div>
             
                         <div class="col-3 col_head">
-                            {!! Html::decode(Form::label('method','Transaction method')) !!} </br>
-                            @foreach(($methods = hp_methods())  as $key => $method)
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" id="bnk-pymnt-{{$key}}" value ="{{$key}}" name="method" class="custom-control-input">
-                                    <label class="custom-control-label" for="bnk-pymnt-{{$key}}">{{$method}}</label>
-                                </div>
-                            @endforeach
+                            {!! Html::decode(Form::label('method','Cheque#')) !!} </br>
+                            {!! Form::text('cheque_no',  null, array('placeholder' => 'Enter cheque#', 'id' => 'cheque_no','class' => 'form-control' )) !!}
+
                         </div> 
 
                         <div class="col-2 col_head">
@@ -48,38 +44,35 @@
                             {!! Form::hidden('selected_account_balance', 0, array('id' => 'selected_account_balance','class' => 'form-control','readonly' => '' )) !!}
                         </div>
                     </div>
-
-                
                 </div>
-          
 
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-                            <table class="table" id="tbl_bnk_pymnt">
+                            <table class="table table_5" id="tbl_bnk_pymnt">
                                 <thead>
                                     <tr>
                                         <th width="25%">Account</th>
                                         <th width="60%">Detail</th>
                                         <th width="15%">Amount</th>
-                                        <th width="10%"><a class="text-light btn btn-primary btn-xs add_bnk_pymnt" id="">+</a></th>
+                                        <th width="10%"><a class="text-light btn btn-primary btn-xs add_bnk_pymnt btn_add" id="">+</a></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                        <tr>
-                                            <td>
-                                                {!! Form::select("account_ids[]", ["Please select"]+hp_accounts() ,[], array("class" => "form-control select2 cls_bnk_pymnt_account_ids")) !!}
-                                            </td>
-                                            <td>
-                                                {{ Form::text("details[]", null, array("placeholder" => "Enter details","class" => "form-control")) }}
-                                            </td>
-                                            <td>
-                                                {{ Form::number("amounts[]", null, array("placeholder" => "amounts","class" => "form-control cls_bnk_pymnt_amnt","min"=>0, "step"=>"any")) }}
-                                            </td>
-                                            <td>
-                                                <a class="text-light btn btn-danger btn-xs del_bnk_pymnt">-</a>
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td>
+                                            {!! Form::select("account_ids[]", ["Please select"]+hp_accounts() ,[], array("class" => "form-control select2 cls_bnk_pymnt_account_ids")) !!}
+                                        </td>
+                                        <td>
+                                            {{ Form::text("details[]", null, array("placeholder" => "Enter details","class" => "form-control")) }}
+                                        </td>
+                                        <td>
+                                            {{ Form::number("amounts[]", null, array("placeholder" => "amounts","class" => "form-control cls_bnk_pymnt_amnt","min"=>0, "step"=>"any")) }}
+                                        </td>
+                                        <td>
+                                            <a class="text-light btn btn-danger btn-xs del_bnk_pymnt btn_del">-</a>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -243,8 +236,6 @@
 
 
              $(document).on('click','.add_bnk_pymnt', function(){
-
-                console.log("test");
                 $('#tbl_bnk_pymnt tbody tr:last').after(
                                                 '<tr>'+
                                                     '<td>'+
@@ -257,7 +248,7 @@
                                                         '{{ Form::number("amounts[]", null, array("placeholder" => "amounts","class" => "form-control cls_bnk_pymnt_amnt","min"=>0, "step"=>"any")) }}' +
                                                     '</td>'+
                                                     '<td>'+
-                                                        '<a class="text-light btn btn-danger btn-xs del_bnk_pymnt">-</a>'+
+                                                        '<a class="text-light btn btn-danger btn-xs del_bnk_pymnt btn_del">-</a>'+
                                                     '</td>'+
                                                 '</tr>'
                     );
@@ -269,6 +260,8 @@
                 var rowCount = $('#tbl_bnk_pymnt tr').length;
                 if(rowCount > 2){
                     $(this).closest('tr').remove();
+                    let trnx_id  = $(".class_transaction_id").html();
+                    $(".class_transaction_id").html(--trnx_id);
                 }else{
                     toastr.error("All rows can not be deleted");
                 }

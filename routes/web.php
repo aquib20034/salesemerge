@@ -87,7 +87,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('transactions', TransactionController::class);
     Route::delete('transactions/destory', [TransactionController::class, 'destroy'])->name('transactions.massDestroy');
     Route::get('/get-current-balance/{account_id}',  [App\Http\Controllers\HelperController::class, 'getCurrentBalance'])->name('get.current.balance');
+    Route::get('/get_last_trnx_id/{trnx_type_id}', [App\Http\Controllers\HelperController::class, 'get_last_trnx_id'])->name('get.last.trnx.id');
 
+    
     
     //account_openings
     Route::resource('account_openings', AccountOpeningController::class);

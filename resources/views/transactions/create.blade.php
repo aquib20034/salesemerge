@@ -37,7 +37,7 @@
     .cls_heading_3, .cls_table_heading_3{
         font-weight:900;
         /* text-align: center; */
-        font-size:18px;
+        font-size:15px;
     }
 
     .card{
@@ -82,7 +82,7 @@
                             </div> 
                             
                             <div class="col col_head">
-                                <span class="">Select transaction voucher</span>
+                                <span class="">Select transactions</span>
                                 {!! Form::select('trnx_type_id', [0=>"---select---"]+hp_transaction_types(TRUE),null, array('class' => 'form-control cls_transaction_type','id'=>'trnx_type_id')) !!}
                             </div>  
                         </div>  
@@ -92,7 +92,8 @@
         </div>-->
         <div class="row">
             <div class="col-md-12">
-                <div class="card" style="background-color: #d1cdcd38;">
+                <div class="card">
+                <!-- style="background-color: #d1cdcd38;" -->
                     <div class="card-header">
                         <!-- <div class="d-flex align-items-center"> -->
                              <!-- <h4 class="page-title">@yield('title') vouchers</h4> -->
@@ -100,7 +101,7 @@
                                 
                         <div class="row">
 
-                            <div class="col-3" style="text-align: left;">
+                            <div class="col-2" style="text-align: left;">
                                 <div class="cls_heading_3">New vouchers</div>
                             </div>
 
@@ -111,7 +112,8 @@
 
                                     </div>
                                     <div class="col-6">
-                                        <span class="cls_label class_transaction_id">{{hp_next_transaction_id()}}</span>
+                                        <span class="cls_label class_transaction_type">-</span>
+                                        <span class="cls_label class_transaction_id">-</span>
                                     </div>
                                 </div>
                             </div>
@@ -133,13 +135,19 @@
                                         {!! Html::decode(Form::label('trnx_type_id', 'Trnx type')) !!}
                                     </div>
                                     <div class="col-8">
-                                        {!! Form::select('trnx_type_id', [0=>"---Select transaction voucher---"]+hp_transaction_types(TRUE),null, array('class' => 'cls_transaction_type form-control','id'=>'trnx_type_id')) !!}
+                                        {!! Form::select('trnx_type_id', [0=>"---Select transactions---"]+hp_transaction_types(TRUE),null, array('class' => 'cls_transaction_type form-control','id'=>'trnx_type_id')) !!}
                                     </div>
                                 </div>
                             </div> 
+
+                            <div class="col-2" style="text-align: right;">
+                                <a  href="{{ route('transactions.index') }}" class="btn btn-primary btn-xs ml-auto">
+                                <i class="fas fa-search"></i>
+
+                                    Find old transactions
+                                </a>
+                            </div>  
                             
-
-
                         </div>  
                     </div>
                 </div>
@@ -168,7 +176,7 @@
             <x-vouchers.journal/>
         </div>
 
-        <x-vouchers.table_filters/>
+   
     </div>
 
 
@@ -182,27 +190,69 @@
             });
 
 
-            $(document).on('change','.cls_transaction_type', function(){
+            function getFirstLetters(str) {
+                var words = str.split(" ");
+                var firstLetters = words.map(function(word) {
+                    return word.charAt(0);
+                });
+                return firstLetters.join("");
+            }
+
+
+            $(document).on('change','.cls_transaction_type', async function() {
+                $('.cls_form').hide();
+                $(".cls_selected_bank_balance").html(0);
+                $(".cls_selected_account_balance").html(0);
                 $(".cls_cih_balance").html($("#cih_balance").val());
 
-                $(".cls_selected_account_balance").html(0);
-                $(".cls_selected_bank_balance").html(0);
+                var trnx_type_id = ($(this).val());
                 
-                $('.cls_form').hide();
-                var id = ($(this).val());
-                $('.form_'+id).show();
-                $('.select2').focus();
-                $('.cls_transaction_type').val(id);
+                $('.form_'+trnx_type_id).show();
+                $('.cls_transaction_type').val(trnx_type_id);
 
                 var selectedOptionText = $('.cls_transaction_type').find('option:selected').text();
-                if(selectedOptionText == "---Select transaction voucher---"){
+                if(selectedOptionText == "---Select transactions---"){
                     $(".cls_heading_3").html("New vouchers");
+                    $(".class_transaction_id").html('-');
+                    $(".class_transaction_type").html('-');
+
                 }else{
                     $(".cls_heading_3").html(selectedOptionText);
-                }
+                    await get_last_trnx_id(trnx_type_id) // get last transaction id of this type
+                   
+                    var rCount      = parseInt($(".class_transaction_id").html());
+                    var rowCount    = $('.table_' + trnx_type_id + ' tbody tr').length;
+                    var totalCount  = rCount + (rowCount-1);
+                    $(".class_transaction_id").html(totalCount);
+                    $(".class_transaction_type").html(getFirstLetters(selectedOptionText));
 
-                console.log("cls_transaction_type: ", selectedOptionText);
+                    // console.log("rowCount", rowCount);
+                    // console.log("totalCount", totalCount);
+                    // console.log("cls_transaction_type: ", selectedOptionText);
+                }
             })
+
+
+            async function get_last_trnx_id(trnx_type_id) {
+                try {
+                    const response = await $.ajax({
+                        url: "{{ url('get_last_trnx_id') }}/" + trnx_type_id,
+                        method: 'GET'
+                    });
+                    // alert("result: success:: ", response);
+                    $(".class_transaction_id").html(response);
+                } catch (error) {
+                    console.log(error.responseText);
+                }
+            }
+
+
+            $(document).on('click','.btn_add', function(){
+                let trnx_id  = $(".class_transaction_id").html();
+                $(".class_transaction_id").html(++trnx_id);
+            });
+
+          
         });
 	</script>
 
