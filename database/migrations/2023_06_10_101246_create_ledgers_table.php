@@ -18,7 +18,7 @@ class CreateLedgersTable extends Migration
             $table->unsignedInteger('account_id')->nullable();
             $table->unsignedInteger('transaction_id')->nullable();
             $table->enum('amount_type', ['D', 'C']);
-            $table->decimal('amount')->default(0); 
+            $table->decimal('amount', 18, 2)->default(0); 
             $table->timestamps();
         });
     }

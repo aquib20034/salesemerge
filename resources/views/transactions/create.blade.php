@@ -101,11 +101,11 @@
                                 
                         <div class="row">
 
-                            <div class="col-2" style="text-align: left;">
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12" style="text-align: left;">
                                 <div class="cls_heading_3">New vouchers</div>
                             </div>
 
-                            <div class="col-2">
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                 <div class="row">
                                     <div class="col-6">
                                         {!! Html::decode(Form::label('transaction_id','Trnx ID')) !!} </br>
@@ -118,7 +118,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-2">
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                 <div class="row">
                                     <div class="col-5">
                                         {!! Html::decode(Form::label('transaction_date','Trnx date')) !!}</br>
@@ -129,7 +129,7 @@
                                 </div>
                             </div> 
 
-                            <div class="col-4">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                 <div class="row">
                                     <div class="col-4">
                                         {!! Html::decode(Form::label('trnx_type_id', 'Trnx type')) !!}
@@ -140,10 +140,9 @@
                                 </div>
                             </div> 
 
-                            <div class="col-2" style="text-align: right;">
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12" style="text-align: right;">
                                 <a  href="{{ route('transactions.index') }}" class="btn btn-primary btn-xs ml-auto">
                                 <i class="fas fa-search"></i>
-
                                     Find old transactions
                                 </a>
                             </div>  
