@@ -55,6 +55,12 @@
     .row{
         align-items: center!important;
     }
+
+    @media only screen and (min-width: 480px) {
+        .col-xs-12 {
+            margin-top: 0;
+        }
+    }
 </style>
     @include( '../sweet_script')
     <div class="page-inner">
@@ -141,7 +147,7 @@
                             </div> 
 
                             <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12" style="text-align: right;">
-                                <a  href="{{ route('transactions.index') }}" class="btn btn-primary btn-xs ml-auto">
+                                <a  href="{{ route('transactions.index') }}" class="btn btn-primary btn-xs ml-auto" style="margin-top: 10px;">
                                 <i class="fas fa-search"></i>
                                     Find old transactions
                                 </a>

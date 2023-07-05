@@ -46,6 +46,11 @@
     .row{
         align-items: center!important;
     }
+    @media only screen and (min-width: 480px) {
+        .col-xs-12 {
+            margin-top: 0;
+        }
+    }
 </style>
     <div class="page-inner">
         <!-- <div class="page-header">
@@ -104,14 +109,14 @@
                             
 
                             <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12" style="text-align: center;">
-                                <button type="" class="btn btn-primary btn-xs" id="btn_table">
+                                <button type="" class="btn btn-primary btn-xs" id="btn_table" style="margin-top: 10px;">
                                     <i class="fas fa-sync-alt"></i>
                                     Load vouchers
                                 </button>
                             </div>  
                             
                             <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12" style="text-align: center;">
-                                <a  href="{{ route('transactions.create') }}" class="btn btn-success btn-xs ml-auto">
+                                <a  href="{{ route('transactions.create') }}" class="btn btn-success btn-xs ml-auto" style="margin-top: 10px;">
                                     <i class="fa fa-plus"></i> 
                                     Add voucher
                                 </a>
