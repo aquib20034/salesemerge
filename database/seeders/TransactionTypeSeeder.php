@@ -14,7 +14,7 @@ class TransactionTypeSeeder extends Seeder
             'Cash Payment Voucher',
             'Bank Deposit Voucher',
             'Bank Payment Voucher',
-            'Journal Voucher Voucher'
+            'Journal Voucher'
          ];
          foreach ($data as $val) {
             TransactionType::create([

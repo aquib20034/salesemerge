@@ -78,7 +78,8 @@ class TransactionRequest extends FormRequest
                 $con    =   [
 
                             'bank_id'                => 'required|numeric|min:1',
-                            'method'                 => 'required|string|in:cash,cheque,online',
+                            // 'method'                 => 'required|string|in:cash,cheque,online',
+                            'cheque_no'              => 'required|string',
                             'transaction_date'       => 'required|date|after_or_equal:today',
 
 
@@ -104,9 +105,21 @@ class TransactionRequest extends FormRequest
                             // 'bank_id'                => 'required|numeric|min:1',
                             // 'transaction_date'       => 'required|date|after_or_equal:today',
 
-                            'dbt_acnt_id'            => 'required|numeric|min:1|exists:accounts,id',
-                            'dbt_detail'             => 'required|string',
-                            'dbt_amount'             => 'required|numeric|min:0',
+                            // 'dbt_acnt_id'            => 'required|numeric|min:1|exists:accounts,id',
+                            // 'dbt_detail'             => 'required|string',
+                            // 'dbt_amount'             => 'required|numeric|min:0',
+
+
+                            'dbt_acnt_ids'            => 'required|array|min:1',
+                            'dbt_acnt_ids.*'          => 'required|numeric|min:1|distinct',
+
+                            'dbt_details'                => 'required|array|min:1',
+                            'dbt_details.*'              => 'required|string',
+
+                            'dbt_amounts'                => 'required|array|min:1',
+                            'dbt_amounts.*'              => 'required|numeric|min:0',
+
+
                             
                             'account_ids'            => 'required|array|min:1',
                             'account_ids.*'          => 'required|numeric|min:1|distinct',

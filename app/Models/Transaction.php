@@ -9,6 +9,9 @@ class Transaction extends Model
 {
     protected $fillable = [
         'account_id',
+        'custom_id',
+        'reference_id',
+        'cheque_no',
         'transaction_type_id',
         'transaction_date',
         'method',

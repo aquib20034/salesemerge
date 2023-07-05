@@ -22,13 +22,13 @@
                                     <tr>
                                         <th>Account title</th>
                                         <th>Trnx date</th>
-                                        <th>Trnx Id</th>
                                         <th>Type</th>
-                                        <th>detail</th>
+                                        <th>Trnx Id</th>  <!-- custom id -->
+                                        <th>Detail</th>
                                         <th>Debit</th>
                                         <th>Credit</th>
-                                        <th>Balance</th>
                                         <th>Created by</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                             
@@ -50,16 +50,16 @@
             @endcan
             dtButtons.push(deleteButton)
             let data = [
-                { data: 'account_id', name: 'account_id' },
-                { data: 'transaction_date', name: 'transaction_date' },
-                { data: 'id', name: 'id' },
-                { data: 'transaction_type_id', name: 'transaction_type_id' },
-                { data: 'detail', name: 'detail' },
-                { data: 'debit', name: 'debit' },
-                { data: 'credit', name: 'credit' },
-                { data: 'balance', name: 'balance' },
-                { data: 'created_by', name: 'created_by' },
-            ]
+                    { data: 'account_id', name: 'account_id' },
+                    { data: 'transaction_date', name: 'transaction_date' },
+                    { data: 'transaction_type_id', name: 'transaction_type_id',orderable:false,searchable:false  },
+                    { data: 'custom_id', name: 'custom_id' ,orderable:false,searchable:false },
+                    { data: 'detail', name: 'detail' ,orderable:false,searchable:false },
+                    { data: 'debit', name: 'debit' ,orderable:false,searchable:false },
+                    { data: 'credit', name: 'credit' ,orderable:false,searchable:false },
+                    { data: 'created_by', name: 'created_by' },
+                    { data: 'actions', name: '{{ trans('global.actions') }}',orderable:false,searchable:false }
+                ]
             DataTableCall('#myTable', "{{ route('account_ledgers.index') }}", dtButtons, data)
         });
     </script>

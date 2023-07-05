@@ -1,13 +1,16 @@
-<x-vouchers.head_row/>
 
 <div class="row">
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header">
+
+            <!-- <div class="card-header">
                 <div class="d-flex align-items-center">
                     <h4 class="card-title">Cash payment</h4>
                 </div>
-            </div>
+            </div> -->
+
+            <x-vouchers.head_row/>
+
             <!--begin::Form-->
                 {!! Form::open(array('id'=>'csh_pymnt_form','enctype'=>'multipart/form-data')) !!}
 
@@ -22,13 +25,13 @@
 
                         <div class="row">
                                 <div class="col">
-                                    <table class="table" id="tbl_csh_pymnt">
+                                    <table class="table table_3" id="tbl_csh_pymnt">
                                         <thead>
                                             <tr>
                                                 <th width="25%">Account</th>
                                                 <th width="60%">Detail</th>
                                                 <th width="15%">Amount</th>
-                                                <th width="10%"><a class="text-light btn btn-primary btn-xs add_csh_pymnt" id="">+</a></th>
+                                                <th width="10%"><a class="text-light btn btn-primary btn-xs add_csh_pymnt btn_add" id="">+</a></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -43,7 +46,7 @@
                                                         {{ Form::number("amounts[]", null, array("placeholder" => "amounts","class" => "form-control cls_csh_pymnt_amnt","min"=>0, "step"=>"any")) }}
                                                     </td>
                                                     <td>
-                                                        <a class="text-light btn btn-danger btn-xs del_csh_pymnt">-</a>
+                                                        <a class="text-light btn btn-danger btn-xs del_csh_pymnt btn_del">-</a>
                                                     </td>
                                                 </tr>
                                         </tbody>
@@ -212,7 +215,7 @@
                                                         '{{ Form::number("amounts[]", null, array("placeholder" => "amounts","class" => "form-control cls_csh_pymnt_amnt","min"=>0, "step"=>"any")) }}' +
                                                     '</td>'+
                                                     '<td>'+
-                                                        '<a class="text-light btn btn-danger btn-xs del_csh_pymnt">-</a>'+
+                                                        '<a class="text-light btn btn-danger btn-xs del_csh_pymnt btn_del">-</a>'+
                                                     '</td>'+
                                                 '</tr>'
                     );
@@ -224,6 +227,8 @@
                 var rowCount = $('#tbl_csh_pymnt tr').length;
                 if(rowCount > 2){
                     $(this).closest('tr').remove();
+                    let trnx_id  = $(".class_transaction_id").html();
+                    $(".class_transaction_id").html(--trnx_id);
                 }else{
                     toastr.error("All rows can not be deleted");
                 }

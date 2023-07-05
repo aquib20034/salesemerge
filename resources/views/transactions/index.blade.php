@@ -1,85 +1,137 @@
 @extends('layouts.main')
-@section('title','Accounts')
+@section('title','Vouchers')
 @section('content')
     @include( '../sweet_script')
+
     <style>
-        .cls_badge_green{
-            background-color: #35cd3a;
-            margin-left: auto;
-            line-height: 1;
-            padding: 2px 5px;
-            vertical-align: middle;
-            font-weight: 900;
-            font-size: 11px;
-            color:white;
-        }
+    .cls_form{
+        display:none;
+    }
+    .cls_label{
+        font-weight:900;
+        text-align: center;
+        font-size:14px;
+    }
 
-        .cls_badge_blue{
-            background-color: blue;
-            margin-left: auto;
-            line-height: 1;
-            padding: 2px 5px;
-            vertical-align: middle;
-            font-weight: 900;
-            font-size: 11px;
-            color:white;
-        }
+    .col_head{
+        text-align: center;
+    }
 
-        .cls_badge_balance{
-            background-color: grey;
-            margin-left: auto;
-            line-height: 1;
-            padding: 2px 5px;
-            vertical-align: middle;
-            font-weight: 900;
-            font-size: 11px;
-            color:white;
-        }
+    .select2-container--default .select2-selection--single {
+        /* background-color: #fff; */
+        border: 0 solid #aaa !important;
+        /* border-radius: 4px; */
+    }
+    .select2{
+        display: block;
+        width: 100% !important;
+        /* padding: 0.375rem 0.75rem !important; */
+        padding: 0.2rem 0.8rem !important;
+        font-size: 11px;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ebedf2 !important;
+        border-radius: 0.25rem;
+        transition: border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out;
+    }
+    .cls_heading_3, .cls_table_heading_3{
+        font-weight:900;
+        /* text-align: center; */
+        font-size:15px;
+    }
 
-        .cls_badge_blue:hover,
-        .cls_badge_green:hover,
-        .cls_badge_balance:hover {
-            cursor: pointer;
-        }
-
-        
-    </style>
+   
+    .row{
+        align-items: center!important;
+    }
+</style>
     <div class="page-inner">
-        <div class="page-header">
+        <!-- <div class="page-header">
             <h4 class="page-title">@yield('title')</h4>
-        </div>
-        <!-- <div class="row">
-            <div class="col-md-3">
-                <div class="form-group">
-                <label for="filter_account_type">Filter by Account Type:</label>
-                <select id="filter_account_type" class="form-control">
-                    <option value="">All</option>
-                    <option value="1">Assets</option>
-                </select>
-                </div>
-            </div>
         </div> -->
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <h4 class="card-title">Manage @yield('title')</h4>
-                            @can('account-create')
-                                <a  href="{{ route('accounts.create') }}" class="btn btn-primary btn-xs ml-auto">
-                                <i class="fa fa-plus"></i> Create new account</a>
-                            @endcan
-                        </div>
+                        <!--  style="background-color: #d1cdcd38;" -->
+                        <!-- <div class="d-flex align-items-center"> -->
+                                <!-- <h4 class="page-title">@yield('title') vouchers</h4> -->
+                            <!-- <div  class="ml-auto"> -->
+                                
+                        <div class="row">
+
+                            <div class="col-2" style="text-align: left;">
+                                <div class="cls_table_heading_3">New vouchers</div>
+                            </div>
+                            
+                            <div class="col-2">
+                                <div class="row">
+                                    <div class="col-3">
+                                        {!! Html::decode(Form::label('from_date', 'From')) !!}
+                                    </div>
+                                    <div class="col-9">
+                                        {!! Form::date('from_date', hp_today(), array('id' => 'from_date', 'class' => 'form-control cls_transaction_date')) !!}
+                                    </div>
+                                </div>
+                            </div>
+                                
+                            <div class="col-2">
+                                <div class="row">
+                                    <div class="col-3">
+                                        {!! Html::decode(Form::label('to_date', 'To')) !!}
+                                    </div>
+                                    <div class="col-9">
+                                        {!! Form::date('to_date', hp_today(), array('id' => 'to_date', 'class' => 'form-control cls_transaction_date')) !!}
+                                    </div>
+                                </div>
+                            </div> 
+
+
+                                            
+                            <div class="col-3">
+                                <div class="row">
+                                    <div class="col-3">
+                                        {!! Html::decode(Form::label('tt_id', 'Type')) !!}
+                                    </div>
+                                    <div class="col-9">
+                                        {!! Form::select('tt_id', [0=>"---Select transactions---"]+hp_transaction_types(TRUE),null, array('class' => 'cls_tt form-control','id'=>'tt_id')) !!}
+                                    </div>
+                                </div>
+                            </div> 
+                        
+                            
+
+                            <div class="col-1">
+                                <button type="" class="btn btn-primary btn-xs" id="btn_table">
+                                    <i class="fas fa-sync-alt"></i>
+                                    Load transaction
+                                </button>
+                            </div>  
+                            
+                            <div class="col-2" style="text-align: right;">
+                                <a  href="{{ route('transactions.create') }}" class="btn btn-success btn-xs ml-auto">
+                                    <i class="fa fa-plus"></i> 
+                                    Add new transaction
+                                </a>
+                            </div> 
+                        </div>  
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table id="myTable" class="table table-hover" style="width: 100%;" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
+                                        <th>Account title</th>
+                                        <th>Trnx date</th>
                                         <th>Type</th>
-                                        <th>Opening balance</th>
-                                        <th width="5%">Action</th>
+                                        <th>Trnx Id</th>  <!-- custom id -->
+                                        <th>Detail</th>
+                                        <th>Debit</th>
+                                        <th>Credit</th>
+                                        <th>Created by</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                             
@@ -93,92 +145,26 @@
         </div>
     </div>
 
-    <div class="modal fade" id="addOpeningBalanceModal" tabindex="-1" role="dialog"  aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Opening balance form </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!--begin::Form-->
-                    
-                {!! Form::open(array('id'=>'modalForm','enctype'=>'multipart/form-data')) !!}
-                    {{  Form::hidden('action', "store",array('id' => 'action')) }}
-                    {{  Form::hidden('account_id', null, array('id' => 'account_id')) }}
-                    {{  Form::hidden('created_by', Auth::user()->id ) }}
-                    {{  Form::hidden('company_id', Auth::user()->company_id ) }}
-                    {{  Form::hidden('branch_id', Auth::user()->branch_id ) }}
-                    {{  Form::hidden('transaction_type_id',1, array('id' => 'transaction_type_id')) }}
-                    {{  Form::hidden('transaction_id',0, array('id' => 'transaction_id')) }}
-                    
-                    <div class=" row">
-                        <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
-                            <div class="form-group">
-                                {!! Html::decode(Form::label('amount_type','Amount type')) !!}
-                                {!! Form::select('amount_type', hp_amount_types(),null, array('class' => 'form-control','id'=>'amount_type')) !!}
-                                @if ($errors->has('amount_type'))  
-                                    {!! "<span class='span_danger'>". $errors->first('amount_type')."</span>"!!} 
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
-                            <div class="form-group">
-                                {!! Html::decode(Form::label('amount','Opening balance <span class="text-danger">*</span>')) !!}
-                                {{ Form::number('amount', null, array('placeholder' => 'Enter opening balance','class' => 'form-control','id' => 'amount'  )) }}
-                                @if ($errors->has('amount'))
-                                    {!! "<span class='span_danger'>". $errors->first('amount')."</span>"!!}
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary btn-xs">Save</button>
-                </div>
-                {!! Form::close() !!}
-                <!--end::Form-->
-            </div>
-        </div>
-    </div>
-
+    
     <script>
-        $(function () {
-            let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-            @can('account-delete')
-                deleteButton = DeleteButtonCall("{{ route('accounts.massDestroy') }}")
-            @endcan
-            dtButtons.push(deleteButton)
-            let data = [
-                { data: 'name', name: 'name' },
-                { data: 'account_type', name: 'account_type' },
-                { data: 'amount', name: 'amount' },
-                { data: 'actions', name: '{{ trans('global.actions') }}',orderable:false,searchable:false }
-            ]
-            let table = DataTableCall('#myTable', "{{ route('accounts.index') }}", dtButtons, data)
-
-            // Add account type filter event
-            // $('#filter_account_type').on('change', function () {
-            //     let accountType = $(this).val();
-            //     console.log(accountType)
-            //     if (table) {
-            //         // table.column(1).search(accountType).draw();
-            //         // $('#myTable').DataTable().column(1).search(accountType).draw();
-            //         table.column(1).search(accountType);
-            //       table.draw();
-            //     }
-            // });
-        });
-
+        
         $(document).ready(function () {
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
+
+            $(document).on('change','.cls_tt', function(){
+
+                var selectedOptionText = $('.cls_tt').find('option:selected').text();
+                if(selectedOptionText == "---Select transactions---"){
+                    $(".cls_table_heading_3").html("New vouchers");
+                }else{
+                    $(".cls_table_heading_3").html(selectedOptionText);
+                }
+            })
 
             function handle_error(data){
                 $("#spinner-div").hide();
@@ -190,57 +176,46 @@
                 toastr.error(txt);
             }
 
-            $('#modalForm').submit(function(e) {
-                e.preventDefault();
-                console.log("test")
-                var formData = new FormData(this);
 
-                $.ajax({
-                    type: 'POST',
-                    url: "{{ route('add_upd_opening_balance') }}",
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    beforeSend:function(){
-                        $("#spinner-div").show();
-                    },
-                    success: function(data) {
-                        $("#spinner-div").hide();
-                        AlertCall(data, $('#myTable').DataTable().ajax.reload());
-                        $("#modalForm")[0].reset();
-                        $("#addOpeningBalanceModal").modal("hide"); 
+            $(document).on('click', '#btn_table', async function() {
 
-                    },
-                    error: function(data) {
-                        handle_error(data);
-                    }
-                });
+                // Destroy the DataTable instance if it exists
+                if ($.fn.DataTable.isDataTable('#myTable')) {
+                    $('#myTable').DataTable().destroy();
+                }
+                let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+                @can('account_ledger-delete')
+                    deleteButton = DeleteButtonCall("{{ route('account_ledgers.massDestroy') }}")
+                @endcan
+                dtButtons.push(deleteButton)
+                let data = [
+                    { data: 'account_id', name: 'account_id' },
+                    { data: 'transaction_date', name: 'transaction_date' },
+                    { data: 'transaction_type_id', name: 'transaction_type_id',orderable:false,searchable:false  },
+                    { data: 'custom_id', name: 'custom_id' ,orderable:false,searchable:false },
+                    { data: 'detail', name: 'detail' ,orderable:false,searchable:false },
+                    { data: 'debit', name: 'debit' ,orderable:false,searchable:false },
+                    { data: 'credit', name: 'credit' ,orderable:false,searchable:false },
+                    { data: 'created_by', name: 'created_by' },
+                    { data: 'actions', name: '{{ trans('global.actions') }}',orderable:false,searchable:false }
+                ]
+
+                let transaction_type_id =$('.cls_tt').val();  // transactoin type id
+                let from_date = $('#from_date').val();
+                let to_date = $('#to_date').val();
+                let path  = "{{ url('get_ledger') }}/" + transaction_type_id + "/" + from_date + "/" + to_date;
+
+                console.log("transaction_type_id: ", transaction_type_id);
+                console.log("from_date: ", from_date);
+                console.log("to_date: ", to_date);
+                console.log("path: ", path);
+                
+
+                DataTableCall('#myTable', path, dtButtons, data)
+
+                
+
             });
-
-
-         
-
-            $(document).on('click','.cls_amount', function(){
-
-                // get attributes
-                let account_id      = $(this).attr('data-account_id');
-                let action          = $(this).attr('data-action');
-                let amount          = $(this).attr('data-amount');
-                let amount_type     = $(this).attr('data-amount_type');
-                let transaction_id  = $(this).attr('data-transaction_id');
-
-                // set attributes
-                $('#account_id').val(account_id);
-                $('#action').val(action);
-                $('#amount').val(amount);
-                $('#amount_type').val(amount_type);
-                $('#transaction_id').val(transaction_id);
-               
-                $('#amount').focus();
-            })
-
-        });
-
+        })
     </script>
 @endsection

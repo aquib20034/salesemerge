@@ -1,4 +1,5 @@
 <?php
+use Carbon\Carbon;
 use App\Models\City;
 use App\Models\Account;
 use App\Models\Branch;
@@ -80,7 +81,7 @@ function hp_next_transaction_id(){
 
 function hp_cash_in_hand(){
     return Account::where('company_id',hp_company_id())
-                    ->where('branch_id',hp_branch_id())
+                    ->where('branch_id',hp_branch_id()) // logged in user branch
                     ->where('account_type_id',1) // Assets
                     ->where('group_head_id',2) // Current Assets
                     ->where('child_head_id',3) // Cash in Hand
@@ -129,4 +130,38 @@ function hp_current_balance($account_id)
                         ->first();
 
     return (isset($account->current_balance) ? $account->current_balance : 0);
+}
+
+
+function hp_last_trnx_custom_id($trnx_type_id){
+    $lastId = Transaction::where('transaction_type_id', $trnx_type_id)
+                ->whereNotNull('custom_id')
+                ->latest()
+                ->value('custom_id');
+
+    return isset($lastId) ? ($lastId + 1) : 1;
+}
+
+
+function get_first_letters($str) {
+    $words = explode(" ", $str);
+    $firstLetters = array_map(function($word) {
+        return $word[0];
+    }, $words);
+    return implode("", $firstLetters);
+}
+
+function concatenate_time_to_date($date){
+
+    // Assuming $data['transaction_date'] contains the date in Y-m-d format (e.g., '2023-07-05')
+    $transactionDate = Carbon::parse($date);
+    
+    // Concatenate the current time to the transaction date
+    $dateTimeNow = Carbon::now();
+    $transactionDateWithTime = $transactionDate->setTime($dateTimeNow->hour, $dateTimeNow->minute, $dateTimeNow->second);
+    
+    // Now $transactionDateWithTime contains the transaction date with the current time
+    // You can use it as needed, for example:
+    return $transactionDateWithTime->format('Y-m-d H:i:s');
+    
 }

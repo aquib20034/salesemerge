@@ -370,9 +370,9 @@
 
 
                                 
-                                    @can('account-create')
-                                        <li class="nav-item {{ (request()->is('accounts/create') || request()->is('accounts/store')) ? 'active':''}}">
-                                            <a  href="{{url('/accounts/create')}}">
+                                    @can('account-list')
+                                        <li class="nav-item {{ (request()->is('accounts') || request()->is('accounts')) ? 'active':''}}">
+                                            <a  href="{{url('/accounts')}}">
                                                 <span class="sub-item">Create new account</span>
                                             </a>
                                         </li>
@@ -380,8 +380,8 @@
 
 
                                     @can('account-list')
-                                        <li class="nav-item {{ (request()->is('accounts')) ? 'active':''}}">
-                                            <a  href="{{url('/accounts')}}">
+                                        <li class="nav-item {{ (request()->is('account_openings')) ? 'active':''}}">
+                                            <a  href="{{url('/account_openings')}}">
                                                 <span class="sub-item">Add opening balance</span>
                                             </a>
                                         </li>
