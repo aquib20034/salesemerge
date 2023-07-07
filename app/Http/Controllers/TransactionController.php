@@ -56,6 +56,17 @@ class TransactionController extends Controller
                                             ));
     }
 
+    public function getLastTrnxId(){
+        $lastTransaction = Transaction::latest()->first();
+    
+        if ($lastTransaction) {
+            $lastId = $lastTransaction->id;
+            return $lastId;
+        } else {
+            return 0; // or handle the case when there are no transactions
+        }
+    }
+
     public function store(TransactionRequest $request)
     {
         try {
@@ -85,7 +96,9 @@ class TransactionController extends Controller
                 }
             // Commit the transaction
             DB::commit();
-            return response()->json(['status' => 200, 'msg' => $msg]);
+
+            $last_id = $this->getLastTrnxId();
+            return response()->json(['status' => 200, 'msg' => $msg, 'last_id' =>$last_id]);
         } catch (\Exception $e) {
             // Roll back the transaction if an exception occurs
             DB::rollBack();
@@ -336,7 +349,8 @@ class TransactionController extends Controller
         $company_id = hp_company_id();
         $data       = Account::where('company_id',$company_id)->findOrFail($id);
 
-        return view('accounts.show',compact('data'));
+
+        return view('transactions.show',compact('data'));
     }
 
 

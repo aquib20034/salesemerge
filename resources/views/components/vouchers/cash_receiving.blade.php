@@ -1,4 +1,3 @@
-
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -55,8 +54,9 @@
                     <div class="card-footer">
                         <div class="row">
                             <div class="col-lg-12 text-right">
-                                <button type="submit" class="btn btn-primary btn-xs mr-2" id="btn_csh_rcvng">Save</button>
-                                <button type="reset" class="btn btn-danger btn-xs">Cancel</button>
+                                <x-buttons.find_old_transactions/>
+                                <button type="submit" class="btn btn-primary btn-xs mr-2 btn_save" id="btn_csh_rcvng">Save</button>
+                                <button type="reset" class="btn btn-danger btn-xs btn_clear">Clear</button>
                             </div>
                         </div>
                     </div>
@@ -71,23 +71,6 @@
 <script>
         $(document).ready(function () {  
 
-            async function getAccountCurrentBalance(account_id) {
-                // console.log("sending request");
-                try {
-                    const response = await $.ajax({
-                        url: "{{ url('get-current-balance') }}/" + account_id,
-                        method: 'GET'
-                    });
-
-                    // console.log("result: success:: ", response);
-
-                    $("#selected_account_balance").val(response);
-                    $(".cls_selected_account_balance").html(response);
-                } catch (error) {
-                    console.log(error.responseText);
-                }
-            }
-
             function setInputs(entrd_amnt){
                 if (isNaN(entrd_amnt)) {
                     entrd_amnt = 0;
@@ -100,8 +83,7 @@
                 // console.log("focus finished");
             }
 
-           
-           
+
             $(document).on('click', '.cls_csh_rcvng_amnt', async function() {
                 // Get the current value of cls_csh_rcvng_amnt
                 var currentValue = $(this).val();
@@ -125,8 +107,6 @@
                 getAccountCurrentBalance(account_id);
             });
             
-
-
             $(document).on('change', '.cls_csh_rcvng_amnt', function() {
                 var inputs      = $(".cls_csh_rcvng_amnt");
                 var amount      = 0;
@@ -160,17 +140,6 @@
                 // console.log("balance: ", balance);
             });
 
-            function handle_error(data){
-                $("#spinner-div").hide();
-                var txt   = '';
-                for (var key in data.responseJSON.errors) {
-                    txt += data.responseJSON.errors[key];
-                    txt +='<br>';
-                }
-                toastr.error(txt);
-            }
-
-
             $('#csh_rcvng_form').submit(function(e) {
                 e.preventDefault();
                 var formData = new FormData(this);
@@ -189,8 +158,10 @@
                         if(data.msg){
                             // this.reset();
                             toastr.success(data.msg);
-                             $("#spinner-div").hide();
-                            setTimeout(location.reload.bind(location), 2000);
+                            $("#spinner-div").hide();
+                            $("#btn_csh_rcvng").text("Record saved");
+                            shouldPrint(data.last_id);
+                            // setTimeout(location.reload.bind(location), 2000);
                         }
                     },
                     error: function(data) {
@@ -200,8 +171,7 @@
                 });
             });
 
-
-             $(document).on('click','.add_csh_rcvng', function(){
+            $(document).on('click','.add_csh_rcvng', function(){
                 $('#tbl_csh_rcvng tbody tr:last').after(
                                                 '<tr>'+
                                                     '<td>'+
@@ -221,6 +191,7 @@
                     $('.select2').select2();
                
             });
+
             $(document).on('click','.del_csh_rcvng', function(){
 
                 var rowCount = $('#tbl_csh_rcvng tr').length;
@@ -233,6 +204,5 @@
                     toastr.error("All rows can not be deleted");
                 }
             });
-         
         });
     </script>

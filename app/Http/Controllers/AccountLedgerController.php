@@ -215,6 +215,22 @@ class AccountLedgerController extends Controller
             return "Coming soon!";
         });
 
+         $table->editColumn('actions', function ($row) {
+            $viewGate       = 'account_ledger-list';
+            $editGate       = 'account_ledger-edit';
+            $deleteGate     = 'account_ledger-delete';
+            
+            $crudRoutePart  = 'account_ledgers';
+
+            return view('partials.datatableTrnxActions', compact(
+                'viewGate',
+                'editGate',
+                'deleteGate',
+                'crudRoutePart',
+                'row'
+            ));
+        });
+        
         
         // $table->editColumn('actions', function ($row) {
         //     $viewGate       = 'account_ledger-list';
@@ -260,11 +276,62 @@ class AccountLedgerController extends Controller
                 ->with('success','Record added successfully.');
     }
 
-     public function show($id)
+    public function show($id)
     {
         $company_id = Auth::user()->company_id;
         $data       = Unit::where('company_id',$company_id)->findOrFail($id);
         return view('account_ledgers.show',compact('data'));
+    }
+
+    
+
+    public function print($id)
+    {
+        $path       = "";
+        $data       = Transaction::findOrFail($id);
+
+        
+        $records    = Transaction::where('company_id',$data->company_id)
+                        ->where('branch_id',$data->branch_id)
+                        ->where('custom_id',$data->custom_id)
+                        ->where('transaction_type_id',$data->transaction_type_id)
+                        ->get();
+
+                        // dd($data->ledger->amount);
+                        // dd($records[0]->ledger->amount);
+
+        if(isset($data->transaction_type_id)){
+            switch ($data->transaction_type_id) {
+                case '1':  // Account opening Voucher
+                    // $path = "documents.vouchers.cash_receiving";
+                    // break;
+
+                case '2':  // Cash Receiving Voucher
+                    $path = "documents.vouchers.cash_receiving";
+                    break;
+
+                case '3': // Cash Payment Voucher
+                    $path = "documents.vouchers.cash_payment";
+                    break;
+
+                case '4': // Bank Deposit Voucher
+                    $path = "documents.vouchers.bank_deposit";
+                    break;
+
+                case '5': // Bank Payment Voucher
+                    $path = "documents.vouchers.bank_payment";
+                    break;
+
+                case '6': // Journal Voucher
+                    $path = "documents.vouchers.journal";
+                    break;
+                
+                default:
+                    # code...
+                    break;
+            }
+        }
+        return view($path,compact('data','records'));
     }
 
 
