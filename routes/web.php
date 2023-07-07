@@ -99,6 +99,8 @@ Route::group(['middleware' => ['auth']], function() {
      
     //account_ledgers
     Route::resource('account_ledgers', AccountLedgerController::class);
+    Route::get('account_ledgers/print/{trnx_id}', [App\Http\Controllers\AccountLedgerController::class, 'print']);
+
     Route::delete('account_ledgers/destory', [AccountLedgerController::class, 'destroy'])->name('account_ledgers.massDestroy');
 	
 
