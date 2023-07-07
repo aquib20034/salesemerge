@@ -34,16 +34,19 @@
     
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 	<style>
+        .swal2-cancel{
+            margin-right:5px;
+        }
         .select2-container{
             width:250px !important;
             /* width:100% !important; */
 
         }
-	.span_danger{
-		color:red;
-	}
-    .table>tbody>tr>td{ white-space: nowrap !important;   padding: 2px; !important;}
-    .table td, .table th { padding: 0.25rem!important; }
+        .span_danger{
+            color:red;
+        }
+        .table>tbody>tr>td{ white-space: nowrap !important;   padding: 2px; !important;}
+        .table td, .table th { padding: 0.25rem!important; }
 
 
 		.span_danger{

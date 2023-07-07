@@ -1,80 +1,128 @@
-@extends('layouts.main')
-@section('title','Account')
-@section('content')
-@include( '../sweet_script')
-    <div class="page-inner">
-        <h4 class="page-title">@yield('title')</h4>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <h4 class="card-title">@yield('title')</h4>
-                            <a  href="{{ route('accounts.index') }}" class="btn btn-primary btn-xs ml-auto">
-                                <i class="fas fa-arrow-left"></i>
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col">
-                                <div class="table-responsive">
-                                    <table class="table dt-responsive">
-                                        <tr>
-                                            <th width="50%">Account name</th>
-                                            <td>{{isset($data->name) ? $data->name : ""}}</td>
-                                        </tr>
-                                        
-                                        <tr>
-                                            <th>Head of Accounts/ Account types</th>
-                                            <td>{{$data->account_type_tree($data)}}</td>
-                                        </tr>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Test</title>
+</head>
 
-                                        
-                                        <tr>
-                                            <th>Account limit</th>
-                                            <td>
-                                                <span class="cls_currency_symbol"> {{ hp_currency_symbol()}} </span>
-                                                {{isset($data->account_limit) ? $data->account_limit : ""}}
-                                            </td>
-                                        </tr>
+<style type="text/css">
+	.tbl_first, .tbl_second, .tbl_three{
+  		border-collapse: collapse;
+		width:100%;
+	}
+
+	.tbl_first td{
+	  /*border: 1px solid black;*/
+	  /*padding: 2px;*/
+	}
+
+	.tbl_second td,  .tbl_second th{
+	  border: 1px solid black;
+	  padding: 0px 10px;
+	}
 
 
-                                        <tr>
-                                            <th>City</th>
-                                            <td>{{isset($data->city->name) ? $data->city->name : ""}}</td>
-                                        </tr>
+	body{
+	  border: 1px dotted black;
+	  padding: 15px;
 
-                                        <tr>
-                                            <th>Company</th>
-                                            <td>{{isset($data->company->name) ? $data->company->name : ""}}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Branch</th>
-                                            <td>{{isset($data->branch->name) ? $data->branch->name : ""}}</td>
-                                        </tr>
-                                        
-                                        <tr>
-                                            <th>Status</th>
-                                            <td>
-                                                @if((isset($data->active)) && ( ($data->active == 1) || ($data->active == "Active") ) )
-                                                    <span class="badge badge-success">Active</span>
-                                                @else
-                                                    <span class="badge badge-danger">Inactive</span>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                        <br>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-  
+	}
 
-@endsection
+
+</style>
+<body>
+
+ 	<!-- <span style="font-size:14px; font-weight: 600; text-align:right;">  07/05/2023 6:23 AM</span> -->
+	<table class="tbl_first">
+	   <tbody>
+	      <tr style="height: 20px;">
+	         <td style="text-align: center; vertical-align: middle; width: 117%; height: 20px;" colspan="5">
+	         	<span style="font-size:18px; font-weight: 800"> COMPANY NAME</span>
+	         </td>
+	      </tr>
+	      <tr style="height: 20px;">
+	         <td style="text-align: center; vertical-align: middle; width: 117%; height: 20px;" colspan="5">
+	         	<span style="font-size:14px; font-weight: 500"> Company Branch</span>
+	     	</td>
+	      </tr>
+	      <tr style="height: 20px;">
+	         <td style="text-align: center; vertical-align: middle; width: 117%; height: 20px;" colspan="5">
+	         	<span style="font-size:14px; font-weight: 500"> Company Code/ STN, Phone:##########, Email:######@#####.### </span>
+	     	</td>
+	      </tr>
+	      <tr style="height: 20px;">
+	         <td style="text-align: center; vertical-align: middle; width: 117%; height: 20px;" colspan="5">
+	         	<span style="font-size:22px; font-weight: 800"> <u>CASH RECEIVING VOUCHER</u></span>
+
+	         </td>
+	      </tr>
+	      <tr style="height: 20.4px;">
+	         <td style="width: 15%;">
+	         	<span style="font-size:14px; font-weight: 600"> Voucher#</span>
+	         </td>
+	         <td style="width: 15%;">123</td>
+	         <td style="width: 40%;"></td>
+	         <td style="width: 15%;">
+	         	<span style="font-size:14px; font-weight: 600"> Date</span>
+	         </td>
+	         <td style="width: 15%;">06/07/2023</td>
+	      </tr>
+	      <tr style="height: 20.4px;">
+	         <td style="width: 15%;">
+	         	<span style="font-size:14px; font-weight: 600"> Description</span>
+	         </td>
+	         <td style="width: 15%;">tes tes</td>
+	         <td style="width: 40%;"></td>
+	         <td style="width: 15%">
+	         	<span style="font-size:14px; font-weight: 600"> Operator</span>
+	         </td>
+	         <td style="width: 15%;">Admin</td>
+	      </tr>
+	   </tbody>
+	</table>
+	<!-- DivTable.com -->
+	
+	<br>
+
+	<table class="tbl_second">
+	   <tbody>
+	      <tr style="height: 20px;">
+	         <th style="width: 76.7895%; text-align: center; height: 20px;">Amount Detail</th>
+	         <th style="width: 44.2105%; text-align: center; height: 20px;">Credit</th>
+	      </tr>
+	      <tr style="height: 20px;">
+	         <td style="width: 76.7895%; height: 20px;">6248-RAJESH KUMAR MIRPURKHAS</td>
+	         <td style="width: 44.2105%; height: 40px; text-align: right; vertical-align: top;" rowspan="2"> 25000.00</td>
+	      </tr>
+	      <tr style="height: 20px;">
+	         <td style="width: 17%; text-align: right; height: 20px;">Cash Recieved</td>
+	      </tr>
+	      <tr style="height: 20.6px;">
+	         <th style="width: 76.7895%; text-align: right; height: 20.6px;">Total Rs.</th>
+	         <th style="width: 44.2105%; height: 20.6px; text-align: right; vertical-align: middle;">25000.00</th>
+	      </tr>
+	      <tr style="height: 20px;">
+	         <td style="width: 76.7895%; height: 20px; text-align: left; vertical-align: middle; padding: 10px" colspan="2">
+	         	The Sum of Rupees: <span style="font-size:16px; font-weight: 800"> TWENTY FIVE THOUSAND ONLY</span>
+	         </td>
+	      </tr>
+	   </tbody>
+	</table> 
+	<br>
+	<br>
+	<table class="tbl_three" style="width: 100%; margin-left: auto; margin-right: auto;" border="0">
+	   <tbody>
+	      <tr style="height: 20.2px;">
+	         <td style="text-align: center; vertical-align: middle; height: 20px; width: 33%;">____________</td>
+	         <td style="text-align: center; vertical-align: middle; height: 20px; width: 33%;">____________</td>
+	         <td style="text-align: center; vertical-align: middle; height: 20px; width: 33%;">____________</td>
+	      </tr>
+	      <tr style="height: 20px;">
+	         <th style="text-align: center; vertical-align: middle; height: 20px; width: 33%;">Accountant</th>
+	         <th style="text-align: center; vertical-align: middle; height: 20px; width: 33%;">Cashier</th>
+	         <th style="text-align: center; vertical-align: middle; height: 20px; width: 33%;">Party Signature</th>
+	      </tr>
+	   </tbody>
+	</table>
+ 
+</body>
+</html>

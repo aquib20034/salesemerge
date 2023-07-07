@@ -165,3 +165,248 @@ function concatenate_time_to_date($date){
     return $transactionDateWithTime->format('Y-m-d H:i:s');
     
 }
+
+function numberToWords2($number) {
+    $ones = array(
+        0 => 'ZERO',
+        1 => 'ONE',
+        2 => 'TWO',
+        3 => 'THREE',
+        4 => 'FOUR',
+        5 => 'FIVE',
+        6 => 'SIX',
+        7 => 'SEVEN',
+        8 => 'EIGHT',
+        9 => 'NINE',
+        10 => 'TEN',
+        11 => 'ELEVEN',
+        12 => 'TWELVE',
+        13 => 'THIRTEEN',
+        14 => 'FOURTEEN',
+        15 => 'FIFTEEN',
+        16 => 'SIXTEEN',
+        17 => 'SEVENTEEN',
+        18 => 'EIGHTEEN',
+        19 => 'NINETEEN'
+    );
+
+    $tens = array(
+        2 => 'TWENTY',
+        3 => 'THIRTY',
+        4 => 'FORTY',
+        5 => 'FIFTY',
+        6 => 'SIXTY',
+        7 => 'SEVENTY',
+        8 => 'EIGHTY',
+        9 => 'NINETY'
+    );
+
+    $powers = array(
+        0 => '',
+        1 => 'THOUSAND',
+        2 => 'MILLION',
+        3 => 'BILLION',
+        4 => 'TRILLION',
+        5 => 'QUADRILLION',
+        6 => 'QUINTILLION',
+        7 => 'SEXTILLION',
+        8 => 'SEPTILLION',
+        9 => 'OCTILLION',
+        10 => 'NONILLION',
+        11 => 'DECILLION',
+        12 => 'UNDECILLION',
+        13 => 'DUODECILLION',
+        14 => 'TREDECILLION',
+        15 => 'QUATTUORDECILLION',
+        16 => 'QUINDECILLION',
+        17 => 'SEXDECILLION',
+        18 => 'SEPTENDECILLION',
+        19 => 'OCTODECILLION',
+        20 => 'NOVEMDECILLION',
+        21 => 'VIGINTILLION'
+    );
+
+    $num = number_format($number, 2, '.', '');
+    $num_arr = explode('.', $num);
+
+    $whole = (int) $num_arr[0];
+    $fraction = (int) $num_arr[1];
+
+    $result = '';
+
+    if ($whole == 0) {
+        $result = 'ZERO';
+    } else {
+        $power = 0;
+
+        while ($whole > 0) {
+            $w = $whole % 1000; // Process three digits at a time
+            $whole = (int) ($whole / 1000);
+
+            $h = floor($w / 100); // Hundreds
+            $w %= 100;
+
+            $t = floor($w / 10); // Tens
+            $w %= 10;
+
+            $temp = '';
+
+            if ($h > 0) {
+                $temp = $ones[$h] . ' HUNDRED ';
+            }
+
+            if ($t > 0 || $w > 0) {
+                if ($t < 2) {
+                    $temp .= $ones[$t * 10 + $w];
+                } else{
+                    $temp .= $tens[$t];
+                    if ($w > 0) {
+                        $temp .= '-' . $ones[$w];
+                    }
+                }
+            }
+
+            if (!empty($temp)) {
+                if ($power > 0) {
+                    $result = $temp . ' ' . $powers[$power] . ' ' . $result;
+                } else {
+                    $result = $temp . ' ' . $result;
+                }
+            }
+
+            $power++;
+        }
+    }
+
+    $result .= ' ONLY';
+
+    return $result;
+}
+function numberToWords($number) {
+    $ones = array(
+        0 => 'ZERO',
+        1 => 'ONE',
+        2 => 'TWO',
+        3 => 'THREE',
+        4 => 'FOUR',
+        5 => 'FIVE',
+        6 => 'SIX',
+        7 => 'SEVEN',
+        8 => 'EIGHT',
+        9 => 'NINE',
+        10 => 'TEN',
+        11 => 'ELEVEN',
+        12 => 'TWELVE',
+        13 => 'THIRTEEN',
+        14 => 'FOURTEEN',
+        15 => 'FIFTEEN',
+        16 => 'SIXTEEN',
+        17 => 'SEVENTEEN',
+        18 => 'EIGHTEEN',
+        19 => 'NINETEEN'
+    );
+
+    $tens = array(
+        2 => 'TWENTY',
+        3 => 'THIRTY',
+        4 => 'FORTY',
+        5 => 'FIFTY',
+        6 => 'SIXTY',
+        7 => 'SEVENTY',
+        8 => 'EIGHTY',
+        9 => 'NINETY'
+    );
+
+    $powers = array(
+        0 => '',
+        1 => 'THOUSAND',
+        2 => 'LAKH',
+        3 => 'CRORE',
+        4 => 'ARAB',
+        5 => 'KAROD',
+        6 => 'NEEL',
+        7 => 'PADMA',
+        8 => 'SHANKH',
+        9 => 'MAHA-SHANKH',
+        10 => 'VRINDA',
+        11 => 'KOTI',
+        12 => 'ARAB-KOTI',
+        13 => 'NIYUT',
+        14 => 'ANT',
+        15 => 'MAD',
+        16 => 'PARARDHA',
+        17 => 'MAHA-PARARDHA',
+        18 => 'SHATAK',
+        19 => 'SAKOTI',
+        20 => 'NAYUT',
+        21 => 'ABJAD',
+        22 => 'AKSHOHI',
+        23 => 'MAHAAKSHOHI',
+        24 => 'FABJA',
+        25 => 'FABJAAKSHOHI',
+        26 => 'SHANKHA',
+        27 => 'VRINDAMAHAAKSHOHI',
+        28 => 'PADMAMAHAAKSHOHI',
+        29 => 'SHARVA',
+        30 => 'PADMASHARVA',
+        31 => 'PADMASHARVA-MUKTAAKSHOHI',
+        32 => 'SAMUDRA',
+        33 => 'MAHA-SAMUDRA',
+        34 => 'ANT-SAMUDRA',
+        35 => 'MAD-SAMUDRA',
+        36 => 'PARARDHA-SAMUDRA',
+        37 => 'MAHA-PARARDHA-SAMUDRA',
+    );
+
+    $num = number_format($number, 2, '.', '');
+    $num_arr = explode('.', $num);
+
+    $whole = (int) $num_arr[0];
+    $fraction = (int) $num_arr[1];
+
+    $result = '';
+
+    if ($whole == 0) {
+        $result = 'ZERO';
+    } else {
+        $power = 0;
+
+        while ($whole > 0) {
+            $w = $whole % 100; // Process two digits at a time
+            $whole = (int) ($whole / 100);
+
+            $h = floor($w / 10); // Tens
+            $w %= 10;
+
+            $temp = '';
+
+            if ($h > 0) {
+                if ($h == 1) {
+                    $temp = $ones[$h * 10 + $w];
+                } else {
+                    $temp = $tens[$h];
+                    if ($w > 0) {
+                        $temp .= '-' . $ones[$w];
+                    }
+                }
+            } else {
+                $temp = $ones[$w];
+            }
+
+            if (!empty($temp)) {
+                if ($power > 0) {
+                    $result = $temp . ' ' . $powers[$power] . ' ' . $result;
+                } else {
+                    $result = $temp . ' ' . $result;
+                }
+            }
+
+            $power++;
+        }
+    }
+
+    $result .= ' ONLY';
+
+    return $result;
+}
+
